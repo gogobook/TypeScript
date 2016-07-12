@@ -1,71 +1,71 @@
-# 介绍
+# 介紹
 
-[JSX](https://facebook.github.io/jsx/)是一种嵌入式的类似XML的语法。
-它可以被转换成合法的JavaScript，尽管转换的语义是依据不同的实现而定的。
-JSX因[React](http://facebook.github.io/react/)框架而流行，但是也被其它应用所使用。
-TypeScript支持内嵌，类型检查和将JSX直接编译为JavaScript。
+[JSX](https://facebook.github.io/jsx/)是一種嵌入式的類似XML的語法。
+它可以被轉換成合法的JavaScript，儘管轉換的語義是依據不同的實現而定的。
+JSX因[React](http://facebook.github.io/react/)框架而流行，但是也被其它應用所使用。
+TypeScript支持內嵌，類型檢查和將JSX直接編譯為JavaScript。
 
 # 基本用法
 
-想要使用JSX必须做两件事：
+想要使用JSX必須做兩件事：
 
-1. 给文件一个`.tsx`扩展名
-2. 启用`jsx`选项
+1. 給文件一個`.tsx`擴展名
+2. 啟用`jsx`選項
 
-TypeScript具有两种JSX模式：`preserve`和`react`。
-这些模式只在代码生成阶段起作用 - 类型检查并不受影响。
-在`preserve`模式下生成代码中会保留JSX以供后续的转换操作使用（比如：[Babel](https://babeljs.io/)）。
-另外，输出文件会带有`.jsx`扩展名。
-`react`模式会生成`React.createElement`，在使用前不需要再进行转换操作了，输出文件的扩展名为`.js`。
+TypeScript具有兩種JSX模式：`preserve`和`react`。
+這些模式只在代碼生成階段起作用 - 類型檢查並不受影響。
+在`preserve`模式下生成代碼中會保留JSX以供後續的轉換操作使用（比如：[Babel](https://babeljs.io/)）。
+另外，輸出文件會帶有`.jsx`擴展名。
+`react`模式會生成`React.createElement`，在使用前不需要再進行轉換操作了，輸出文件的擴展名為`.js`。
 
-模式        | 输入      | 输出                          | 输出文件扩展名
+模式        | 輸入      | 輸出                          | 輸出文件擴展名
 -----------|-----------|------------------------------|----------------------
 `preserve` | `<div />` | `<div />`                    | `.jsx`
 `react`    | `<div />` | `React.createElement("div")` | `.js`
 
-你可以通过在命令行里使用`--jsx`标记或[tsconfig.json](./tsconfig.json.md)里的选项来指定模式。
+你可以通過在命令行裡使用`--jsx`標記或[tsconfig.json](./tsconfig.json.md)裡的選項來指定模式。
 
-> *注意：`React`标识符是写死的硬代码，所以你必须保证React（大写的R）是可用的。*
+> *注意：`React`標識符是寫死的硬代碼，所以你必須保證React（大寫的R）是可用的。*
 > *Note: The identifier `React` is hard-coded, so you must make React available with an uppercase R.*
 
 # `as`操作符
 
-回想一下怎么写类型断言：
+回想一下怎麼寫類型斷言：
 
 ```ts
 var foo = <foo>bar;
 ```
 
-这里我们断言`bar`变量是`foo`类型的。
-因为TypeScript也使用尖括号来表示类型断言，JSX的语法带来了解析的困难。因此，TypeScript在`.tsx`文件里禁用了使用尖括号的类型断言。
+這裡我們斷言`bar`變量是`foo`類型的。
+因為TypeScript也使用尖括號來表示類型斷言，JSX的語法帶來瞭解析的困難。因此，TypeScript在`.tsx`文件裡禁用了使用尖括號的類型斷言。
 
-为了弥补`.tsx`里的这个功能，新加入了一个类型断言符号：`as`。
-上面的例子可以很容易地使用`as`操作符改写：
+為了彌補`.tsx`裡的這個功能，新加入了一個類型斷言符號：`as`。
+上面的例子可以很容易地使用`as`操作符改寫：
 
 ```ts
 var foo = bar as foo;
 ```
 
-`as`操作符在`.ts`和`.tsx`里都可用，并且与其它类型断言行为是等价的。
+`as`操作符在`.ts`和`.tsx`裡都可用，並且與其它類型斷言行為是等價的。
 
-# 类型检查
+# 類型檢查
 
-为了理解JSX的类型检查，你必须首先理解固有元素与基于值的元素之间的区别。
-假设有这样一个JSX表达式`<expr />`，`expr`可能引用环境自带的某些东西（比如，在DOM环境里的`div`或`span`）或者是你自定义的组件。
-这是非常重要的，原因有如下两点：
+為了理解JSX的類型檢查，你必須首先理解固有元素與基於值的元素之間的區別。
+假設有這樣一個JSX表達式`<expr />`，`expr`可能引用環境自帶的某些東西（比如，在DOM環境裡的`div`或`span`）或者是你自定義的組件。
+這是非常重要的，原因有如下兩點：
 
-1. 对于React，固有元素会生成字符串（`React.createElement("div")`），然而由你自定义的组件却不会生成（`React.createElement(MyComponent)`）。
-2. 传入JSX元素里的属性类型的查找方式不同。
-  固有元素属性*本身*就支持，然而自定义的组件会自己去指定它们具有哪个属性。
+1. 對於React，固有元素會生成字符串（`React.createElement("div")`），然而由你自定義的組件卻不會生成（`React.createElement(MyComponent)`）。
+2. 傳入JSX元素裡的屬性類型的查找方式不同。
+  固有元素屬性*本身*就支持，然而自定義的組件會自己去指定它們具有哪個屬性。
 
-TypeScript使用[与React相同的规范](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) 来区别它们。
-固有元素总是以一个小写字母开头，基于值的元素总是以一个大写字母开头。
+TypeScript使用[與React相同的規範](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) 來區別它們。
+固有元素總是以一個小寫字母開頭，基於值的元素總是以一個大寫字母開頭。
 
 ## 固有元素
 
-固有元素使用特殊的接口`JSX.IntrinsicElements`来查找。
-默认地，如果这个接口没有指定，会全部通过，不对固有元素进行类型检查。
-然而，如果接口存在，那么固有元素的名字需要在`JSX.IntrinsicElements`接口的属性里查找。
+固有元素使用特殊的接口`JSX.IntrinsicElements`來查找。
+默認地，如果這個接口沒有指定，會全部通過，不對固有元素進行類型檢查。
+然而，如果接口存在，那麼固有元素的名字需要在`JSX.IntrinsicElements`接口的屬性裡查找。
 例如：
 
 ```ts
@@ -75,13 +75,13 @@ declare namespace JSX {
     }
 }
 
-<foo />; // 正确
-<bar />; // 错误
+<foo />; // 正確
+<bar />; // 錯誤
 ```
 
-在上例中，`<foo />`没有问题，但是`<bar />`会报错，因为它没在`JSX.IntrinsicElements`里指定。
+在上例中，`<foo />`沒有問題，但是`<bar />`會報錯，因為它沒在`JSX.IntrinsicElements`裡指定。
 
-> 注意：你也可以在`JSX.IntrinsicElements`上指定一个用来捕获所有字符串索引：
+> 注意：你也可以在`JSX.IntrinsicElements`上指定一個用來捕獲所有字符串索引：
 >```ts
 >declare namespace JSX {
 >    interface IntrinsicElements {
@@ -90,37 +90,37 @@ declare namespace JSX {
 >}
 >```
 
-## 基于值的元素
+## 基於值的元素
 
-基于值的元素会简单的在它所在的作用域里按标识符查找。
+基於值的元素會簡單的在它所在的作用域裡按標識符查找。
 
 ```ts
 import MyComponent from "./myComponent";
 
-<MyComponent />; // 正确
-<SomeOtherComponent />; // 错误
+<MyComponent />; // 正確
+<SomeOtherComponent />; // 錯誤
 ```
 
-可以限制基于值的元素的类型。
-然而，为了这么做我们需要引入两个新的术语：*元素类的类型*和*元素实例的类型*。
+可以限制基於值的元素的類型。
+然而，為了這麼做我們需要引入兩個新的術語：*元素類的類型*和*元素實例的類型*。
 
-现在有`<Expr />`，*元素类的类型*为`Expr`的类型。
-所以在上面的例子里，如果`MyComponent`是ES6的类，那么它的类类型就是这个类。
-如果`MyComponent`是个工厂函数，类类型为这个函数。
+現在有`<Expr />`，*元素類的類型*為`Expr`的類型。
+所以在上面的例子裡，如果`MyComponent`是ES6的類，那麼它的類類型就是這個類。
+如果`MyComponent`是個工廠函數，類類型為這個函數。
 
-一旦建立起了类类型，实例类型就确定了，为类类型调用签名的返回值与构造签名的联合类型。
-再次说明，在ES6类的情况下，实例类型为这个类的实例的类型，并且如果是工厂函数，实例类型为这个函数返回值类型。
+一旦建立起了類類型，實例類型就確定了，為類類型調用簽名的返回值與構造簽名的聯合類型。
+再次說明，在ES6類的情況下，實例類型為這個類的實例的類型，並且如果是工廠函數，實例類型為這個函數返回值類型。
 
 ```ts
 class MyComponent {
   render() {}
 }
 
-// 使用构造签名
+// 使用構造簽名
 var myComponent = new MyComponent();
 
-// 元素类的类型 => MyComponent
-// 元素实例的类型 => { render: () => void }
+// 元素類的類型 => MyComponent
+// 元素實例的類型 => { render: () => void }
 
 function MyFactoryFunction() {
   return {
@@ -129,15 +129,15 @@ function MyFactoryFunction() {
   }
 }
 
-// 使用调用签名
+// 使用調用簽名
 var myComponent = MyFactoryFunction();
 
-// 元素类的类型 => FactoryFunction
-// 元素实例的类型 => { render: () => void }
+// 元素類的類型 => FactoryFunction
+// 元素實例的類型 => { render: () => void }
 ```
 
-元素的实例类型很有趣，因为它必须赋值给`JSX.ElementClass`或抛出一个错误。
-默认的`JSX.ElementClass`为`{}`，但是它可以被扩展用来限制JSX的类型以符合相应的接口。
+元素的實例類型很有趣，因為它必須賦值給`JSX.ElementClass`或拋出一個錯誤。
+默認的`JSX.ElementClass`為`{}`，但是它可以被擴展用來限制JSX的類型以符合相應的接口。
 
 ```ts
 declare namespace JSX JSX {
@@ -153,24 +153,24 @@ function MyFactoryFunction() {
   return { render: () => {} }
 }
 
-<MyComponent />; // 正确
-<MyFactoryFunction />; // 正确
+<MyComponent />; // 正確
+<MyFactoryFunction />; // 正確
 
 class NotAValidComponent {}
 function NotAValidFactoryFunction() {
   return {};
 }
 
-<NotAValidComponent />; // 错误
-<NotAValidFactoryFunction />; // 错误
+<NotAValidComponent />; // 錯誤
+<NotAValidFactoryFunction />; // 錯誤
 ```
 
-## 属性类型检查
+## 屬性類型檢查
 
-属性类型检查的第一步是确定*元素属性类型*。
-这在固有元素和基于值的元素之间稍有不同。
+屬性類型檢查的第一步是確定*元素屬性類型*。
+這在固有元素和基於值的元素之間稍有不同。
 
-对于固有元素，这是`JSX.IntrinsicElements`属性的类型。
+對於固有元素，這是`JSX.IntrinsicElements`屬性的類型。
 
 ```ts
 declare namespace JSX {
@@ -179,36 +179,36 @@ declare namespace JSX {
   }
 }
 
-// `foo`的元素属性类型为`{bar?: boolean}`
+// `foo`的元素屬性類型為`{bar?: boolean}`
 <foo bar />;
 ```
 
-对于基于值的元素，就稍微复杂些。
-它取决于先前确定的在元素实例类型上的某个属性的类型。
-至于该使用哪个属性来确定类型取决于`JSX.ElementAttributesProperty`。
-它应该使用单一的属性来定义。
-这个属性名之后会被使用。
+對於基於值的元素，就稍微複雜些。
+它取決於先前確定的在元素實例類型上的某個屬性的類型。
+至於該使用哪個屬性來確定類型取決於`JSX.ElementAttributesProperty`。
+它應該使用單一的屬性來定義。
+這個屬性名之後會被使用。
 
 ```ts
 declare namespace JSX {
   interface ElementAttributesProperty {
-    props; // 指定用来使用的属性名
+    props; // 指定用來使用的屬性名
   }
 }
 
 class MyComponent {
-  // 在元素实例类型上指定属性
+  // 在元素實例類型上指定屬性
   props: {
     foo?: string;
   }
 }
 
-// `MyComponent`的元素属性类型为`{foo?: string}`
+// `MyComponent`的元素屬性類型為`{foo?: string}`
 <MyComponent foo="bar" />
 ```
 
-元素属性类型用于的JSX里进行属性的类型检查。
-支持可选属性和必须属性。
+元素屬性類型用於的JSX裡進行屬性的類型檢查。
+支持可選屬性和必須屬性。
 
 ```ts
 declare namespace JSX {
@@ -217,36 +217,36 @@ declare namespace JSX {
   }
 }
 
-<foo requiredProp="bar" />; // 正确
-<foo requiredProp="bar" optionalProp={0} />; // 正确
-<foo />; // 错误, 缺少 requiredProp
-<foo requiredProp={0} />; // 错误, requiredProp 应该是字符串
-<foo requiredProp="bar" unknownProp />; // 错误, unknownProp 不存在
-<foo requiredProp="bar" some-unknown-prop />; // 正确, `some-unknown-prop`不是个合法的标识符
+<foo requiredProp="bar" />; // 正確
+<foo requiredProp="bar" optionalProp={0} />; // 正確
+<foo />; // 錯誤, 缺少 requiredProp
+<foo requiredProp={0} />; // 錯誤, requiredProp 應該是字符串
+<foo requiredProp="bar" unknownProp />; // 錯誤, unknownProp 不存在
+<foo requiredProp="bar" some-unknown-prop />; // 正確, `some-unknown-prop`不是個合法的標識符
 ```
 
-> 注意：如果一个属性名不是个合法的JS标识符（像`data-*`属性），并且它没出现在元素属性类型里时不会当做一个错误。
+> 注意：如果一個屬性名不是個合法的JS標識符（像`data-*`屬性），並且它沒出現在元素屬性類型裡時不會當做一個錯誤。
 
 延展操作符也可以使用：
 
 ```JSX
 var props = { requiredProp: 'bar' };
-<foo {...props} />; // 正确
+<foo {...props} />; // 正確
 
 var badProps = {};
-<foo {...badProps} />; // 错误
+<foo {...badProps} />; // 錯誤
 ```
 
-# JSX结果类型
+# JSX結果類型
 
-默认地JSX表达式结果的类型为`any。
-你可以自定义这个类型，通过指定`JSX.Element`接口。
-然而，不能够从接口里检索元素，属性或JSX的子元素的类型信息。
-它是一个黑盒。
+默認地JSX表達式結果的類型為`any。
+你可以自定義這個類型，通過指定`JSX.Element`接口。
+然而，不能夠從接口裡檢索元素，屬性或JSX的子元素的類型信息。
+它是一個黑盒。
 
-# 嵌入的表达式
+# 嵌入的表達式
 
-JSX允许你使用`{ }`标签来内嵌表达式。
+JSX允許你使用`{ }`標籤來內嵌表達式。
 
 ```JSX
 var a = <div>
@@ -254,8 +254,8 @@ var a = <div>
 </div>
 ```
 
-上面的代码产生一个错误，因为你不能用数字来除以一个字符串。
-输出如下，若你使用了`preserve`选项：
+上面的代碼產生一個錯誤，因為你不能用數字來除以一個字符串。
+輸出如下，若你使用了`preserve`選項：
 
 ```JSX
 var a = <div>
@@ -265,8 +265,8 @@ var a = <div>
 
 # React整合
 
-要想一起使用JSX和React，你应该使用[React类型定义](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react)。
-这些类型声明定义了`JSX`合适命名空间来使用React。
+要想一起使用JSX和React，你應該使用[React類型定義](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react)。
+這些類型聲明定義了`JSX`合適命名空間來使用React。
 
 ```ts
 /// <reference path="react.d.ts" />
@@ -281,6 +281,6 @@ class MyComponent extends React.Component<Props, {}> {
   }
 }
 
-<MyComponent foo="bar" />; // 正确
-<MyComponent foo={0} />; // 错误
+<MyComponent foo="bar" />; // 正確
+<MyComponent foo={0} />; // 錯誤
 ```

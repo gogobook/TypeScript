@@ -1,65 +1,65 @@
-> 这节假设你已经了解了模块的一些基本知识
-请阅读[模块](./Modules.md)文档了解更多信息。
+> 這節假設你已經瞭解了模組的一些基本知識
+請閱讀[模組](./Modules.md)文檔瞭解更多信息。
 
-*模块解析*就是指编译器所要依据的一个流程，用它来找出某个导入操作所引用的具体值。
-假设有一个导入语句`import { a } from "moduleA"`;
-为了去检查任何对`a`的使用，编译器需要准确的知道它表示什么，并且会需要检查它的定义`moduleA`。
+*模組解析*就是指編譯器所要依據的一個流程，用它來找出某個導入操作所引用的具體值。
+假設有一個導入語句`import { a } from "moduleA"`;
+為了去檢查任何對`a`的使用，編譯器需要準確的知道它表示什麼，並且會需要檢查它的定義`moduleA`。
 
-这时候，编译器会想知道“`moduleA`的shape是怎样的？”
-这听上去很简单，`moduleA`可能在你写的某个`.ts`/`.tsx`文件里或者在你的代码所依赖的`.d.ts`里。
+這時候，編譯器會想知道「`moduleA`的shape是怎樣的？」
+這聽上去很簡單，`moduleA`可能在你寫的某個`.ts`/`.tsx`文件裡或者在你的代碼所依賴的`.d.ts`裡。
 
-首先，编译器会尝试定位表示导入模块的文件。
-编译会遵循下列二种策略之一：[Classic](#classic)或[Node](#node)。
-这些策略会告诉编译器到*哪里*去查找`moduleA`。
+首先，編譯器會嘗試定位表示導入模組的文件。
+編譯會遵循下列二種策略之一：[Classic](#classic)或[Node](#node)。
+這些策略會告訴編譯器到*哪裡*去查找`moduleA`。
 
-如果它们失败了并且如果模块名是非相对的（且是在`"moduleA"`的情况下），编译器会尝试定位一个[外部模块声明](./Modules.md#ambient-modules)。
-我们接下来会讲到非相对导入。
+如果它們失敗了並且如果模組名是非相對的（且是在`"moduleA"`的情況下），編譯器會嘗試定位一個[外部模組聲明](./Modules.md#ambient-modules)。
+我們接下來會講到非相對導入。
 
-最后，如果编译器还是不能解析这个模块，它会记录一个错误。
-在这种情况下，错误可能为`error TS2307: Cannot find module 'moduleA'.`
+最後，如果編譯器還是不能解析這個模組，它會記錄一個錯誤。
+在這種情況下，錯誤可能為`error TS2307: Cannot find module 'moduleA'.`
 
-## 相对 vs. 非相对模块导入
+## 相對 vs. 非相對模組導入
 
-根据模块引用是相对的还是非相对的，模块导入会以不同的方式解析。
+根據模組引用是相對的還是非相對的，模組導入會以不同的方式解析。
 
-*相对导入*是以`/`，`./`或`../`开头的。
+*相對導入*是以`/`，`./`或`../`開頭的。
 下面是一些例子：
 
 * `import Entry from "./components/Entry";`
 * `import { DefaultHeaders } from "../constants/http";`
 * `import "/mod";`
 
-所有其它形式的导入被当作*非相对*的。
+所有其它形式的導入被當作*非相對*的。
 下面是一些例子：
 
 * `import * as $ from "jQuery";`
 * `import { Component } from "angular2/core";`
 
-相对导入解析时是相对于导入它的文件来的，并且*不能*解析为一个外部模块声明。
-你应该为你自己写的模块使用相对导入，这样能确保它们在运行时的相对位置。
+相對導入解析時是相對於導入它的文件來的，並且*不能*解析為一個外部模組聲明。
+你應該為你自己寫的模組使用相對導入，這樣能確保它們在運行時的相對位置。
 
-## 模块解析策略
+## 模組解析策略
 
-共有两种可用的模块解析策略：[Node](#node)和[Classic](#classic)。
-你可以使用`--moduleResolution`标记为指定使用哪个。
-默认值为[Node](#node)。
+共有兩種可用的模組解析策略：[Node](#node)和[Classic](#classic)。
+你可以使用`--moduleResolution`標記為指定使用哪個。
+默認值為[Node](#node)。
 
 ### Classic
 
-这种策略以前是TypeScript默认的解析策略。
-现在，它存在的理由主要是为了向后兼容。
+這種策略以前是TypeScript默認的解析策略。
+現在，它存在的理由主要是為了向後兼容。
 
-相对导入的模块是相对于导入它的文件进行解析的。
-因此`/root/src/folder/A.ts`文件里的`import { b } from "./moduleB"`会使用下面的查找流程：
+相對導入的模組是相對於導入它的文件進行解析的。
+因此`/root/src/folder/A.ts`文件裡的`import { b } from "./moduleB"`會使用下面的查找流程：
 
 1. `/root/src/folder/moduleB.ts`
 2. `/root/src/folder/moduleB.d.ts`
 
-对了非相对模块的导入，编译器则会从包含导入文件的目录开始依次向上级目录遍历，尝试定位匹配的声明文件。
+對了非相對模組的導入，編譯器則會從包含導入文件的目錄開始依次向上級目錄遍歷，嘗試定位匹配的聲明文件。
 
 比如：
 
-有一个对`moduleB`的非相对导入`import { b } from "moduleB"`，它是在`/root/src/folder/A.ts`文件里，会以如下的方式来定位`"moduleB"`：
+有一個對`moduleB`的非相對導入`import { b } from "moduleB"`，它是在`/root/src/folder/A.ts`文件裡，會以如下的方式來定位`"moduleB"`：
 
 1. `/root/src/folder/moduleB.ts`
 2. `/root/src/folder/moduleB.d.ts`
@@ -72,78 +72,78 @@
 
 ### Node
 
-这个解析策略试图在运行时模仿[Node.js](https://nodejs.org/)模块解析机制。
+這個解析策略試圖在運行時模仿[Node.js](https://nodejs.org/)模組解析機制。
 完整的Node.js解析算法可以在[Node.js module documentation](https://nodejs.org/api/modules.html#modules_all_together)找到。
 
-#### Node.js如何解析模块
+#### Node.js如何解析模組
 
-为了理解TypeScript编译依照的解析步骤，先弄明白Node.js模块是非常重要的。
-通常，在Node.js里导入是通过`require`函数调用进行的。
-Node.js会根据`require`的是相对路径还是非相对路径做出不同的行为。
+為了理解TypeScript編譯依照的解析步驟，先弄明白Node.js模組是非常重要的。
+通常，在Node.js裡導入是通過`require`函數調用進行的。
+Node.js會根據`require`的是相對路徑還是非相對路徑做出不同的行為。
 
-相对路径很简单。
-例如，假设有一个文件路径为`/root/src/moduleA.js`，包含了一个导入`var x = require("./moduleB");`
-Node.js以下面的顺序解析这个导入：
+相對路徑很簡單。
+例如，假設有一個文件路徑為`/root/src/moduleA.js`，包含了一個導入`var x = require("./moduleB");`
+Node.js以下面的順序解析這個導入：
 
-1. 将`/root/src/moduleB.js`视为文件，检查是否存在。
+1. 將`/root/src/moduleB.js`視為文件，檢查是否存在。
 
-2. 将`/root/src/moduleB`视为目录，检查是否它包含`package.json`文件并且其指定了一个`"main"`模块。
-   在我们的例子里，如果Node.js发现文件`/root/src/moduleB/package.json`包含了`{ "main": "lib/mainModule.js" }`，那么Node.js会引用`/root/src/moduleB/lib/mainModule.js`。
+2. 將`/root/src/moduleB`視為目錄，檢查是否它包含`package.json`文件並且其指定了一個`"main"`模組。
+   在我們的例子裡，如果Node.js發現文件`/root/src/moduleB/package.json`包含了`{ "main": "lib/mainModule.js" }`，那麼Node.js會引用`/root/src/moduleB/lib/mainModule.js`。
 
-3. 将`/root/src/moduleB`视为目录，检查它是否包含`index.js`文件。
-   这个文件会被隐式地当作那个文件夹下的"main"模块。
+3. 將`/root/src/moduleB`視為目錄，檢查它是否包含`index.js`文件。
+   這個文件會被隱式地當作那個文件夾下的"main"模組。
 
-你可以阅读Node.js文档了解更多详细信息：[file modules](https://nodejs.org/api/modules.html#modules_file_modules) 和 [folder modules](https://nodejs.org/api/modules.html#modules_folders_as_modules)。
+你可以閱讀Node.js文檔瞭解更多詳細信息：[file modules](https://nodejs.org/api/modules.html#modules_file_modules) 和 [folder modules](https://nodejs.org/api/modules.html#modules_folders_as_modules)。
 
-但是，[非相对模块名](#relative-vs-non-relative-module-imports)的解析是个完全不同的过程。
-Node会在一个特殊的文件夹`node_modules`里查找你的模块。
-`node_modules`可能与当前文件在同一级目录下，或者在上层目录里。
-Node会向上级目录遍历，查找每个`node_modules`直到它找到要加载的模块。
+但是，[非相對模組名](#relative-vs-non-relative-module-imports)的解析是個完全不同的過程。
+Node會在一個特殊的文件夾`node_modules`裡查找你的模組。
+`node_modules`可能與當前文件在同一級目錄下，或者在上層目錄裡。
+Node會向上級目錄遍歷，查找每個`node_modules`直到它找到要加載的模組。
 
-还是用上面例子，但假设`/root/src/moduleA.js`里使用的是非相对路径导入`var x = require("moduleB");`。
-Node则会以下面的顺序去解析`moduleB`，直到有一个匹配上。
+還是用上面例子，但假設`/root/src/moduleA.js`裡使用的是非相對路徑導入`var x = require("moduleB");`。
+Node則會以下面的順序去解析`moduleB`，直到有一個匹配上。
 
 1. `/root/src/node_modules/moduleB.js`
-2. `/root/src/node_modules/moduleB/package.json` (如果指定了`"main"`属性)
+2. `/root/src/node_modules/moduleB/package.json` (如果指定了`"main"`屬性)
 3. `/root/src/node_modules/moduleB/index.js`
    <br /><br />
 4. `/root/node_modules/moduleB.js`
-5. `/root/node_modules/moduleB/package.json` (如果指定了`"main"`属性)
+5. `/root/node_modules/moduleB/package.json` (如果指定了`"main"`屬性)
 6. `/root/node_modules/moduleB/index.js`
    <br /><br />
 7. `/node_modules/moduleB.js`
-8. `/node_modules/moduleB/package.json` (如果指定了`"main"`属性)
+8. `/node_modules/moduleB/package.json` (如果指定了`"main"`屬性)
 9. `/node_modules/moduleB/index.js`
 
-注意Node.js在步骤（4）和（7）会向上跳一级目录。
+注意Node.js在步驟（4）和（7）會向上跳一級目錄。
 
-你可以阅读Node.js文档了解更多详细信息：[loading modules from `node_modules`](https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders)。
+你可以閱讀Node.js文檔瞭解更多詳細信息：[loading modules from `node_modules`](https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders)。
 
-#### TypeScript如何解析模块
+#### TypeScript如何解析模組
 
-TypeScript是模仿Node.js运行时的解析策略来在编译阶段定位模块定义文件。
-因此，TypeScript在Node解析逻辑基础上增加了TypeScript源文件的扩展名（`.ts`，`.tsx`和`.d.ts`）。
-同时，TypeScript在`package.json`里使用字段`"typings"`来表示类似`"main"`的意义 - 编译器会使用它来找到要使用的"main"定义文件。
+TypeScript是模仿Node.js運行時的解析策略來在編譯階段定位模組定義文件。
+因此，TypeScript在Node解析邏輯基礎上增加了TypeScript源文件的擴展名（`.ts`，`.tsx`和`.d.ts`）。
+同時，TypeScript在`package.json`裡使用字段`"typings"`來表示類似`"main"`的意義 - 編譯器會使用它來找到要使用的"main"定義文件。
 
-比如，有一个导入语句`import { b } from "./moduleB"`在`/root/src/moduleA.ts`里，会以下面的流程来定位`"./moduleB"`：
+比如，有一個導入語句`import { b } from "./moduleB"`在`/root/src/moduleA.ts`裡，會以下面的流程來定位`"./moduleB"`：
 
 1. `/root/src/moduleB.ts`
 2. `/root/src/moduleB.tsx`
 3. `/root/src/moduleB.d.ts`
-4. `/root/src/moduleB/package.json` (如果指定了`"typings"`属性)
+4. `/root/src/moduleB/package.json` (如果指定了`"typings"`屬性)
 5. `/root/src/moduleB/index.ts`
 6. `/root/src/moduleB/index.tsx`
 7. `/root/src/moduleB/index.d.ts`
 
-回想一下Node.js先查找`moduleB.js`文件，然后是合适的`package.json`，再之后是`index.js`。
+回想一下Node.js先查找`moduleB.js`文件，然後是合適的`package.json`，再之後是`index.js`。
 
-类似地，非相对的导入会遵循Node.js的解析逻辑，首先查找文件，然后是合适的文件夹。
-因此`/src/moduleA.ts`文件里的`import { b } from "moduleB"`会以下面的查找顺序解析：
+類似地，非相對的導入會遵循Node.js的解析邏輯，首先查找文件，然後是合適的文件夾。
+因此`/src/moduleA.ts`文件裡的`import { b } from "moduleB"`會以下面的查找順序解析：
 
 1. `/root/src/node_modules/moduleB.ts`
 2. `/root/src/node_modules/moduleB.tsx`
 3. `/root/src/node_modules/moduleB.d.ts`
-4. `/root/src/node_modules/moduleB/package.json` (如果指定了`"typings"`属性)
+4. `/root/src/node_modules/moduleB/package.json` (如果指定了`"typings"`屬性)
 5. `/root/src/node_modules/moduleB/index.ts`
 6. `/root/src/node_modules/moduleB/index.tsx`
 7. `/root/src/node_modules/moduleB/index.d.ts`
@@ -151,7 +151,7 @@ TypeScript是模仿Node.js运行时的解析策略来在编译阶段定位模块
 8. `/root/node_modules/moduleB.ts`
 9. `/root/node_modules/moduleB.tsx`
 10. `/root/node_modules/moduleB.d.ts`
-11. `/root/node_modules/moduleB/package.json` (如果指定了`"typings"`属性)
+11. `/root/node_modules/moduleB/package.json` (如果指定了`"typings"`屬性)
 12. `/root/node_modules/moduleB/index.ts`
 13. `/root/node_modules/moduleB/index.tsx`
 14. `/root/node_modules/moduleB/index.d.ts`
@@ -159,21 +159,21 @@ TypeScript是模仿Node.js运行时的解析策略来在编译阶段定位模块
 15. `/node_modules/moduleB.ts`
 16. `/node_modules/moduleB.tsx`
 17. `/node_modules/moduleB.d.ts`
-18. `/node_modules/moduleB/package.json` (如果指定了`"typings"`属性)
+18. `/node_modules/moduleB/package.json` (如果指定了`"typings"`屬性)
 19. `/node_modules/moduleB/index.ts`
 20. `/node_modules/moduleB/index.tsx`
 21. `/node_modules/moduleB/index.d.ts`
 
-不要被这里步骤的数量吓到 - TypeScript只是在步骤（8）和（15）向上跳了两次目录。
-这并不比Node.js里的流程复杂。
+不要被這裡步驟的數量嚇到 - TypeScript只是在步驟（8）和（15）向上跳了兩次目錄。
+這並不比Node.js裡的流程複雜。
 
 ## 使用`--noResolve`
 
-正常来讲编译器会在开始编译之前解析模块导入。
-每当它成功地解析了对一个文件`import`，这个文件被会加到一个文件列表里，以供编译器稍后处理。
+正常來講編譯器會在開始編譯之前解析模組導入。
+每當它成功地解析了對一個文件`import`，這個文件被會加到一個文件列表裡，以供編譯器稍後處理。
 
-`--noResolve`编译选项告诉编译器不要添加任何不是在命令行上传入的文件到编译列表。
-编译器仍然会尝试解析模块，但是只要没有指定这个文件，那么它就不会被包含在内。
+`--noResolve`編譯選項告訴編譯器不要添加任何不是在命令行上傳入的文件到編譯列表。
+編譯器仍然會嘗試解析模組，但是只要沒有指定這個文件，那麼它就不會被包含在內。
 
 比如
 
@@ -188,21 +188,21 @@ import * as B from "moduleB" // Error TS2307: Cannot find module 'moduleB'.
 tsc app.ts moduleA.ts --noResolve
 ```
 
-使用`--noResolve`编译`app.ts`：
+使用`--noResolve`編譯`app.ts`：
 
-* 可能正确找到`moduleA`，因为它在命令行上指定了。
-* 找不到`moduleB`，因为没有在命令行上传递。
+* 可能正確找到`moduleA`，因為它在命令行上指定了。
+* 找不到`moduleB`，因為沒有在命令行上傳遞。
 
-## 常见问题
+## 常見問題
 
-### 为什么在`exclude`列表里的模块还会被编译器使用
+### 為什麼在`exclude`列表裡的模組還會被編譯器使用
 
-`tsconfig.json`将文件夹转变一个“工程”
-如果不指定任何`“exclude”`或`“files”`，文件夹里的所有文件包括`tsconfig.json`和所有的子目录都会在编译列表里。
-如果你想利用`“exclude”`排除某些文件，甚至你想指定所有要编译的文件列表，请使用`“files”`。
+`tsconfig.json`將文件夾轉變一個「工程」
+如果不指定任何`「exclude」`或`「files」`，文件夾裡的所有文件包括`tsconfig.json`和所有的子目錄都會在編譯列表裡。
+如果你想利用`「exclude」`排除某些文件，甚至你想指定所有要編譯的文件列表，請使用`「files」`。
 
-有些是被`tsconfig.json`自动加入的。
-它不会涉及到上面讨论的模块解析。
-如果编译器识别出一个文件是模块导入目标，它就会加到编译列表里，不管它是否被排除了。
+有些是被`tsconfig.json`自動加入的。
+它不會涉及到上面討論的模組解析。
+如果編譯器識別出一個文件是模組導入目標，它就會加到編譯列表裡，不管它是否被排除了。
 
-因此，要从编译列表中排除一个文件，你需要在排除它的同时，还要排除所有对它进行`import`或使用了`/// <reference path="..." />`指令的文件。
+因此，要從編譯列表中排除一個文件，你需要在排除它的同時，還要排除所有對它進行`import`或使用了`/// <reference path="..." />`指令的文件。

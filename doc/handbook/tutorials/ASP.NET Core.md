@@ -1,37 +1,37 @@
 # ASP.NET Core
 
-## 安装 ASP.NET Core 和 TypeScript
+## 安裝 ASP.NET Core 和 TypeScript
 
-首先，若有必要请[安装 ASP.NET Core](https://get.asp.net)。
-这个快速上手指南使用的是 Visual Studio ，若要使用 ASP.NET Core 你需要有 Visual Studio 2015。
+首先，若有必要請[安裝 ASP.NET Core](https://get.asp.net)。
+這個快速上手指南使用的是 Visual Studio ，若要使用 ASP.NET Core 你需要有 Visual Studio 2015。
 
-其次，如果你的 Visual Studio 中没有包含 TypeScript，你可以从这里安装[TypeScript for Visual Studio 2015](http://www.microsoft.com/en-us/download/details.aspx?id=48593)。
+其次，如果你的 Visual Studio 中沒有包含 TypeScript，你可以從這裡安裝[TypeScript for Visual Studio 2015](http://www.microsoft.com/en-us/download/details.aspx?id=48593)。
 
 ## 新建工程
 
-1. 选择 **File**
-2. 选择 **New Project** （Ctrl + Shift + N）
-3. 选择 **Visual C#**
-4. 选择 **ASP.NET Web Application**
+1. 選擇 **File**
+2. 選擇 **New Project** （Ctrl + Shift + N）
+3. 選擇 **Visual C#**
+4. 選擇 **ASP.NET Web Application**
 
    ![Create new ASP.NET project](../../assets/images/tutorials/aspnet/new-asp-project.png)
 
-5. 选择 **ASP.NET 5 Empty** 工程模板
+5. 選擇 **ASP.NET 5 Empty** 工程模板
 
-   取消复选 "Host in the cloud" 本指南将使用一个本地示例。
+   取消複選 "Host in the cloud" 本指南將使用一個本地示例。
    ![Use empty template](../../assets/images/tutorials/aspnet/new-asp-project-empty.png)
 
-运行此应用以确保它能正常工作。
+運行此應用以確保它能正常工作。
 
-## 设置服务项
+## 設置服務項
 
-在 `project.json` 文件的 `"dependencies"` 字段里添加:
+在 `project.json` 文件的 `"dependencies"` 字段裡添加:
 
 ```json
 "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final"
 ```
 
-最终的 dependencies 部分应该类似于下面这样：
+最終的 dependencies 部分應該類似於下面這樣：
 
 ```json
 "dependencies": {
@@ -41,7 +41,7 @@
 },
 ```
 
-用以下内容替换 `Startup.cs` 文件里的 `Configure` 函数：
+用以下內容替換 `Startup.cs` 文件裡的 `Configure` 函數：
 
 ```cs
 public void Configure(IApplicationBuilder app)
@@ -54,24 +54,24 @@ public void Configure(IApplicationBuilder app)
 
 # 添加 TypeScript
 
-下一步我们为 TypeScript 添加一个文件夹。
+下一步我們為 TypeScript 添加一個文件夾。
 
 ![Create new folder](../../assets/images/tutorials/aspnet/new-folder.png)
 
-将文件夹命名为 `scripts`。
+將文件夾命名為 `scripts`。
 
 ![scripts folder](../../assets/images/tutorials/aspnet/scripts-folder.png)
 
-## 添加 TypeScript 代码
+## 添加 TypeScript 代碼
 
-在`scripts`上右击并选择**New Item**。
-接着选择**TypeScript File**（也可能 .NET Core 部分），并将此文件命名为`app.ts`。
+在`scripts`上右擊並選擇**New Item**。
+接著選擇**TypeScript File**（也可能 .NET Core 部分），並將此文件命名為`app.ts`。
 
 ![New item](../../assets/images/tutorials/aspnet/new-item.png)
 
-## 添加示例代码
+## 添加示例代碼
 
-将以下代码写入app.ts文件。
+將以下代碼寫入app.ts文件。
 
 ```ts
 function sayHello() {
@@ -81,17 +81,17 @@ function sayHello() {
 }
 ```
 
-## 构建设置
+## 構建設置
 
-### 配置 TypeScript 编译器
+### 配置 TypeScript 編譯器
 
-我们先来告诉TypeScript怎样构建。
-右击scripts文件夹并选择**New Item**。
-接着选择**TypeScript Configuration File**，保持文件的默认名字为`tsconfig.json`。
+我們先來告訴TypeScript怎樣構建。
+右擊scripts文件夾並選擇**New Item**。
+接著選擇**TypeScript Configuration File**，保持文件的默認名字為`tsconfig.json`。
 
 ![Create tsconfig.json](../../assets/images/tutorials/aspnet/new-tsconfig.png)
 
-将默认的`tsconfig.json`内容改为如下所示：
+將默認的`tsconfig.json`內容改為如下所示：
 
 ```json
 {
@@ -108,20 +108,20 @@ function sayHello() {
 }
 ```
 
-看起来和默认的设置差不多，但注意以下不同之处：
+看起來和默認的設置差不多，但注意以下不同之處：
 
-1. 设置`"noImplicitAny": true`。
-2. 显式列出了`"files"`而不是依据`"excludes"`。
-3. 设置`"compileOnSave": true`。
+1. 設置`"noImplicitAny": true`。
+2. 顯式列出了`"files"`而不是依據`"excludes"`。
+3. 設置`"compileOnSave": true`。
 
-当你写新代码时，设置`"noImplicitAny"`选项是个不错的选择 &mdash; 这可以确保你不会错写任何新的类型。
-设置`"compileOnSave"`选项可以确保你在运行web程序前自动编译保存变更后的代码。
+當你寫新代碼時，設置`"noImplicitAny"`選項是個不錯的選擇 &mdash; 這可以確保你不會錯寫任何新的類型。
+設置`"compileOnSave"`選項可以確保你在運行web程序前自動編譯保存變更後的代碼。
 
 ### 配置 NPM
 
-现在，我们来配置NPM以使用我们能够下载JavaScript包。
-在工程上右击并选择**New Item**。
-接着选择**NPM Configuration File**，保持文件的默认名字为`package.json`。
+現在，我們來配置NPM以使用我們能夠下載JavaScript包。
+在工程上右擊並選擇**New Item**。
+接著選擇**NPM Configuration File**，保持文件的默認名字為`package.json`。
 在`"devDependencies"`部分添加"gulp"和"del"：
 
 ```json
@@ -131,13 +131,13 @@ function sayHello() {
 }
 ```
 
-保存这个文件后，Visual Studio将开始安装gulp和del。
-若没有自动开始，请右击package.json文件选择**Restore Packages**。
+保存這個文件後，Visual Studio將開始安裝gulp和del。
+若沒有自動開始，請右擊package.json文件選擇**Restore Packages**。
 
-### 设置 gulp
+### 設置 gulp
 
-最后，添加一个新JavaScript文件`gulpfile.js`。
-键入以下内容：
+最後，添加一個新JavaScript文件`gulpfile.js`。
+鍵入以下內容：
 
 ```js
 /// <binding AfterBuild='default' Clean='clean' />
@@ -162,18 +162,18 @@ gulp.task('default', function () {
 });
 ```
 
-第一行是告诉Visual Studio构建完成后，立即运行'default'任务。
-当你应答 Visual Studio 清除构建内容后，它也将运行'clean'任务。
+第一行是告訴Visual Studio構建完成後，立即運行'default'任務。
+當你應答 Visual Studio 清除構建內容後，它也將運行'clean'任務。
 
-现在，右击`gulpfile.js`并选择**Task Runner Explorer**。
-若'default'和'clean'任务没有显示输出内容的话，请刷新explorer：
+現在，右擊`gulpfile.js`並選擇**Task Runner Explorer**。
+若'default'和'clean'任務沒有顯示輸出內容的話，請刷新explorer：
 
 ![Refresh Task Runner Explorer](../../assets/images/tutorials/aspnet/task-runner-explorer.png)
 
-## 编写HTML页
+## 編寫HTML頁
 
-在`wwwroot`中添加一个新建项 `index.html`。
-在`index.html`中写入以下代码：
+在`wwwroot`中添加一個新建項 `index.html`。
+在`index.html`中寫入以下代碼：
 
 ```html
 <!DOCTYPE html>
@@ -193,27 +193,27 @@ gulp.task('default', function () {
 </html>
 ```
 
-## 测试
+## 測試
 
-1. 运行项目。
-2. 在输入框中键入时，您应该看到一个消息：
+1. 運行項目。
+2. 在輸入框中鍵入時，您應該看到一個消息：
 
 ![Picture of running demo](../../assets/images/tutorials/aspnet/running-demo.png)
 
-## 调试
+## 調試
 
-1. 在 Edge 浏览器中，按 F12 键并选择 **Debugger** 标签页。
-2. 展开 localhost 列表，选择 scripts/app.ts
-3. 在 `return` 那一行上打一个断点。
-4. 在输入框中键入一些内容，确认TypeScript代码命中断点，观察它是否能正确地工作。
+1. 在 Edge 瀏覽器中，按 F12 鍵並選擇 **Debugger** 標籤頁。
+2. 展開 localhost 列表，選擇 scripts/app.ts
+3. 在 `return` 那一行上打一個斷點。
+4. 在輸入框中鍵入一些內容，確認TypeScript代碼命中斷點，觀察它是否能正確地工作。
 
 ![Demo paused on breakpoint](../../assets/images/tutorials/aspnet/paused-demo.png)
 
-这就是你需要知道的在ASP.NET中使用TypeScript的基本知识了。接下来，我们引入Angular，写一个简单的Angular程序示例。
+這就是你需要知道的在ASP.NET中使用TypeScript的基本知識了。接下來，我們引入Angular，寫一個簡單的Angular程序示例。
 
 # 添加 Angular 2
 
-## 使用 NPM 下载所需的包
+## 使用 NPM 下載所需的包
 
 在 `package.json` 文件的 `"dependencies"` 添加 Angular 2 和 SystemJS：
 
@@ -224,10 +224,10 @@ gulp.task('default', function () {
   },
 ```
 
-## 安装 typings
+## 安裝 typings
 
-Angular 2 包含 es6-shim 以提供 Promise 支持，但 TypeScript 还需要它的类型文件。
-打开一个 command prompt，切换到应用程序源文件目录中：
+Angular 2 包含 es6-shim 以提供 Promise 支持，但 TypeScript 還需要它的類型文件。
+打開一個 command prompt，切換到應用程序源文件目錄中：
 
 ```shell
 cd C:\Users\<you>\Documents\Visual Studio 2015\Projects\<app>\src\<app>
@@ -237,10 +237,10 @@ typings install --global dt~es6-shim
 
 ## 更新 tsconfig.json
 
-现在安装好了 Angular 2 及其依赖项，我们还需要启用 TypeScript 中实验性的装饰器支持并且引入 es6-shim 的类型文件。
-将来的版本中，装饰器和 ES6 选项将成为默认选项，我们就可以不做此设置了。添加
-`"experimentalDecorators": true, "emitDecoratorMetadata": true` 选项到 `"compilerOptions"` 选项段，添加 `"./typings/index.d.ts"` 到 `"files"` 选项段。
-最后，我们还将要创建新的代码文件 `"./src/model.ts"`、`"./src/main.ts"` ，也将它们添加到 `"files"` 中，现在 tsconfig 看起来像这样：
+現在安裝好了 Angular 2 及其依賴項，我們還需要啟用 TypeScript 中實驗性的裝飾器支持並且引入 es6-shim 的類型文件。
+將來的版本中，裝飾器和 ES6 選項將成為默認選項，我們就可以不做此設置了。添加
+`"experimentalDecorators": true, "emitDecoratorMetadata": true` 選項到 `"compilerOptions"` 選項段，添加 `"./typings/index.d.ts"` 到 `"files"` 選項段。
+最後，我們還將要創建新的代碼文件 `"./src/model.ts"`、`"./src/main.ts"` ，也將它們添加到 `"files"` 中，現在 tsconfig 看起來像這樣：
 
 ```json
 {
@@ -262,16 +262,16 @@ typings install --global dt~es6-shim
 }
 ```
 
-## 将 Angular 添加到 gulp 构建中
+## 將 Angular 添加到 gulp 構建中
 
-最后，我们需要确保 Angular 文件作为 build 的一部分复制进来。
-我们需要添加：
+最後，我們需要確保 Angular 文件作為 build 的一部分複製進來。
+我們需要添加：
 
-1. 库文件目录。
-2. 添加一个 `lib` 任务来输送文件到 `wwwroot`。
-3. 在 `default` 任务上添加 `lib` 任务依赖。
+1. 庫文件目錄。
+2. 添加一個 `lib` 任務來輸送文件到 `wwwroot`。
+3. 在 `default` 任務上添加 `lib` 任務依賴。
 
-更新后的 `gulpfile.js` 像如下所示：
+更新後的 `gulpfile.js` 像如下所示：
 
 ```xml
 /// <binding AfterBuild='default' Clean='clean' />
@@ -304,11 +304,11 @@ gulp.task('default', ['lib'], function () {
 });
 ```
 
-此外，保存了此gulpfile后，要确保 Task Runner Explorer 能看到 `lib` 任务。
+此外，保存了此gulpfile後，要確保 Task Runner Explorer 能看到 `lib` 任務。
 
-## 用 TypeScript 写一个简单的 Angular 应用
+## 用 TypeScript 寫一個簡單的 Angular 應用
 
-首先，将 `app.ts` 改成：
+首先，將 `app.ts` 改成：
 
 ```ts
 import {Component} from "angular2/core"
@@ -326,7 +326,7 @@ class MyApp {
 }
 ```
 
-接着在 `scripts` 中添加 TypeScript 文件 `model.ts`:
+接著在 `scripts` 中添加 TypeScript 文件 `model.ts`:
 
 ```ts
 export class MyModel {
@@ -342,7 +342,7 @@ import {MyApp} from "./app";
 bootstrap(MyApp);
 ```
 
-最后，将 `index.html` 改成：
+最後，將 `index.html` 改成：
 
 ```html
 <!DOCTYPE html>
@@ -372,5 +372,5 @@ bootstrap(MyApp);
 </html>
 ```
 
-这里加载了此应用。
-运行 ASP.NET 应用，你应该能看到一个 div 显示 "Loading..." 紧接着更新成显示 "Hello from TypeScript"。
+這裡加載了此應用。
+運行 ASP.NET 應用，你應該能看到一個 div 顯示 "Loading..." 緊接著更新成顯示 "Hello from TypeScript"。

@@ -1,4 +1,4 @@
-# TypeScript语言规范
+# TypeScript語言規範
 
 1.5版本
 
@@ -6,25 +6,25 @@
 
 <br/>
 
-微软公司在[Open Web Foundation Final Specification Agreement Version 1.0 ("OWF 1.0")](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0)许可下开放此语言规范.
+微軟公司在[Open Web Foundation Final Specification Agreement Version 1.0 ("OWF 1.0")](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0)許可下開放此語言規範.
 
-TypeScript是微软公司的注册商标.
+TypeScript是微軟公司的註冊商標.
 
 <br/>
 
-## 目录
+## 目錄
 
-* [1 介绍](#1)
-  * [1.1 外部（外来）声明](#1.1)
-  * [1.2 函数类型](#1.2)
-  * [1.3 对象类型](#1.3)
-  * [1.4 结构性子类型](#1.4)
-  * [1.5 按上下文归类](#1.5)
-  * [1.6 类](#1.6)
-  * [1.7 枚举类型](#1.7)
-  * [1.8 字符串参数重载](#1.8)
-  * [1.9 泛型和函数](#1.9)
-  * [1.10 模块](#1.10)
+* [1 介紹](#1)
+  * [1.1 外部（外來）聲明](#1.1)
+  * [1.2 函數類型](#1.2)
+  * [1.3 物件類型](#1.3)
+  * [1.4 結構性子類型](#1.4)
+  * [1.5 按上下文歸類](#1.5)
+  * [1.6 類](#1.6)
+  * [1.7 枚舉類型](#1.7)
+  * [1.8 字符串參數重載](#1.8)
+  * [1.9 泛型和函數](#1.9)
+  * [1.10 模組](#1.10)
 * [2 Basic Concepts](#2)
   * [2.1 Grammar Conventions](#2.1)
   * [2.2 Namespaces and Named Types](#2.2)
@@ -218,23 +218,23 @@ TypeScript是微软公司的注册商标.
 
 <br/>
 
-# <a name="1"/>1 介绍
+# <a name="1"/>1 介紹
 
-如今, 像web邮箱, 地图, 文档编辑器和团队协作工具等Javascript应用在日常工作中变得越来越重要. 我们设计了TypeScript来满足Javascript开发团队创建和维护这些大型程序的需求. TypeScript帮助开发团队定义软件组件之间的接口, 有助于他们加深对现有的Javascript类库行为的了解. TypeScript将代码组织为动态加载的模块来减少团队成员之间在命名上的冲突. TypeScript可选的类型系统可以方便程序员高效的使用工具进行如下操作: 静态检查, 标识符导航, 语句自动完成和代码重构.
+如今, 像web郵箱, 地圖, 文檔編輯器和團隊協作工具等Javascript應用在日常工作中變得越來越重要. 我們設計了TypeScript來滿足Javascript開發團隊創建和維護這些大型程序的需求. TypeScript幫助開發團隊定義軟件組件之間的接口, 有助於他們加深對現有的Javascript類庫行為的瞭解. TypeScript將代碼組織為動態加載的模組來減少團隊成員之間在命名上的衝突. TypeScript可選的類型系統可以方便程序員高效的使用工具進行如下操作: 靜態檢查, 標識符導航, 語句自動完成和代碼重構.
 
-TypeScript就好比是Javascript的语法糖. TypeScript语法是ES5语法的超集. 每段Javascript代码自然也是TypeScript的代码. TypeScript编译器只以TypeScript源文件中的局部为单位进行转换而且不会对声明的变量进行重新排序. 所以编译后的代码与输入的TypeScript源码非常相像. TypeScript不会改变变量名称, 因此可以直接在编译后的代码上调试. TypeScript也可以提供source maps, 这样就可以针对TypeScript源码进行调试. TypeScript工具通常会在你保存文件的时候去编译Javascript, 这样就保持了测试, 编辑和刷新的普便开发流程.
+TypeScript就好比是Javascript的語法糖. TypeScript語法是ES5語法的超集. 每段Javascript代碼自然也是TypeScript的代碼. TypeScript編譯器只以TypeScript源文件中的局部為單位進行轉換而且不會對聲明的變量進行重新排序. 所以編譯後的代碼與輸入的TypeScript源碼非常相像. TypeScript不會改變變量名稱, 因此可以直接在編譯後的代碼上調試. TypeScript也可以提供source maps, 這樣就可以針對TypeScript源碼進行調試. TypeScript工具通常會在你保存文件的時候去編譯Javascript, 這樣就保持了測試, 編輯和刷新的普便開發流程.
 
-TypeScript语法中包含了一些ES6的语法, 如类和模块. 类可以让开发者使用标准的面向对象设计模式, 像继承这样的特性变得易读和易于操作. 模块则可以让开发者将其代码封装成组件以避免命名冲突. TypeScript编译器提供了模块代码生成选项来支持静态或动态的加载模块内容.
+TypeScript語法中包含了一些ES6的語法, 如類和模組. 類可以讓開發者使用標準的面向物件設計模式, 像繼承這樣的特性變得易讀和易於操作. 模組則可以讓開發者將其代碼封裝成組件以避免命名衝突. TypeScript編譯器提供了模組代碼生成選項來支持靜態或動態的加載模組內容.
 
-TypeScript提供一套类型注解系统. 类型注解系统好比JSDoc注释一样, 但在TypeScript中, 它直接与法语整合在一起. 整合后代码可读性更高了, 也节省了查找类型注解与其对应变量的成本.
+TypeScript提供一套類型註解系統. 類型註解系統好比JSDoc註釋一樣, 但在TypeScript中, 它直接與法語整合在一起. 整合後代碼可讀性更高了, 也節省了查找類型註解與其對應變量的成本.
 
-TypeScript类型系统可以表示对Javascript对象的约束和使用工具来强制这些限制. 为了最小化注解的数量, TypeScript类型系统大量的使用类型推论. 比如从下面的语句, TypeScript会推断出变量i是number类型.
+TypeScript類型系統可以表示對Javascript物件的約束和使用工具來強制這些限制. 為了最小化註解的數量, TypeScript類型系統大量的使用類型推論. 比如從下面的語句, TypeScript會推斷出變量i是number類型.
 
 ```TypeScript
 var i = 0;
 ```
 
-从下面这个函数, TypeScript推断出函数f返回string类型的值.
+從下面這個函數, TypeScript推斷出函數f返回string類型的值.
 
 ```TypeScript
 function f() {  
@@ -242,11 +242,11 @@ function f() {
 }
 ```
 
-开发者可以使用TypeScript的语言服务就是得益于类型推论. 比如, 代码编辑器可以引入TypeScript语言服务, 利用其查找字符串对象的成员.
+開發者可以使用TypeScript的語言服務就是得益於類型推論. 比如, 代碼編輯器可以引入TypeScript語言服務, 利用其查找字符串物件的成員.
 
 ![Image 1](./images/1.png)
 
-在TypeScript里, 我们可以这样描述一个参数的要求.
+在TypeScript裡, 我們可以這樣描述一個參數的要求.
 
 ```TypeScript
 function f(s: string) {  
@@ -257,7 +257,7 @@ f({});       // Error
 f("hello");  // Ok
 ```
 
-这个可选的类型注解, 告诉TypeScript类型检查器, 希望传入的参数s是string类型. 在f函数内部, 工具可以假设s是string类型并提供操作符类型检查和成员自动完成功能. 在第一次调用f的时候, 工具也可以发送一个错误信号, 因为f希望传入字符串, 不是一个对象做为参数. 对于f函数, TypeScript编译器会生成如下代码:
+這個可選的類型註解, 告訴TypeScript類型檢查器, 希望傳入的參數s是string類型. 在f函數內部, 工具可以假設s是string類型並提供操作符類型檢查和成員自動完成功能. 在第一次調用f的時候, 工具也可以發送一個錯誤信號, 因為f希望傳入字符串, 不是一個物件做為參數. 對於f函數, TypeScript編譯器會生成如下代碼:
 
 ```TypeScript
 function f(s) {  
@@ -265,32 +265,32 @@ function f(s) {
 }
 ```
 
-在输出中, 所有的注解都被删除了. 通常来讲, 在生成Javascript之前TypeScript会清除所有类型注解.
+在輸出中, 所有的註解都被刪除了. 通常來講, 在生成Javascript之前TypeScript會清除所有類型註解.
 
-## <a name="1.1"/>1.1 外部（外来）声明
+## <a name="1.1"/>1.1 外部（外來）聲明
 
-一条外部声明可以把变量引入TypeScript, 并且对生成的Javascript无任何影响. 程序员通过使用外部环境声明来告诉TypeScript编译器某些组件提供了什么样的变量. 例如, TypeScript编译器发现使用了没有声明过的变量时默认输出error. 程序员可以使用外部环境声明来把浏览器提供的公共变量引入TypeScript. 下面的例子声明了浏览器环境下的document对象. 由于此声明并没给出具体类型, 所以TypeScript类型推论为any类型. any的意思是工具不必去猜测document的类型及行为. 下面的一些例子也演示了程序员如何使用类型去表示对象应具有的行为.
+一條外部聲明可以把變量引入TypeScript, 並且對生成的Javascript無任何影響. 程序員通過使用外部環境聲明來告訴TypeScript編譯器某些組件提供了什麼樣的變量. 例如, TypeScript編譯器發現使用了沒有聲明過的變量時默認輸出error. 程序員可以使用外部環境聲明來把瀏覽器提供的公共變量引入TypeScript. 下面的例子聲明了瀏覽器環境下的document物件. 由於此聲明並沒給出具體類型, 所以TypeScript類型推論為any類型. any的意思是工具不必去猜測document的類型及行為. 下面的一些例子也演示了程序員如何使用類型去表示物件應具有的行為.
 
 ```TypeScript
 declare var document;  
-document.title = "Hello";  // 成功, 因为document被声明了
+document.title = "Hello";  // 成功, 因為document被聲明了
 ```
 
-对于document来说, TypeScript编译器会自动声明. 因为TypeScript中包含的'lib.d.ts'文件提供了Javascript内置函数的声明. 这其中也包含了Document Object Model.
+對於document來說, TypeScript編譯器會自動聲明. 因為TypeScript中包含的'lib.d.ts'文件提供了Javascript內置函數的聲明. 這其中也包含了Document Object Model.
 
-TypeScript默认情况下不包含对jQuery的声明, 所以要是使用jQuery的话, 可以用如下方式声明.
+TypeScript默認情況下不包含對jQuery的聲明, 所以要是使用jQuery的話, 可以用如下方式聲明.
 
 ```TypeScript
 declare var $;
 ```
 
-[1.3](#1.3)章节提供了更多关于使用jQuery和其它类库的例子.
+[1.3](#1.3)章節提供了更多關於使用jQuery和其它類庫的例子.
 
-## <a name="1.2"/>1.2 函数类型
+## <a name="1.2"/>1.2 函數類型
 
-函数表达式是Javascript的强大特性. 使用它可以让函数声明创建出闭包: 函数可以访问在函数定义之外, 词法作用域内的信息. 闭包也是目前Javascript实现强制数据封装的唯一方式. 通过读取和使用这些环境变量, 闭包能够保证它们只能在闭包范围内访问到. Javascript程序员经常使用闭包来定义事件处理函数和其它异步回调函数.
+函數表達式是Javascript的強大特性. 使用它可以讓函數聲明創建出閉包: 函數可以訪問在函數定義之外, 詞法作用域內的信息. 閉包也是目前Javascript實現強制數據封裝的唯一方式. 通過讀取和使用這些環境變量, 閉包能夠保證它們只能在閉包範圍內訪問到. Javascript程序員經常使用閉包來定義事件處理函數和其它異步回調函數.
 
-TypeScript函数类型帮助我们限制函数*签名*. 函数签名指的是一连串的参数类型加上返回值类型. 下面的例子使用函数类型描述了投票操作的回调函数所需要的函数签名.
+TypeScript函數類型幫助我們限制函數*簽名*. 函數簽名指的是一連串的參數類型加上返回值類型. 下面的例子使用函數類型描述了投票操作的回調函數所需要的函數簽名.
 
 ```TypeScript
 function vote(candidate: string, callback: (result: string) => any) {  
@@ -306,19 +306,19 @@ vote("BigPig",
 );
 ```
 
-在这个例子中, vote的第二个参数是函数类型
+在這個例子中, vote的第二個參數是函數類型
 
 ```TypeScript
 (result: string) => any
 ```
 
-它表示第二个参数是个函数, 返回值为any类型, 并带有一个string类型名为result的参数.
+它表示第二個參數是個函數, 返回值為any類型, 並帶有一個string類型名為result的參數.
 
-[3.8.2](#3.8.2)章节提供了更多关于函数类型的说明.
+[3.8.2](#3.8.2)章節提供了更多關於函數類型的說明.
 
-## <a name="1.3"/>1.3 对象类型
+## <a name="1.3"/>1.3 物件類型
 
-TypeScript使用*对象类型*来定义对象应具有的行为. 下面的代码使用*对象类型直接量*定义了'MakePoint'函数返回值的类型.
+TypeScript使用*物件類型*來定義物件應具有的行為. 下面的代碼使用*物件類型直接量*定義了'MakePoint'函數返回值的類型.
 
 ```TypeScript
 var MakePoint: () => {  
@@ -326,7 +326,7 @@ var MakePoint: () => {
 };
 ```
 
-我们可以给对象类型命名, 这种有名字的对象类型称做*接口*. 比如, 下面的代码, 声明了带有一个必须的name字段和可选的favoriteColor字段的接口.
+我們可以給物件類型命名, 這種有名字的物件類型稱做*接口*. 比如, 下面的代碼, 聲明了帶有一個必須的name字段和可選的favoriteColor字段的接口.
 
 ```TypeScript
 interface Friend {  
@@ -343,9 +343,9 @@ add({ favoriteColor: "blue" });  // Error, name required
 add({ name: "Jill", favoriteColor: "green" });  // Ok
 ```
 
-TypeScript对象类型可以为Javascript对象展示出的多种多样的行为建立模型. 比如, jQuery库定义了'$'对象, 它具有像'get'(发送Ajax信息)这样的方法, 和一些字段比如'browser'(输出浏览器信息). 而且, jQuery客户端也可以把'$'做为函数调用. 这个函数根据传入参数的不同又有着不同的行为.
+TypeScript物件類型可以為Javascript物件展示出的多種多樣的行為建立模型. 比如, jQuery庫定義了'$'物件, 它具有像'get'(發送Ajax信息)這樣的方法, 和一些字段比如'browser'(輸出瀏覽器信息). 而且, jQuery客戶端也可以把'$'做為函數調用. 這個函數根據傳入參數的不同又有著不同的行為.
 
-下面代码片段截取了jQuery的部分行为, 足够让我们简单的使用jQuery.
+下面代碼片段截取了jQuery的部分行為, 足夠讓我們簡單的使用jQuery.
 
 ```TypeScript
 interface JQuery {  
@@ -366,15 +366,15 @@ $.get("http://mysite.org/divContent",
 );
 ```
 
-'JQueryStatic'接口引用了'JQuery'接口, 表示一系列DOM元素的集合. jQuery库可以操作这个集合. 但是在这个例子中, jQuery客户端只需要知道它可以调用'text'方法并传入一个字符串去设置它的内容. 'JQueryStatic'接口包含'get'方法, 向给定的url上发送Ajax请求, 并使用返回的数据来执行相应的回调函数.
+'JQueryStatic'接口引用了'JQuery'接口, 表示一系列DOM元素的集合. jQuery庫可以操作這個集合. 但是在這個例子中, jQuery客戶端只需要知道它可以調用'text'方法並傳入一個字符串去設置它的內容. 'JQueryStatic'接口包含'get'方法, 向給定的url上發送Ajax請求, 並使用返回的數據來執行相應的回調函數.
 
-'JQueryStatic'接口还包含了一个空的函数签名
+'JQueryStatic'接口還包含了一個空的函數簽名
 
 ```TypeScript
 (query: string): JQuery;
 ```
 
-空的函数签名表示这个接口的实例是可以调用的. 这也说明了TypeScript函数类型只是一种特殊的对象类型. 特别的是, 函数类型是带有一个或多个具有调用签名的对象类型. 因此, 我们可以用对象类型直接量的方法来定义函数类型. 下面的例子使用不同的定义方式但表示同样的意义.
+空的函數簽名表示這個接口的實例是可以調用的. 這也說明了TypeScript函數類型只是一種特殊的物件類型. 特別的是, 函數類型是帶有一個或多個具有調用簽名的物件類型. 因此, 我們可以用物件類型直接量的方法來定義函數類型. 下面的例子使用不同的定義方式但表示同樣的意義.
 
 ```TypeScript
 var f: { (): string; };  
@@ -382,21 +382,21 @@ var sameType: () => string = f;     // Ok
 var nope: () => number = sameType;  // Error: type mismatch
 ```
 
-'$'根据传入参数的不同, 行为也不同. 到目前为止, jQuery类型只能捕获一种行为: 传入字符串并返回一个'jQuery'类型的对象. 为了定义更多行为, TypeScript提供了在对象类型里*重载*函数签名的功能. 比如, 我们添加一个新的签名到'jQueryStatic'接口中.
+'$'根據傳入參數的不同, 行為也不同. 到目前為止, jQuery類型只能捕獲一種行為: 傳入字符串並返回一個'jQuery'類型的物件. 為了定義更多行為, TypeScript提供了在物件類型裡*重載*函數簽名的功能. 比如, 我們添加一個新的簽名到'jQueryStatic'接口中.
 
 ```TypeScript
 (ready: () => any): any;
 ```
 
-这个签名表示'$'可以接收一个函数做为参数. 当传入函数时, 在document准备好的时候jQuery库会调用那个函数. 因为TypeScript支持重载, 工具可以根据在TypeScript中的定义, 准确的提示出所有可能的函数签名及其具体使用方法.
+這個簽名表示'$'可以接收一個函數做為參數. 當傳入函數時, 在document準備好的時候jQuery庫會調用那個函數. 因為TypeScript支持重載, 工具可以根據在TypeScript中的定義, 準確的提示出所有可能的函數簽名及其具體使用方法.
 
 ![Image of 1.3](./images/1.3.png)
 
-[3.3](#3.3)章节提供了更多关于对象类型的的说明.
+[3.3](#3.3)章節提供了更多關於物件類型的的說明.
 
-## <a name="1.4"/>1.4 结构性子类型
+## <a name="1.4"/>1.4 結構性子類型
 
-对象类型是在*结构上*进行比较的. 例如, 在下面的代码里, 'CPoint'类能与'Point'接口相匹配, 因为'CPoint'中包含了所有'Point'中必要的成员. 一个类可以(可选的)声明其实现了一个接口, 之后编译器就会去检查它们在结构上是否兼容. 这个例子也说明, 一个对象类型可以与从对象直接量中推断出来的类型相匹配, 只要这个对象直接量提供了所有必要的成员.
+物件類型是在*結構上*進行比較的. 例如, 在下面的代碼裡, 'CPoint'類能與'Point'接口相匹配, 因為'CPoint'中包含了所有'Point'中必要的成員. 一個類可以(可選的)聲明其實現了一個接口, 之後編譯器就會去檢查它們在結構上是否兼容. 這個例子也說明, 一個物件類型可以與從物件直接量中推斷出來的類型相匹配, 只要這個物件直接量提供了所有必要的成員.
 
 ```TypeScript
 interface Point {  
@@ -419,16 +419,16 @@ class CPoint {
 
 getX(new CPoint(0, 0));  // OK, 字段匹配
 
-getX({ x: 0, y: 0, color: "red" });  // 额外的字段也可以
+getX({ x: 0, y: 0, color: "red" });  // 額外的字段也可以
 
-getX({ x: 0 });  // Error: 参数不匹配
+getX({ x: 0 });  // Error: 參數不匹配
 ```
 
-[3.10](#3.10)章节提供了更多关于类型比较的说明.
+[3.10](#3.10)章節提供了更多關於類型比較的說明.
 
-## <a name="1.5"/>1.5 按上下文归类
+## <a name="1.5"/>1.5 按上下文歸類
 
-通常来讲TypeScript是以"由下至上"的顺序来推断类型: 从表达式树的叶子开始到根. 下面例子里, TypeScript将沿着return表达式树从下至上地推断出'mul'函数的返回值类型是'number'.
+通常來講TypeScript是以"由下至上"的順序來推斷類型: 從表達式樹的葉子開始到根. 下面例子裡, TypeScript將沿著return表達式樹從下至上地推斷出'mul'函數的返回值類型是'number'.
 
 ```TypeScript
 function mul(a: number, b: number) {  
@@ -436,9 +436,9 @@ function mul(a: number, b: number) {
 }
 ```
 
-对于没有类型注解或默认值的变量和参数来讲, TypeScript会推断它们的类型为'any', 这样确保了编译器不再需要从函数被调用的地方去推断其返回值类型. 通常来讲, 这种由下至上推断类型的方式符合我们的直观感觉.
+對於沒有類型註解或默認值的變量和參數來講, TypeScript會推斷它們的類型為'any', 這樣確保了編譯器不再需要從函數被調用的地方去推斷其返回值類型. 通常來講, 這種由下至上推斷類型的方式符合我們的直觀感覺.
 
-但是, 对于有限的一些上下文, 类型推论则会从表达式所处的上下文中由上至下进行. 这种情况叫做**按上下文归类**. 当我们在使用一个不清楚详细信息的类型的时候, 按上下文归类会帮助工具提供出色的提示信息. 比如, 在上面的jQuery例子中, 给'get'方法传了一个函数表达式做为第二个参数. 在对这个函数表达式归类的时候, 工具会把它当成'get'函数签名里面给出的那个函数类型, 并且提供包含相应参数名字和类型的模板.
+但是, 對於有限的一些上下文, 類型推論則會從表達式所處的上下文中由上至下進行. 這種情況叫做**按上下文歸類**. 當我們在使用一個不清楚詳細信息的類型的時候, 按上下文歸類會幫助工具提供出色的提示信息. 比如, 在上面的jQuery例子中, 給'get'方法傳了一個函數表達式做為第二個參數. 在對這個函數表達式歸類的時候, 工具會把它當成'get'函數簽名裡面給出的那個函數類型, 並且提供包含相應參數名字和類型的模板.
 
 ```TypeScript
 $.get("http://mysite.org/divContent",  
@@ -448,15 +448,15 @@ $.get("http://mysite.org/divContent",
 );
 ```
 
-按上下文归类在写对象直接量的时候也很有用. 当我们书写对象量的时候, 按上下文归类提供信息可以使工具提示出对象拥有的成员名字.
+按上下文歸類在寫物件直接量的時候也很有用. 當我們書寫物件量的時候, 按上下文歸類提供信息可以使工具提示出物件擁有的成員名字.
 
-[4.19](#4.19) 4.19章节提供了更多关于按上下文归类表达式的说明.
+[4.19](#4.19) 4.19章節提供了更多關於按上下文歸類表達式的說明.
 
-## <a name="1.6"/>1.6 类
+## <a name="1.6"/>1.6 類
 
-在Javascript实践中有至少两种常用的设计模式: 模块和类. 简单地说, 模块模式使用闭包来隐藏名字和封装私有数据, 而类则使用原型链来实现面向对象中的继承机制. 'prototype.js'这样的库正是它的典型实现.
+在Javascript實踐中有至少兩種常用的設計模式: 模組和類. 簡單地說, 模組模式使用閉包來隱藏名字和封裝私有數據, 而類則使用原型鏈來實現面向物件中的繼承機制. 'prototype.js'這樣的庫正是它的典型實現.
 
-此章节与后面的模块部分, 将会向你展示TypeScript是如何生成纯Javascript来实现如同ES6标准中的类和模块的. TypeScript的目标就是帮助生成你之前需要手动去实现的模块和类的代码. 在这节里也会展示, TypeScript是如何推断每个类的类型的. 我们以一个简单的'BankAccount'类开始.
+此章節與後面的模組部分, 將會向你展示TypeScript是如何生成純Javascript來實現如同ES6標準中的類和模組的. TypeScript的目標就是幫助生成你之前需要手動去實現的模組和類的代碼. 在這節裡也會展示, TypeScript是如何推斷每個類的類型的. 我們以一個簡單的'BankAccount'類開始.
 
 ```TypeScript
 class BankAccount {  
@@ -468,7 +468,7 @@ class BankAccount {
 }  
 ```
 
-这个类会转换成以下代码.
+這個類會轉換成以下代碼.
 
 ```TypeScript
 var BankAccount = (function () {  
@@ -483,7 +483,7 @@ var BankAccount = (function () {
 })();
 ```
 
-这个TypeScript类的声明创建了一个名叫'BankAccount'的变量, 它是BankAccount实例的构造函数. 这个声明同时创建了一个同名的接口类型. 如果要把它写出来的话应该是下面这样.
+這個TypeScript類的聲明創建了一個名叫'BankAccount'的變量, 它是BankAccount實例的構造函數. 這個聲明同時創建了一個同名的接口類型. 如果要把它寫出來的話應該是下面這樣.
 
 ```TypeScript
 interface BankAccount {  
@@ -492,15 +492,15 @@ interface BankAccount {
 }
 ```
 
-'BankAccount'函数类型的声明形式如下.
+'BankAccount'函數類型的聲明形式如下.
 
 ```TypeScript
 var BankAccount: new() => BankAccount;
 ```
 
-函数签名以'new'关键字开头, 这表明'BankAccount'函数必须以构造函数的方式使用. 一个函数类型也可以同时拥有普通调用方式与构造函数的签名. 比如, Javascript内置的Date对象就包含了两种函数签名.
+函數簽名以'new'關鍵字開頭, 這表明'BankAccount'函數必須以構造函數的方式使用. 一個函數類型也可以同時擁有普通調用方式與構造函數的簽名. 比如, Javascript內置的Date物件就包含了兩種函數簽名.
 
-如果想让银行帐户有个初始的余额, 我们可以给'BankAccount'类加一个constructor声明.
+如果想讓銀行帳戶有個初始的餘額, 我們可以給'BankAccount'類加一個constructor聲明.
 
 ```TypeScript
 class BankAccount {  
@@ -515,7 +515,7 @@ class BankAccount {
 }
 ```
 
-'BankAccount'类要求传入一个构造函数参数, 之后把它赋值给'balance'字段. 为了方便使用, TypeScript也可以接受下面的简写语法.
+'BankAccount'類要求傳入一個構造函數參數, 之後把它賦值給'balance'字段. 為了方便使用, TypeScript也可以接受下面的簡寫語法.
 
 ```TypeScript
 class BankAccount {  
@@ -528,9 +528,9 @@ class BankAccount {
 }
 ```
 
-'public'关键字表示构造函数参数会被保存为类的一个字段. 'public'是类成员的默认访问权限, 我们也可以设置'private'或'protected'访问权限. 这些权限只是在设计阶段的概念; 它们只会在静态类型检查时被强制执行, 并不会在运行代码的时候强制限制访问权限.
+'public'關鍵字表示構造函數參數會被保存為類的一個字段. 'public'是類成員的默認訪問權限, 我們也可以設置'private'或'protected'訪問權限. 這些權限只是在設計階段的概念; 它們只會在靜態類型檢查時被強制執行, 並不會在運行代碼的時候強制限制訪問權限.
 
-TypeScript的类同样支持继承, 看下面的例子.
+TypeScript的類同樣支持繼承, 看下面的例子.
 
 ```TypeScript
 class CheckingAccount extends BankAccount {  
@@ -543,15 +543,15 @@ class CheckingAccount extends BankAccount {
 }
 ```
 
-这个例子里, 'CheckingAccount'类来源于'BankAccount'类. 'CheckingAccount'类的构造函数使用'super'关键字调用了'BankAccount'类的构造函数. 在生成的Javascript代码里, 'CheckingAccount'类的原型对象会链到'BankAccount'的原型对象上.
+這個例子裡, 'CheckingAccount'類來源於'BankAccount'類. 'CheckingAccount'類的構造函數使用'super'關鍵字調用了'BankAccount'類的構造函數. 在生成的Javascript代碼裡, 'CheckingAccount'類的原型物件會鏈到'BankAccount'的原型物件上.
 
-TypeScript类也可以声明静态成员. 静态成员会做为类的属性.
+TypeScript類也可以聲明靜態成員. 靜態成員會做為類的屬性.
 
-第[8](#8)章提供了更多关于类的说明.
+第[8](#8)章提供了更多關於類的說明.
 
-## <a name="1.7"/>1.7 枚举类型
+## <a name="1.7"/>1.7 枚舉類型
 
-TypeScript里可以列出一组数字常量做为枚举类型. 下面的例子创建了表示计算器的运算符的枚举类型.
+TypeScript裡可以列出一組數字常量做為枚舉類型. 下面的例子創建了表示計算器的運算符的枚舉類型.
 
 ```TypeScript
 enum Operator {  
@@ -567,11 +567,11 @@ function compute(op: Operator, a: number, b: number) {
 }
 ```
 
-例子中, compute函数会打印出运算符'op'的名字(如 'ADD'), 这里用到了枚举类型的一个特性: 反向映射枚举类型的值到其对应的字符串. 比如在'Operator'声明里会自动地为枚举类型的成员赋上整数值, 从0开始. 第[9](#9)章会介绍怎么显式地为枚举成员指定数值并可以使用任意的字符串去命名枚举成员.
+例子中, compute函數會打印出運算符'op'的名字(如 'ADD'), 這裡用到了枚舉類型的一個特性: 反向映射枚舉類型的值到其對應的字符串. 比如在'Operator'聲明裡會自動地為枚舉類型的成員賦上整數值, 從0開始. 第[9](#9)章會介紹怎麼顯式地為枚舉成員指定數值並可以使用任意的字符串去命名枚舉成員.
 
-如果所有的枚举成员都已经被明确地指定了整数值, 或自动地被赋予了整数值, TypeScript编译器会根据成员被赋予的值生成一个Javascript常数(并用注释进行注解). 这在很多Javascript引擎里都会提高性能.
+如果所有的枚舉成員都已經被明確地指定了整數值, 或自動地被賦予了整數值, TypeScript編譯器會根據成員被賦予的值生成一個Javascript常數(並用註釋進行註解). 這在很多Javascript引擎裡都會提高性能.
 
-比如, 'compute'函数可以包含这样的switch语句.
+比如, 'compute'函數可以包含這樣的switch語句.
 
 ```TypeScript
 switch (op) {  
@@ -585,7 +585,7 @@ switch (op) {
 }
 ```
 
-这个switch语句编译后生成如下代码.
+這個switch語句編譯後生成如下代碼.
 
 ```TypeScript
 switch (op) {  
@@ -599,34 +599,34 @@ switch (op) {
 }
 ```
 
-Javascript会使用这些明确的常数来生成高效的switch语句, 比如可以构建出跳转表, 并用case的值进行索引.
+Javascript會使用這些明確的常數來生成高效的switch語句, 比如可以構建出跳轉表, 並用case的值進行索引.
 
-## <a name="1.8"/>1.8 字符串参数重载
+## <a name="1.8"/>1.8 字符串參數重載
 
-TypeScript一个非常重要的目的就是能为现有的Javascript编程模式提供准确直观的类型表示. 因此, TypeScript包含了泛型, 这会在下一节讨论, 还有这节里讲的*字符串参数重载*.
+TypeScript一個非常重要的目的就是能為現有的Javascript編程模式提供準確直觀的類型表示. 因此, TypeScript包含了泛型, 這會在下一節討論, 還有這節裡講的*字符串參數重載*.
 
-在Javascript代码中, 函数的行为经常会根据传入字符串参数的不同而变化. DOM编程中就大量的使用了这种模式. 比如, 下面的截图展示了'document'的'createElement'方法有多种函数签名, 其中一些只有在传入了特定的参数后才能确定其返回值类型.
+在Javascript代碼中, 函數的行為經常會根據傳入字符串參數的不同而變化. DOM編程中就大量的使用了這種模式. 比如, 下面的截圖展示了'document'的'createElement'方法有多種函數簽名, 其中一些只有在傳入了特定的參數後才能確定其返回值類型.
 
 ![Image of 1.8-1](./images/1.8-1.png)
 
-下面的代码使用了字符串参数重载. 因为'span'变量被推断出是'HTMLSpanElement'类型的, 所以引用其'isMultiline'属性的时候就不会报错了.
+下面的代碼使用了字符串參數重載. 因為'span'變量被推斷出是'HTMLSpanElement'類型的, 所以引用其'isMultiline'屬性的時候就不會報錯了.
 
 ```TypeScript
 var span = document.createElement("span");  
-span.isMultiLine = false;  // 成功: HTMLSpanElement有isMultiline属性
+span.isMultiLine = false;  // 成功: HTMLSpanElement有isMultiline屬性
 ```
 
-下面的截图里, 工具结合了字符串参数重载与按上下文归类推断出变量'e'的类型是'MouseEvent', 因此'e'就具有'clientX'属性.
+下面的截圖裡, 工具結合了字符串參數重載與按上下文歸類推斷出變量'e'的類型是'MouseEvent', 因此'e'就具有'clientX'屬性.
 
 ![Image of 1.8-2](./images/1.8-2.png)
 
-[3.8.2.4](#3.8.2.4)章节提供了如何在函数签名里使用字符串直接量.
+[3.8.2.4](#3.8.2.4)章節提供了如何在函數簽名裡使用字符串直接量.
 
-## <a name="1.9"/>1.9 泛型和函数
+## <a name="1.9"/>1.9 泛型和函數
 
-与字符串参数重载一样, *泛型*能帮助TypeScript准确地获取Javascript库的行为. 因为类型信息的来源是从客户端代码到程序库再回到客户端代码的, 在获取详细的API信息时泛型会比其它TypeScript特性更多的被应用到.
+與字符串參數重載一樣, *泛型*能幫助TypeScript準確地獲取Javascript庫的行為. 因為類型信息的來源是從客戶端代碼到程序庫再回到客戶端代碼的, 在獲取詳細的API信息時泛型會比其它TypeScript特性更多的被應用到.
 
-来看一个例子, Javascript内置的数组类型如何用TypeScript接口表示. 你可以在'lib.d.ts'文件里找到这个接口描述. 这个文件包含在TypeScript的安装包中.
+來看一個例子, Javascript內置的陣列類型如何用TypeScript接口表示. 你可以在'lib.d.ts'文件裡找到這個接口描述. 這個文件包含在TypeScript的安裝包中.
 
 ```TypeScript
 interface Array<T> {  
@@ -636,17 +636,17 @@ interface Array<T> {
 }
 ```
 
-接口的定义中可以带有一个或多个*类型参数*. 在这个例子里'Array'接口只有一个参数, 'T', 它定义了数组里元素的类型. 'reverse'方法返回一个数组, 其元素也是同样的类型T. sort方法有一个可选的参数, 'compareFn', 它是一个函数, 接收两个T类型的参数并返回一个数字. 最后, sort返回一个数组, 其中的元素是T类型的.
+接口的定義中可以帶有一個或多個*類型參數*. 在這個例子裡'Array'接口只有一個參數, 'T', 它定義了陣列裡元素的類型. 'reverse'方法返回一個陣列, 其元素也是同樣的類型T. sort方法有一個可選的參數, 'compareFn', 它是一個函數, 接收兩個T類型的參數並返回一個數字. 最後, sort返回一個陣列, 其中的元素是T類型的.
 
-函数也可以有泛型参数. 例如, array接口包含一个'map'方法, 定义如下:
+函數也可以有泛型參數. 例如, array接口包含一個'map'方法, 定義如下:
 
 ```TypeScript
 map<U>(func: (value: T, index: number, array: T[]) => U, thisArg?: any): U[];
 ```
 
-map方法在元素类型为'T'的数组'a'上调用, 对数组'a'中的每个元素都执行'func'函数, 返回一个类型为'U'的值.
+map方法在元素類型為'T'的陣列'a'上調用, 對陣列'a'中的每個元素都執行'func'函數, 返回一個類型為'U'的值.
 
-TypeScript编译器通常会推断出泛型方法参数, 我们不需要明确的定义它们. 下面的例子, 编译器推断map方法的参数'U'是'string'类型的, 因为传入map的函数返回值是字符串类型.
+TypeScript編譯器通常會推斷出泛型方法參數, 我們不需要明確的定義它們. 下面的例子, 編譯器推斷map方法的參數'U'是'string'類型的, 因為傳入map的函數返回值是字符串類型.
 
 ```TypeScript
 function numberToString(a: number[]) {  
@@ -655,9 +655,9 @@ function numberToString(a: number[]) {
 }
 ```
 
-这个例子中, 编译器推断'numberToString'函数返回一个字符串数组.
+這個例子中, 編譯器推斷'numberToString'函數返回一個字符串陣列.
 
-TypeScript的类也可以有类型参数. 下面的代码声明了一个类, 它实现了元素类型为'T'的链表. 这段代码展示了怎么*约束*类型参数去继承特定的类型. 这个例子中, 链表的元素必须继承'NamedItem'类型. 这样我们就可以使用'log'函数来打印元素的名字.
+TypeScript的類也可以有類型參數. 下面的代碼聲明了一個類, 它實現了元素類型為'T'的鏈表. 這段代碼展示了怎麼*約束*類型參數去繼承特定的類型. 這個例子中, 鏈表的元素必須繼承'NamedItem'類型. 這樣我們就可以使用'log'函數來打印元素的名字.
 
 ```TypeScript
 interface NamedItem {  
@@ -684,15 +684,15 @@ class List<T extends NamedItem> {
 }
 ```
 
-[3.6](#3.6)章节提供了更多关于泛型的说明.
+[3.6](#3.6)章節提供了更多關於泛型的說明.
 
-## <a name="1.10"/>1.10 模块
+## <a name="1.10"/>1.10 模組
 
-类和接口描述了该如何去使用某个软件组件, 这种机制也支撑着大规模Javascript的开发, 因为组件的使用与实现可能是分离开的. TypeScript只在编写代码阶段强制执行类的封装(通过限制对私有成员和保护成员的使用), 在运行时并不强制执行封装, 因为对象的所有属性都是可访问的. Javascript的未来版本里可能会提供*私有命名方式*, 可以在运行时强制执行对私有成员和保护成员访问的限制.
+類和接口描述了該如何去使用某個軟件組件, 這種機制也支撐著大規模Javascript的開發, 因為組件的使用與實現可能是分離開的. TypeScript只在編寫代碼階段強制執行類的封裝(通過限制對私有成員和保護成員的使用), 在運行時並不強制執行封裝, 因為物件的所有屬性都是可訪問的. Javascript的未來版本裡可能會提供*私有命名方式*, 可以在運行時強制執行對私有成員和保護成員訪問的限制.
 
-当前Javascript版本中, 唯一能在运行时强制封装的方法是使用模块模式: 使用闭包来封装私有字段和方法. 模块模式是进行结构组织和动态加载的一种很自然的做法. 通过模块也可以引入命名空间, 避免使用全局命名空间.
+當前Javascript版本中, 唯一能在運行時強制封裝的方法是使用模組模式: 使用閉包來封裝私有字段和方法. 模組模式是進行結構組織和動態加載的一種很自然的做法. 通過模組也可以引入命名空間, 避免使用全局命名空間.
 
-这个例子展示了Javascript的模块模式
+這個例子展示了Javascript的模組模式
 
 ```TypeScript
 (function(exports) {  
@@ -704,13 +704,13 @@ class List<T extends NamedItem> {
 })(MessageModule);
 ```
 
-这个例子展示了模块模式的两个必要元素: *模块闭包*和*模块对象*. 模块闭包是一个函数, 封装了模块的具体实现, 比如这个例子里的'key'变量和'sendMessage'函数. 模块对象包含了此模块导出的变量及函数. 简单的模块会创建并返回这个模块对象. 上面的模块把模块对象做为参数'exports', 并且加上'sendMessage'属性. 这种*扩增*的方式使得动态加载模块和把模块代码分离至多个文件中变得简单了.
+這個例子展示了模組模式的兩個必要元素: *模組閉包*和*模組物件*. 模組閉包是一個函數, 封裝了模組的具體實現, 比如這個例子裡的'key'變量和'sendMessage'函數. 模組物件包含了此模組導出的變量及函數. 簡單的模組會創建並返回這個模組物件. 上面的模組把模組物件做為參數'exports', 並且加上'sendMessage'屬性. 這種*擴增*的方式使得動態加載模組和把模組代碼分離至多個文件中變得簡單了.
 
-这个例子中假设了外部作用域定义了'generateSecretKey'和'sendSecureMessage'函数; 它还假设外部作用域把这个模块对象赋值给'MessageModule'变量了.
+這個例子中假設了外部作用域定義了'generateSecretKey'和'sendSecureMessage'函數; 它還假設外部作用域把這個模組物件賦值給'MessageModule'變量了.
 
-TypeScript模块提供了简单实现模块模式的机制. 在TypeScript里, 我们可以通过把模块和类嵌套在一个外层模块中来结合使用模块模式和类模式.
+TypeScript模組提供了簡單實現模組模式的機制. 在TypeScript裡, 我們可以通過把模組和類嵌套在一個外層模組中來結合使用模組模式和類模式.
 
-下例展示了定义和使用一个简单的模块.
+下例展示了定義和使用一個簡單的模組.
 
 ```TypeScript
 module M {  
@@ -724,7 +724,7 @@ M.f();
 M.s;  // Error, s is not exported
 ```
 
-这个例子中, 's'是私有的, 但是函数'f'是模块导出的一部分, 并可以在模块外部访问. 若我们想以接口和变量的方式来描述模块, 可以这样写
+這個例子中, 's'是私有的, 但是函數'f'是模組導出的一部分, 並可以在模組外部訪問. 若我們想以接口和變量的方式來描述模組, 可以這樣寫
 
 ```TypeScript
 interface M {  
@@ -734,9 +734,9 @@ interface M {
 var M: M;
 ```
 
-'M'接口列出了外部可访问的模块'M'中的行为. 在这个例子里, 我们可以使用相同的名字, 因为在TypeScript里, 类型名和变量名并不冲突: 每个词法作用域中都包含了声明变量的空间和声明类型的空间([2.3](#2.3)节提供了详细说明).
+'M'接口列出了外部可訪問的模組'M'中的行為. 在這個例子裡, 我們可以使用相同的名字, 因為在TypeScript裡, 類型名和變量名並不衝突: 每個詞法作用域中都包含了聲明變量的空間和聲明類型的空間([2.3](#2.3)節提供了詳細說明).
 
-这里的模块'M'是一个*内部*模块, 因为它嵌套在*全局*模块里了([10](#10)章提供了详细说明). TypeScript编译器生成如下模块的代码.
+這裡的模組'M'是一個*內部*模組, 因為它嵌套在*全局*模組裡了([10](#10)章提供了詳細說明). TypeScript編譯器生成如下模組的代碼.
 
 ```TypeScript
 var M;  
@@ -749,9 +749,9 @@ var M;
 })(M || (M = {}));
 ```
 
-这里, 编译器假设模块对象存在于全局变量'M'里, 但不确定其是否真的存在于那个变量中.
+這裡, 編譯器假設模組物件存在於全局變量'M'裡, 但不確定其是否真的存在於那個變量中.
 
-TypeScript也支持*外部*模块, 比如文件里包含了顶层的*export*和*import*指令. 对于这种类型的模块, TypeScript编译器会根据提供的模块动态加载系统, 比如AMD, 来生成相应的代码.
+TypeScript也支持*外部*模組, 比如文件裡包含了頂層的*export*和*import*指令. 對於這種類型的模組, TypeScript編譯器會根據提供的模組動態加載系統, 比如AMD, 來生成相應的代碼.
 
 <br/>
 

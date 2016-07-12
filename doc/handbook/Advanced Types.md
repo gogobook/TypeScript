@@ -1,7 +1,7 @@
-# 联合类型
+# 聯合類型
 
-偶尔你会遇到这种情况，一个代码库希望传入`number`或`string`类型的参数。
-例如下面的函数：
+偶爾你會遇到這種情況，一個代碼庫希望傳入`number`或`string`類型的參數。
+例如下面的函數：
 
 ```ts
 /**
@@ -22,20 +22,20 @@ function padLeft(value: string, padding: any) {
 padLeft("Hello world", 4); // returns "    Hello world"
 ```
 
-`padLeft`存在一个问题，`padding`参数的类型指定成了`any`。
-这就是说我们可以传入一个既不是`number`也不是`string`类型的参数，但是TypeScript却不报错。
+`padLeft`存在一個問題，`padding`參數的類型指定成了`any`。
+這就是說我們可以傳入一個既不是`number`也不是`string`類型的參數，但是TypeScript卻不報錯。
 
 ```ts
-let indentedString = padLeft("Hello world", true); // 编译阶段通过，运行时报错
+let indentedString = padLeft("Hello world", true); // 編譯階段通過，運行時報錯
 ```
 
-在传统的面向对象语言里，我们可能会将这两种类型抽象成有层级的类型。
-这么做显然是非常清晰的，但同时也存在了过度设计。
-`padLeft`原始版本的好处之一是允许我们传入原始类型。
-这做的话使用起来既方便又不过于繁锁。
-如果我们就是想使用已经存在的函数的话，这种新的方式就不适用了。
+在傳統的面向物件語言裡，我們可能會將這兩種類型抽象成有層級的類型。
+這麼做顯然是非常清晰的，但同時也存在了過度設計。
+`padLeft`原始版本的好處之一是允許我們傳入原始類型。
+這做的話使用起來既方便又不過於繁鎖。
+如果我們就是想使用已經存在的函數的話，這種新的方式就不適用了。
 
-代替`any`， 我们可以使用*联合类型*做为`padding`的参数：
+代替`any`， 我們可以使用*聯合類型*做為`padding`的參數：
 
 
 ```ts
@@ -51,10 +51,10 @@ function padLeft(value: string, padding: string | number) {
 let indentedString = padLeft("Hello world", true); // errors during compilation
 ```
 
-联合类型表示一个值可以是几种类型之一。
-我们用竖线（`|`）分隔每个类型，所以`number | string | boolean`表示一个值可以是`number`，`string`，或`boolean`。
+聯合類型表示一個值可以是幾種類型之一。
+我們用豎線（`|`）分隔每個類型，所以`number | string | boolean`表示一個值可以是`number`，`string`，或`boolean`。
 
-如果一个值是联合类型，我们只能访问此联合类型的所有类型里共有的成员。
+如果一個值是聯合類型，我們只能訪問此聯合類型的所有類型裡共有的成員。
 
 ```ts
 interface Bird {
@@ -76,23 +76,23 @@ pet.layEggs(); // okay
 pet.swim();    // errors
 ```
 
-这里的联合类型可能有点复杂，但是你很容易就习惯了。
-如果一个值类型是`A | B`，我们只能*确定*它具有成员同时存在于`A`*和*`B`里。
-这个例子里，`Bird`具有一个`fly`成员。
-我们不能确定一个`Bird | Fish`类型的变量是否有`fly`方法。
-如果变量在运行时是`Fish`类型，那么调用`pet.fly()`就出错了。
+這裡的聯合類型可能有點複雜，但是你很容易就習慣了。
+如果一個值類型是`A | B`，我們只能*確定*它具有成員同時存在於`A`*和*`B`裡。
+這個例子裡，`Bird`具有一個`fly`成員。
+我們不能確定一個`Bird | Fish`類型的變量是否有`fly`方法。
+如果變量在運行時是`Fish`類型，那麼調用`pet.fly()`就出錯了。
 
-# 类型保护与区分类型
+# 類型保護與區分類型
 
-联合类型非常适合这样的情形，可接收的值有不同的类型。
-当我们想明确地知道是否拿到`Fish`时会怎么做？
-JavaScript里常用来区分2个可能值的方法是检查它们是否存在。
-像之前提到的，我们只能访问联合类型的所有类型中共有的成员。
+聯合類型非常適合這樣的情形，可接收的值有不同的類型。
+當我們想明確地知道是否拿到`Fish`時會怎麼做？
+JavaScript裡常用來區分2個可能值的方法是檢查它們是否存在。
+像之前提到的，我們只能訪問聯合類型的所有類型中共有的成員。
 
 ```ts
 let pet = getSmallPet();
 
-// 每一个成员访问都会报错
+// 每一個成員訪問都會報錯
 if (pet.swim) {
     pet.swim();
 }
@@ -101,7 +101,7 @@ else if (pet.fly) {
 }
 ```
 
-为了让这码代码工作，我们要使用类型断言：
+為了讓這碼代碼工作，我們要使用類型斷言：
 
 ```ts
 let pet = getSmallPet();
@@ -114,14 +114,14 @@ else {
 }
 ```
 
-## 用户自定义的类型保护
+## 用戶自定義的類型保護
 
-可以注意到我们使用了多次类型断言。
-如果我们只要检查过一次类型，就能够在后面的每个分支里清楚`pet`的类型的话就好了。
+可以注意到我們使用了多次類型斷言。
+如果我們只要檢查過一次類型，就能夠在後面的每個分支裡清楚`pet`的類型的話就好了。
 
-TypeScript里的*类型保护*机制让它成为了现实。
-类型保护就是一些表达式，它们会在运行时检查以确保在某个作用域里的类型。
-要定义一个类型保护，我们只要简单地定义一个函数，它的返回值是一个*类型断言*：
+TypeScript裡的*類型保護*機制讓它成為了現實。
+類型保護就是一些表達式，它們會在運行時檢查以確保在某個作用域裡的類型。
+要定義一個類型保護，我們只要簡單地定義一個函數，它的返回值是一個*類型斷言*：
 
 ```ts
 function isFish(pet: Fish | Bird): pet is Fish {
@@ -129,13 +129,13 @@ function isFish(pet: Fish | Bird): pet is Fish {
 }
 ```
 
-在这个例子里，`pet is Fish`就是类型断言。
-一个断言是`parameterName is Type`这种形式，`parameterName`必须是来自于当前函数签名里的一个参数名。
+在這個例子裡，`pet is Fish`就是類型斷言。
+一個斷言是`parameterName is Type`這種形式，`parameterName`必須是來自於當前函數簽名裡的一個參數名。
 
-每当使用一些变量调用`isFish`时，TypeScript会将变量缩减为那个具体的类型，只要这个类型与变量的原始类型是兼容的。
+每當使用一些變量調用`isFish`時，TypeScript會將變量縮減為那個具體的類型，只要這個類型與變量的原始類型是兼容的。
 
 ```ts
-// 'swim' 和 'fly' 调用都没有问题了
+// 'swim' 和 'fly' 調用都沒有問題了
 
 if (isFish(pet)) {
     pet.swim();
@@ -145,13 +145,13 @@ else {
 }
 ```
 
-注意TypeScript不仅知道在`if`分支里`pet`是`Fish`类型；
-它还清楚在`else`分支里，一定*不是*`Fish`类型，一定是`Bird`类型。
+注意TypeScript不僅知道在`if`分支裡`pet`是`Fish`類型；
+它還清楚在`else`分支裡，一定*不是*`Fish`類型，一定是`Bird`類型。
 
-## `typeof`类型保护
+## `typeof`類型保護
 
-我们还没有真正的讨论过如何使用联合类型来实现`padLeft`。
-我们可以像下面这样利用类型断言来写：
+我們還沒有真正的討論過如何使用聯合類型來實現`padLeft`。
+我們可以像下面這樣利用類型斷言來寫：
 
 ```ts
 function isNumber(x: any): x is number {
@@ -173,9 +173,9 @@ function padLeft(value: string, padding: string | number) {
 }
 ```
 
-然而，必须要定义一个函数来判断类型是否是原始类型，这太痛苦了。
-幸运的是，现在我们不必将`typeof x === "number"`抽象成一个函数，因为TypeScript可以将它识别为一个类型保护。
-也就是说我们可以直接在代码里检查类型了。
+然而，必須要定義一個函數來判斷類型是否是原始類型，這太痛苦了。
+幸運的是，現在我們不必將`typeof x === "number"`抽象成一個函數，因為TypeScript可以將它識別為一個類型保護。
+也就是說我們可以直接在代碼裡檢查類型了。
 
 ```ts
 function padLeft(value: string, padding: string | number) {
@@ -189,15 +189,15 @@ function padLeft(value: string, padding: string | number) {
 }
 ```
 
-这些*`typeof`类型保护*只有2个形式能被识别：`typeof v === "typename"`和`typeof v !== "typename"`，`"typename"`必须是`"number"`，`"string"`，`"boolean"`或`"symbol"`。
-但是TypeScript并不会阻止你与其它字符串比较，或者将它们位置对换，且语言不会把它们识别为类型保护。
+這些*`typeof`類型保護*只有2個形式能被識別：`typeof v === "typename"`和`typeof v !== "typename"`，`"typename"`必須是`"number"`，`"string"`，`"boolean"`或`"symbol"`。
+但是TypeScript並不會阻止你與其它字符串比較，或者將它們位置對換，且語言不會把它們識別為類型保護。
 
-## `instanceof`类型保护
+## `instanceof`類型保護
 
-如果你已经阅读了`typeof`类型保护并且对JavaScript里的`instanceof`操作符熟悉的话，你可能已经猜到了这节要讲的内容。
+如果你已經閱讀了`typeof`類型保護並且對JavaScript裡的`instanceof`操作符熟悉的話，你可能已經猜到了這節要講的內容。
 
-*`instanceof`类型保护*是通过其构造函数来细化其类型。
-比如，我们借鉴一下之前字符串填充的例子：
+*`instanceof`類型保護*是通過其構造函數來細化其類型。
+比如，我們借鑑一下之前字符串填充的例子：
 
 ```ts
 interface Padder {
@@ -224,29 +224,29 @@ function getRandomPadder() {
         new StringPadder("  ");
 }
 
-// 类型为SpaceRepeatingPadder | StringPadder
+// 類型為SpaceRepeatingPadder | StringPadder
 let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
-    padder; // 类型细化为'SpaceRepeatingPadder'
+    padder; // 類型細化為'SpaceRepeatingPadder'
 }
 if (padder instanceof StringPadder) {
-    padder; // 类型细化为'StringPadder'
+    padder; // 類型細化為'StringPadder'
 }
 ```
 
-`instanceof`的右侧要求为一个构造函数，TypeScript将细化为：
+`instanceof`的右側要求為一個構造函數，TypeScript將細化為：
 
-1. 这个函数的`prototype`属性，如果它的类型不为`any`的话
-2. 类型中构造签名所返回的类型的联合，顺序保持一至。
+1. 這個函數的`prototype`屬性，如果它的類型不為`any`的話
+2. 類型中構造簽名所返回的類型的聯合，順序保持一至。
 
-# 交叉类型
+# 交叉類型
 
-交叉类型与联合类型密切相关，但是用法却完全不同。
-一个交叉类型，例如`Person & Serializable & Loggable`，同时是`Person`*和*`Serializable`*和*`Loggable`。
-就是说这个类型的对象同时拥有这三种类型的成员。
-实际应用中，你大多会在混入中见到交叉类型。
-下面是一个混入的例子：
+交叉類型與聯合類型密切相關，但是用法卻完全不同。
+一個交叉類型，例如`Person & Serializable & Loggable`，同時是`Person`*和*`Serializable`*和*`Loggable`。
+就是說這個類型的物件同時擁有這三種類型的成員。
+實際應用中，你大多會在混入中見到交叉類型。
+下面是一個混入的例子：
 
 ```ts
 function extend<T, U>(first: T, second: U): T & U {
@@ -278,10 +278,10 @@ var n = jim.name;
 jim.log();
 ```
 
-# 类型别名
+# 類型別名
 
-类型别名会给一个类型起个新名字。
-类型别名有时和接口很像，但是可以作用于原始值，联合类型，元组以及其它任何你需要手写的类型。
+類型別名會給一個類型起個新名字。
+類型別名有時和接口很像，但是可以作用於原始值，聯合類型，元組以及其它任何你需要手寫的類型。
 
 ```ts
 type Name = string;
@@ -297,16 +297,16 @@ function getName(n: NameOrResolver): Name {
 }
 ```
 
-起别名不会新建一个类型 - 它创建了一个新*名字*来引用那个类型。
-给原始类型起别名通常没什么用，尽管可以做为文档的一种形式使用。
+起別名不會新建一個類型 - 它創建了一個新*名字*來引用那個類型。
+給原始類型起別名通常沒什麼用，儘管可以做為文檔的一種形式使用。
 
-同接口一样，类型别名也可以是泛型 - 我们可以添加类型参数并且在别名声明的右侧传入：
+同接口一樣，類型別名也可以是泛型 - 我們可以添加類型參數並且在別名聲明的右側傳入：
 
 ```ts
 type Container<T> = { value: T };
 ```
 
-我们也可以使用类型别名来在属性里引用自己：
+我們也可以使用類型別名來在屬性裡引用自己：
 
 ```ts
 type Tree<T> = {
@@ -316,26 +316,26 @@ type Tree<T> = {
 }
 ```
 
-然而，类型别名不可能出现在声明右侧以外的地方：
+然而，類型別名不可能出現在聲明右側以外的地方：
 
 ```ts
-type Yikes = Array<Yikes>; // 错误
+type Yikes = Array<Yikes>; // 錯誤
 ```
 
-## 接口 vs. 类型别名
+## 接口 vs. 類型別名
 
-像我们提到的，类型别名可以像接口一样；然而，仍有一些细微差别。
+像我們提到的，類型別名可以像接口一樣；然而，仍有一些細微差別。
 
-一个重要区别是类型别名不能被`extends`和`implements`也不能去`extends`和`implements`其它类型。
-因为[软件中的对象应该对于扩展是开放的，但是对于修改是封闭的](https://en.wikipedia.org/wiki/Open/closed_principle)，你应该尽量去使用接口代替类型别名。
+一個重要區別是類型別名不能被`extends`和`implements`也不能去`extends`和`implements`其它類型。
+因為[軟件中的物件應該對於擴展是開放的，但是對於修改是封閉的](https://en.wikipedia.org/wiki/Open/closed_principle)，你應該儘量去使用接口代替類型別名。
 
-另一方面，如果你无法通过接口来描述一个类型并且需要使用联合类型或元组类型，这时通常会使用类型别名。
+另一方面，如果你無法通過接口來描述一個類型並且需要使用聯合類型或元組類型，這時通常會使用類型別名。
 
-# 字符串字面量类型
+# 字符串字面量類型
 
-字符串字面量类型允许你指定字符串必须的固定值。
-在实际应用中，字符串字面量类型可以与联合类型，类型保护和类型别名很好的配合。
-通过结合使用这些特性，你可以实现类似枚举类型的字符串。
+字符串字面量類型允許你指定字符串必須的固定值。
+在實際應用中，字符串字面量類型可以與聯合類型，類型保護和類型別名很好的配合。
+通過結合使用這些特性，你可以實現類似枚舉類型的字符串。
 
 ```ts
 type Easing = "ease-in" | "ease-out" | "ease-in-out";
@@ -359,13 +359,13 @@ button.animate(0, 0, "ease-in");
 button.animate(0, 0, "uneasy"); // error: "uneasy" is not allowed here
 ```
 
-你只能从三种允许的字符中选择其一来做为参数传递，传入其它值则会产生错误。
+你只能從三種允許的字符中選擇其一來做為參數傳遞，傳入其它值則會產生錯誤。
 
 ```text
 Argument of type '"uneasy"' is not assignable to parameter of type '"ease-in" | "ease-out" | "ease-in-out"'
 ```
 
-字符串字面量类型还可以用于区分函数重载：
+字符串字面量類型還可以用於區分函數重載：
 
 ```ts
 function createElement(tagName: "img"): HTMLImageElement;
@@ -376,12 +376,12 @@ function createElement(tagName: string): Element {
 }
 ```
 
-# 多态的`this`类型
+# 多態的`this`類型
 
-多态的`this`类型表示的是某个包含类或接口的*子类型*。
-这被称做*F*-bounded多态性。
-它能很容易的表现连贯接口间的继承，比如。
-在计算器的例子里，在每个操作之后都返回`this`类型：
+多態的`this`類型表示的是某個包含類或接口的*子類型*。
+這被稱做*F*-bounded多態性。
+它能很容易的表現連貫接口間的繼承，比如。
+在計算器的例子裡，在每個操作之後都返回`this`類型：
 
 ```ts
 class BasicCalculator {
@@ -406,7 +406,7 @@ let v = new BasicCalculator(2)
             .currentValue();
 ```
 
-由于这个类使用了`this`类型，你可以继承它，新的类可以直接使用之前的方法，不需要做任何的改变。
+由於這個類使用了`this`類型，你可以繼承它，新的類可以直接使用之前的方法，不需要做任何的改變。
 
 ```ts
 class ScientificCalculator extends BasicCalculator {
@@ -427,6 +427,6 @@ let v = new ScientificCalculator(2)
         .currentValue();
 ```
 
-如果没有`this`类型，`ScientificCalculator`就不能够在继承`BasicCalculator`的同时还保持接口的连贯性。
-`multiply`将会返回`BasicCalculator`，它并没有`sin`方法。
-然而，使用`this`类型，`multiply`会返回`this`，在这里就是`ScientificCalculator`。
+如果沒有`this`類型，`ScientificCalculator`就不能夠在繼承`BasicCalculator`的同時還保持接口的連貫性。
+`multiply`將會返回`BasicCalculator`，它並沒有`sin`方法。
+然而，使用`this`類型，`multiply`會返回`this`，在這裡就是`ScientificCalculator`。

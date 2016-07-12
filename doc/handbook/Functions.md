@@ -1,16 +1,16 @@
-# 介绍
+# 介紹
 
-函数是JavaScript应用程序的基础。
-它帮助你实现抽象层，模拟类，信息隐藏和模块。
-在TypeScript里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义*行为*的地方。
-TypeScript为JavaScript函数添加了额外的功能，让我们可以更容易地使用。
+函數是JavaScript應用程序的基礎。
+它幫助你實現抽象層，模擬類，信息隱藏和模組。
+在TypeScript裡，雖然已經支持類，命名空間和模組，但函數仍然是主要的定義*行為*的地方。
+TypeScript為JavaScript函數添加了額外的功能，讓我們可以更容易地使用。
 
-# 函数
+# 函數
 
-和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。
-你可以随意选择适合应用程序的方式，不论是定义一系列API函数还是只使用一次的函数。
+和JavaScript一樣，TypeScript函數可以創建有名字的函數和匿名函數。
+你可以隨意選擇適合應用程序的方式，不論是定義一系列API函數還是只使用一次的函數。
 
-通过下面的例子可以迅速回想起这两种JavaScript中的函数：
+通過下面的例子可以迅速回想起這兩種JavaScript中的函數：
 
 ```ts
 // Named function
@@ -22,9 +22,9 @@ function add(x, y) {
 let myAdd = function(x, y) { return x + y; };
 ```
 
-在JavaScript里，函数可以使用函数体外部的变量。
-当函数这么做时，我们说它‘捕获’了这些变量。
-至于为什么可以这样做以及其中的利弊超出了本文的范围，但是深刻理解这个机制对学习JavaScript和TypeScript会很有帮助。
+在JavaScript裡，函數可以使用函數體外部的變量。
+當函數這麼做時，我們說它『捕獲』了這些變量。
+至於為什麼可以這樣做以及其中的利弊超出了本文的範圍，但是深刻理解這個機制對學習JavaScript和TypeScript會很有幫助。
 
 ```ts
 let z = 100;
@@ -34,11 +34,11 @@ function addToZ(x, y) {
 }
 ```
 
-# 函数类型
+# 函數類型
 
-## 为函数定义类型
+## 為函數定義類型
 
-让我们为上面那个函数添加类型：
+讓我們為上面那個函數添加類型：
 
 ```ts
 function add(x: number, y: number): number {
@@ -48,42 +48,42 @@ function add(x: number, y: number): number {
 let myAdd = function(x: number, y: number): number { return x+y; };
 ```
 
-我们可以给每个参数添加类型之后再为函数本身添加返回值类型。
-TypeScript能够根据返回语句自动推断出返回值类型，因此我们通常省略它。
+我們可以給每個參數添加類型之後再為函數本身添加返回值類型。
+TypeScript能夠根據返回語句自動推斷出返回值類型，因此我們通常省略它。
 
-## 书写完整函数类型
+## 書寫完整函數類型
 
-现在我们已经为函数指定了类型，下面让我们写出函数的完整类型。
+現在我們已經為函數指定了類型，下面讓我們寫出函數的完整類型。
 
 ```ts
 let myAdd: (x:number, y:number)=>number =
     function(x: number, y: number): number { return x+y; };
 ```
 
-函数类型包含两部分：参数类型和返回值类型。
-当写出完整函数类型的时候，这两部分都是需要的。
-我们以参数列表的形式写出参数类型，为每个参数指定一个名字和类型。
-这个名字只是为了增加可读性。
-我们也可以这么写：
+函數類型包含兩部分：參數類型和返回值類型。
+當寫出完整函數類型的時候，這兩部分都是需要的。
+我們以參數列表的形式寫出參數類型，為每個參數指定一個名字和類型。
+這個名字只是為了增加可讀性。
+我們也可以這麼寫：
 
 ```ts
 let myAdd: (baseValue:number, increment:number) => number =
     function(x: number, y: number): number { return x + y; };
 ```
 
-只要参数类型是匹配的，那么就认为它是有效的函数类型，而不在乎参数名是否正确。
+只要參數類型是匹配的，那麼就認為它是有效的函數類型，而不在乎參數名是否正確。
 
-第二部分是返回值类型。
-对于返回值，我们在函数和返回值类型之前使用(`=>`)符号，使之清晰明了。
-如之前提到的，返回值类型是函数类型的必要部分，如果函数没有返回任何值，你也必须指定返回值类型为`void`而不能留空。
+第二部分是返回值類型。
+對於返回值，我們在函數和返回值類型之前使用(`=>`)符號，使之清晰明了。
+如之前提到的，返回值類型是函數類型的必要部分，如果函數沒有返回任何值，你也必須指定返回值類型為`void`而不能留空。
 
-函数的类型只是由参数类型和返回值组成的。
-函数中使用的捕获变量不会体现在类型里。
-实际上，这些变量是函数的隐藏状态并不是组成API的一部分。
+函數的類型只是由參數類型和返回值組成的。
+函數中使用的捕獲變量不會體現在類型裡。
+實際上，這些變量是函數的隱藏狀態並不是組成API的一部分。
 
-## 推断类型
+## 推斷類型
 
-尝试这个例子的时候，你会发现如果你在赋值语句的一边指定了类型但是另一边没有类型的话，TypeScript编译器会自动识别出类型：
+嘗試這個例子的時候，你會發現如果你在賦值語句的一邊指定了類型但是另一邊沒有類型的話，TypeScript編譯器會自動識別出類型：
 
 ```ts
 // myAdd has the full function type
@@ -94,15 +94,15 @@ let myAdd: (baseValue:number, increment:number) => number =
     function(x, y) { return x + y; };
 ```
 
-这叫做“按上下文归类”，是类型推论的一种。
-它帮助我们更好地为程序指定类型。
+這叫做「按上下文歸類」，是類型推論的一種。
+它幫助我們更好地為程序指定類型。
 
-# 可选参数和默认参数
+# 可選參數和默認參數
 
-TypeScript里的每个函数参数都是必须的。
-这不是指不能传递`null`或`undefined`作为参数，而是说编译器检查用户是否为每个参数都传入了值。
-编译器还会假设只有这些参数会被传递进函数。
-简短地说，传递给一个函数的参数个数必须与函数期望的参数个数一致。
+TypeScript裡的每個函數參數都是必須的。
+這不是指不能傳遞`null`或`undefined`作為參數，而是說編譯器檢查用戶是否為每個參數都傳入了值。
+編譯器還會假設只有這些參數會被傳遞進函數。
+簡短地說，傳遞給一個函數的參數個數必須與函數期望的參數個數一致。
 
 ```ts
 function buildName(firstName: string, lastName: string) {
@@ -114,10 +114,10 @@ let result2 = buildName("Bob", "Adams", "Sr.");  // error, too many parameters
 let result3 = buildName("Bob", "Adams");         // ah, just right
 ```
 
-JavaScript里，每个参数都是可选的，可传可不传。
-没传参的时候，它的值就是undefined。
-在TypeScript里我们可以在参数名旁使用`?`实现可选参数的功能。
-比如，我们想让last name是可选的：
+JavaScript裡，每個參數都是可選的，可傳可不傳。
+沒傳參的時候，它的值就是undefined。
+在TypeScript裡我們可以在參數名旁使用`?`實現可選參數的功能。
+比如，我們想讓last name是可選的：
 
 ```ts
 function buildName(firstName: string, lastName?: string) {
@@ -132,12 +132,12 @@ let result2 = buildName("Bob", "Adams", "Sr.");  // error, too many parameters
 let result3 = buildName("Bob", "Adams");  // ah, just right
 ```
 
-可选参数必须跟在必须参数后面。
-如果上例我们想让first name是可选的，那么就必须调整它们的位置，把first name放在后面。
+可選參數必須跟在必須參數後面。
+如果上例我們想讓first name是可選的，那麼就必須調整它們的位置，把first name放在後面。
 
-在TypeScript里，我们也可以为参数提供一个默认值当用户没有传递这个参数或传递的值是`undefined`时。
-它们叫做有默认初始化值的参数。
-让我们修改上例，把last name的默认值设置为`"Smith"`。
+在TypeScript裡，我們也可以為參數提供一個默認值當用戶沒有傳遞這個參數或傳遞的值是`undefined`時。
+它們叫做有默認初始化值的參數。
+讓我們修改上例，把last name的默認值設置為`"Smith"`。
 
 ```ts
 function buildName(firstName: string, lastName = "Smith") {
@@ -150,8 +150,8 @@ let result3 = buildName("Bob", "Adams", "Sr.");  // error, too many parameters
 let result4 = buildName("Bob", "Adams");         // ah, just right
 ```
 
-在所有必须参数后面的带默认初始化的参数都是可选的，与可选参数一样，在调用函数的时候可以省略。
-也就是说可选参数与末尾的默认参数共享参数类型。
+在所有必須參數後面的帶默認初始化的參數都是可選的，與可選參數一樣，在調用函數的時候可以省略。
+也就是說可選參數與末尾的默認參數共享參數類型。
 
 ```ts
 function buildName(firstName: string, lastName?: string) {
@@ -167,12 +167,12 @@ function buildName(firstName: string, lastName = "Smith") {
 }
 ```
 
-共享同样的类型`(firstName: string, lastName?: string) => string`。
-默认参数的默认值消失了，只保留了它是一个可选参数的信息。
+共享同樣的類型`(firstName: string, lastName?: string) => string`。
+默認參數的默認值消失了，只保留了它是一個可選參數的信息。
 
-与普通可选参数不同的是，带默认值的参数不需要放在必须参数的后面。
-如果带默认值的参数出现在必须参数前面，用户必须明确的传入`undefined`值来获得默认值。
-例如，我们重写最后一个例子，让`firstName`是带默认值的参数：
+與普通可選參數不同的是，帶默認值的參數不需要放在必須參數的後面。
+如果帶默認值的參數出現在必須參數前面，用戶必須明確的傳入`undefined`值來獲得默認值。
+例如，我們重寫最後一個例子，讓`firstName`是帶默認值的參數：
 
 ```ts
 function buildName(firstName = "Will", lastName: string) {
@@ -185,13 +185,13 @@ let result3 = buildName("Bob", "Adams");         // okay and returns "Bob Adams"
 let result4 = buildName(undefined, "Adams");     // okay and returns "Will Adams"
 ```
 
-# 剩余参数
+# 剩餘參數
 
-必要参数，默认参数和可选参数有个共同点：它们表示某一个参数。
-有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来。
-在JavaScript里，你可以使用`arguments`来访问所有传入的参数。
+必要參數，默認參數和可選參數有個共同點：它們表示某一個參數。
+有時，你想同時操作多個參數，或者你並不知道會有多少參數傳遞進來。
+在JavaScript裡，你可以使用`arguments`來訪問所有傳入的參數。
 
-在TypeScript里，你可以把所有参数收集到一个变量里：
+在TypeScript裡，你可以把所有參數收集到一個變量裡：
 
 ```ts
 function buildName(firstName: string, ...restOfName: string[]) {
@@ -201,11 +201,11 @@ function buildName(firstName: string, ...restOfName: string[]) {
 let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 ```
 
-剩余参数会被当做个数不限的可选参数。
-可以一个都没有，同样也可以有任意个。
-编译器创建参数数组，名字是你在省略号（`...`）后面给定的名字，你可以在函数体内使用这个数组。
+剩餘參數會被當做個數不限的可選參數。
+可以一個都沒有，同樣也可以有任意個。
+編譯器創建參數陣列，名字是你在省略號（`...`）後面給定的名字，你可以在函數體內使用這個陣列。
 
-这个省略号也会在带有剩余参数的函数类型定义上使用到：
+這個省略號也會在帶有剩餘參數的函數類型定義上使用到：
 
 ```ts
 function buildName(firstName: string, ...restOfName: string[]) {
@@ -215,18 +215,18 @@ function buildName(firstName: string, ...restOfName: string[]) {
 let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
 ```
 
-# Lambda表达式和使用`this`
+# Lambda表達式和使用`this`
 
-JavaScript里`this`的工作机制对JavaScript程序员来说已经是老生常谈了。
-的确，学会如何使用它绝对是JavaScript编程中的一件大事。
-由于TypeScript是JavaScript的超集，TypeScript程序员也需要弄清`this`工作机制并且当有bug的时候能够找出错误所在。
-`this`的工作机制可以单独写一本书了，并确已有人这么做了。在这里，我们只介绍一些基础知识。
+JavaScript裡`this`的工作機制對JavaScript程序員來說已經是老生常談了。
+的確，學會如何使用它絕對是JavaScript編程中的一件大事。
+由於TypeScript是JavaScript的超集，TypeScript程序員也需要弄清`this`工作機制並且當有bug的時候能夠找出錯誤所在。
+`this`的工作機制可以單獨寫一本書了，並確已有人這麼做了。在這裡，我們只介紹一些基礎知識。
 
-JavaScript里，`this`的值在函数被调用的时候才会指定。
-这是个既强大又灵活的特点，但是你需要花点时间弄清楚函数调用的上下文是什么。
-众所周知这不是一件很简单的事，特别是函数当做回调函数使用的时候。
+JavaScript裡，`this`的值在函數被調用的時候才會指定。
+這是個既強大又靈活的特點，但是你需要花點時間弄清楚函數調用的上下文是什麼。
+眾所周知這不是一件很簡單的事，特別是函數當做回調函數使用的時候。
 
-下面看一个例子：
+下面看一個例子：
 
 ```ts
 let deck = {
@@ -248,15 +248,15 @@ let pickedCard = cardPicker();
 alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 ```
 
-如果我们运行这个程序，会发现它并没有弹出对话框而是报错了。
-因为`createCardPicker`返回的函数里的`this`被设置成了`window`而不是`deck`对象。
-当你调用`cardPicker()`时会发生这种情况。这里没有对`this`进行动态绑定因此为window。（注意在严格模式下，会是undefined而不是window）。
+如果我們運行這個程序，會發現它並沒有彈出對話框而是報錯了。
+因為`createCardPicker`返回的函數裡的`this`被設置成了`window`而不是`deck`物件。
+當你調用`cardPicker()`時會發生這種情況。這裡沒有對`this`進行動態綁定因此為window。（注意在嚴格模式下，會是undefined而不是window）。
 
-为了解决这个问题，我们可以在函数被返回时就绑好正确的`this`。
-这样的话，无论之后怎么使用它，都会引用绑定的‘deck’对象。
+為瞭解決這個問題，我們可以在函數被返回時就綁好正確的`this`。
+這樣的話，無論之後怎麼使用它，都會引用綁定的『deck'物件。
 
-我们把函数表达式变为使用lambda表达式（ () => {} ）。
-这样就会在函数创建的时候就指定了‘this’值，而不是在函数调用的时候。
+我們把函數表達式變為使用lambda表達式（ () => {} ）。
+這樣就會在函數創建的時候就指定了『this'值，而不是在函數調用的時候。
 
 ```ts
 let deck = {
@@ -279,12 +279,12 @@ let pickedCard = cardPicker();
 alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 ```
 
-为了解更多关于`this`的信息，请阅读Yahuda Katz的[Understanding JavaScript Function Invocation and "this"](http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/)。
+為瞭解更多關於`this`的信息，請閱讀Yahuda Katz的[Understanding JavaScript Function Invocation and "this"](http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/)。
 
-# 重载
+# 重載
 
-JavaScript本身是个动态语言。
-JavaScript里函数根据传入不同的参数而返回不同类型的数据是很常见的。
+JavaScript本身是個動態語言。
+JavaScript裡函數根據傳入不同的參數而返回不同類型的數據是很常見的。
 
 ```ts
 let suits = ["hearts", "spades", "clubs", "diamonds"];
@@ -311,14 +311,14 @@ let pickedCard2 = pickCard(15);
 alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
 ```
 
-`pickCard`方法根据传入参数的不同会返回两种不同的类型。
-如果传入的是代表纸牌的对象，函数作用是从中抓一张牌。
-如果用户想抓牌，我们告诉他抓到了什么牌。
-但是这怎么在类型系统里表示呢。
+`pickCard`方法根據傳入參數的不同會返回兩種不同的類型。
+如果傳入的是代表紙牌的物件，函數作用是從中抓一張牌。
+如果用戶想抓牌，我們告訴他抓到了什麼牌。
+但是這怎麼在類型系統裡表示呢。
 
-方法是为同一个函数提供多个函数类型定义来进行函数重载。
-编译器会根据这个列表去处理函数的调用。
-下面我们来重载`pickCard`函数。
+方法是為同一個函數提供多個函數類型定義來進行函數重載。
+編譯器會根據這個列表去處理函數的調用。
+下面我們來重載`pickCard`函數。
 
 ```ts
 let suits = ["hearts", "spades", "clubs", "diamonds"];
@@ -347,12 +347,12 @@ let pickedCard2 = pickCard(15);
 alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
 ```
 
-这样改变后，重载的`pickCard`函数在调用的时候会进行正确的类型检查。
+這樣改變後，重載的`pickCard`函數在調用的時候會進行正確的類型檢查。
 
-为了让编译器能够选择正确的检查类型，它与JavaScript里的处理流程相似。
-它查找重载列表，尝试使用第一个重载定义。
-如果匹配的话就使用这个。
-因此，在定义重载的时候，一定要把最精确的定义放在最前面。
+為了讓編譯器能夠選擇正確的檢查類型，它與JavaScript裡的處理流程相似。
+它查找重載列表，嘗試使用第一個重載定義。
+如果匹配的話就使用這個。
+因此，在定義重載的時候，一定要把最精確的定義放在最前面。
 
-注意，`function pickCard(x): any`并不是重载列表的一部分，因此这里只有两个重载：一个是接收对象另一个接收数字。
-以其它参数调用`pickCard`会产生错误。
+注意，`function pickCard(x): any`並不是重載列表的一部分，因此這裡只有兩個重載：一個是接收物件另一個接收數字。
+以其它參數調用`pickCard`會產生錯誤。

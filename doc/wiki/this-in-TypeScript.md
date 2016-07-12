@@ -1,129 +1,101 @@
-## 介绍
+<!-- markdownlint-disable MD005 -->
+<!-- markdownlint-disable MD029 -->
 
-在JavaScript里（还有TypeScript），`this`关键字的行为与其它语言相比大为不同。这可能会很令人吃惊，特别是对于那些使用其它语言的用户，他们凭借其直觉来想象`this`关键字的行为。
+這個編碼規範是給TypeScript開發團隊在開發TypeScript時使用的。
+對於使用TypeScript的普通用戶來說不一定適用，但是可以做為一個參考。
 
-这篇文章会教你怎么识别及调试TypeScript里的`this`问题，并且提供了一些解决方案和各自的利弊。
+## 命名
 
-## 典型症状和危险系数
+1. 使用PascalCase為類型命名。
+2. 不要使用`I`做為接口名前綴。
+3. 使用PascalCase為枚舉值命名。
+4. 使用camelCase為函數命名。
+5. 使用camelCase為屬性或本地變量命名。
+6. 不要為私有屬性名添加`_`前綴。
+7. 儘可能使用完整的單詞拼寫命名。
 
-丢失`this`上下文的典型症状包括：
+## 組件
 
-* 类的某字段（`this.foo`）为`undefined`，但其它值没有问题
-* `this`的值指向全局的`window`对象而不是类实例对象（在非严格模式下）
-* `this`的值为`undefined`而不是类实例对象（严格模式下）
-* 调用类方法（`this.doBa()`）失败，错误信息如“TypeError: undefined is not a function”，“Object doesn't support property or method 'doBar'”或“this.doBar is not a function”
+1. 1個文件對應一個邏輯組件 （比如：解析器，檢查器）。
+2. 不要添加新的文件。 :)
+3. `.generated.*`後綴的文件是自動生成的，不要手動改它。
 
-程序中应该出现了以下代码：
+## 類型
 
-* 事件监听，比如`window.addEventListener('click', myClass.doThing);`
-* Promise解决，比如`myPromise.then(myClass.theNextThing);`
-* 第三方库回调，比如`$(document).ready(myClass.start);`
-* 函数回调，比如`someArray.map(myClass.convert)`
-* ViewModel类型的库里的类，比如`<div data-bind="click: myClass.doSomething">`
-* 可选包里的函数，比如`$.ajax(url, { success: myClass.handleData })`
+1. 不要導出類型/函數，除非你要在不同的組件中共享它。
+2. 不要在全局命名空間內定義類型/值。
+3. 共享的類型應該在`types.ts`裡定義。
+4. 在一個文件裡，類型定義應該出現在頂部。
 
-## JavaScript里的`this`究竟是什么？
+## `null` 和 `undefined`：
 
-已经有大量的文章讲述了JavaScript里`this`关键字的危险性。查看[这里](http://www.quirksmode.org/js/this.html)，[这里](http://javascriptissexy.com/understand-javascripts-this-with-clarity-and-master-it/)，或[这里](http://bjorn.tipling.com/all-this)。
+1. 使用 **undefined**，不要使用 null。
 
-当JavaScript里的一个函数被调用时，你可以按照下面的顺序来推断出`this`指向的是什么（这些规则是按优先级顺序排列的）：
+## 一般假設
 
-* 如果这个函数是`function#bind`调用的结果，那么`this`指向的是传入`bind`的参数
-* 如果函数是以`foo.func()`形式调用的，那么`this`值为`foo`
-* 如果是在严格模式下，`this`将为`undefined`
-* 否则，`this`将是全局对象（浏览器环境里为`window`）
+1. 假設像Nodes，Symbols等這樣的物件在定義它的組件外部是不可改變的。不要去改變它們。
+2. 假設陣列是不能改變的。
 
-这些规则会产生与直觉相反的效果。比如：
+## 類
 
-```ts
-class Foo {
-  x = 3;
-  print() {
-    console.log('x is ' + this.x);
-  }
-}
+1. 為了保持一致，在核心編譯鏈中不要使用類，使用函數閉包代替。
 
-var f = new Foo();
-f.print(); // Prints 'x is 3' as expected
+## 標記
 
-// Use the class method in an object literal
-var z = { x: 10, p: f.print };
-z.p(); // Prints 'x is 10'
+1. 一個類型中有超過2個布爾屬性時，把它變成一個標記。
 
-var p = z.p;
-p(); // Prints 'x is undefined'
-```
+## 註釋
 
-## `this`的危险信号
+為函數，接口，枚舉類型和類使用JSDoc風格的註釋。
 
-你要注意的最大的危险信号是*在要使用类的方法时没有立即调用它*。任何时候你看到类方法被*引用了*却没有使用相同的表达式来*调用*时，`this`可能已经不对了。
+## 字符串
 
-例子：
+1. 使用雙引號`""`
+2. 所有要展示給用戶看的信息字符串都要做好本地化工作（在diagnosticMessages.json中創建新的實體）。
 
-```ts
-var x = new MyObject();
-x.printThing(); // SAFE, method is invoked where it is referenced
+## 錯誤提示信息
 
-var y = x.printThing; // DANGER, invoking 'y()' may not have correct 'this'
+1. 在句子結尾使用`.`。
+2. 對不確定的實體使用不定冠詞。
+3. 確切的實體應該使用名字（變量名，類型名等）
+4. 當創建一條新的規則時，主題應該使用單數形式（比如：An external module cannot...而不是External modules cannot）。
+5. 使用現在時態。
 
-window.addEventListener('click', x.printThing, 10); // DANGER, method is not invoked where it is referenced
+## 錯誤提示信息代碼
 
-window.addEventListener('click', () => x.printThing(), 10); // SAFE, method is invoked in the same expression
-```
+提示信息被劃分類成了一般的區間。如果要新加一個提示信息，在上條代碼上加1做為新的代碼。
 
-## 修复
+* 1000 語法信息
+* 2000 語言信息
+* 4000 聲明生成信息
+* 5000 編譯器選項信息
+* 6000 命令行編譯器信息
+* 7000 noImplicitAny信息
 
-可以通过一些方法来保持`this`的上下文。
+## 普通方法
 
-### 使用实例函数
+由於種種原因，我們避免使用一些方法，而使用我們自己定義的。
 
-代替TypeScript里默认的*原型*方法，你可以使用一个*实例箭头函数*来定义类成员：
+1. 不使用ECMAScript 5函數；而是使用[core.ts](https://github.com/Microsoft/TypeScript/blob/master/src/compiler/core.ts)這裡的。
+2. 不要使用`for..in`語句；而是使用`ts.forEach`，`ts.forEachKey`和`ts.forEachValue`。注意它們之間的區別。
+3. 如果可能的話，嘗試使用`ts.forEach`，`ts.map`和`ts.filter`代替循環。
 
-```ts
-class MyClass {
-    private status = "blah";
+## 風格
 
-    public run = () => { // <-- note syntax here
-        alert(this.status);
-    }
-}
-var x = new MyClass();
-$(document).ready(x.run); // SAFE, 'run' will always have correct 'this'
-```
+1. 使用arrow函數代替匿名函數表達式。
+2. 只要需要的時候才把arrow函數的參數括起來。<br />比如，`(x) => x + x`是錯誤的，下面是正確的做法：
 
-* 好与坏：这会为每个类实例的每个方法创建额外的闭包。如果这个方法通常是正常调用的，那么这么做有点过了。然而，它经常会在回调函数里调用，让类实例捕获到`this`上下文会比在每次调用时都创建一个闭包来得更有效率一些。
-* 好：其它外部使用者不可能忘记处理`this`上下文
-* 好：在TypeScript里是类型安全的
-* 好：如果函数带参数不需要额外的工作
-* 坏：派生类不能通过使用`super`调用基类方法
-* 坏：在类与用户之前产生了额外的非类型安全的约束：明确了哪些方法提前绑定了以及哪些没有
+  1. `x => x + x`
+  2. `(x,y) => x + y`
+  3. `<T>(x: T, y: T) => x === y`
 
-### 本地的胖箭头
+3. 總是使用`{}`把循環體和條件語句括起來。
+4. 開始的`{`總是在同一行。
+5. 小括號裡開始不要有空白. <br />逗號，冒號，分號後要有一個空格。比如：
 
-在TypeScrip里（这里为了讲解添加了一些参数） :
+  1. `for (var i = 0, n = str.length; i < 10; i++) { }`
+  2. `if (x < 10) { }`
+  3. `function f(x: number, y: string): void { }`
 
-```ts
-var x = new SomeClass();
-someCallback((n, m) => x.doSomething(n, m));
-```
-
-* 好与坏：内存/效能上的利弊与实例函数相比正相反
-* 好：在TypeScript，100%的类型安全
-* 好：在ECMAScript 3里同样生效
-* 好：你只需要输入一次实例名
-* 坏：你要输出2次参数名
-* 坏：对于可变参数不起作用（'rest'）
-
-### Function.bind
-
-```ts
-var x = new SomeClass();
-// SAFE: Functions created from function.bind are always preserve 'this'
-window.setTimeout(x.someMethod.bind(x), 100);
-```
-
-* 好与坏：内存/效能上的利弊与实例函数相比正相反
-* 好：如果函数带参数不需要额外的工作
-* 坏：目前在TypeScript里，不是类型安全的
-* 坏：只在ECMAScript 5里生效
-* 坏：你要输入2次实例名
+6. 每個變量聲明語句只聲明一個變量 <br />（比如 使用 `var x = 1; var y = 2;` 而不是 `var x = 1, y = 2;`）。
+7. `else`要在結束的`}`後另起一行。

@@ -1,21 +1,21 @@
-# 介绍
+# 介紹
 
-为了让程序有价值，我们需要能够处理最简单的数据单元：数字，字符串，结构体，布尔值等。
-TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。
+為了讓程序有價值，我們需要能夠處理最簡單的數據單元：數字，字符串，結構體，布林值等。
+TypeScript支持與JavaScript幾乎相同的數據類型，此外還提供了實用的枚舉類型方便我們使用。
 
-# 布尔值
+# 布林值
 
-最基本的数据类型就是简单的true/false值，在JavaScript和TypeScript里叫做`boolean`（其它语言中也一样）。
+最基本的數據類型就是簡單的true/false值，在JavaScript和TypeScript裡叫做`boolean`（其它語言中也一樣）。
 
 ```ts
 let isDone: boolean = false;
 ```
 
-# 数字
+# 數字
 
-和JavaScript一样，TypeScript里的所有数字都是浮点数。
-这些浮点数的类型是`number`。
-除了支持十进制和十六进制字面量，Typescript还支持ECMAScript 2015中引入的二进制和八进制字面量。
+和JavaScript一樣，TypeScript裡的所有數字都是浮點數。
+這些浮點數的類型是`number`。
+除了支持十進制和十六進制字面量，Typescript還支持ECMAScript 2015中引入的二進制和八進制字面量。
 
 ```ts
 let decLiteral: number = 6;
@@ -26,17 +26,17 @@ let octalLiteral: number = 0o744;
 
 # 字符串
 
-JavaScript程序的另一项基本操作是处理网页或服务器端的文本数据。
-像其它语言里一样，我们使用`string`表示文本数据类型。
-和JavaScript一样，可以使用双引号（`"`）或单引号（`'`）表示字符串。
+JavaScript程序的另一項基本操作是處理網頁或服務器端的文本數據。
+像其它語言裡一樣，我們使用`string`表示文本數據類型。
+和JavaScript一樣，可以使用雙引號（`"`）或單引號（`'`）表示字符串。
 
 ```ts
 let name: string = "bob";
 name = "smith";
 ```
 
-你还可以使用*模版字符串*，它可以定义多行文本和内嵌表达式。
-这种字符串是被反引号包围（`` ` ``），并且以`${ expr }`这种形式嵌入表达式
+你還可以使用*模版字符串*，它可以定義多行文本和內嵌表達式。
+這種字符串是被反引號包圍（`` ` ``），並且以`${ expr }`這種形式嵌入表達式
 
 ```ts
 let name: string = `Gene`;
@@ -46,33 +46,33 @@ let sentence: string = `Hello, my name is ${ name }.
 I'll be ${ age + 1 } years old next month.`;
 ```
 
-这与下面定义`sentence`的方式效果相同：
+這與下面定義`sentence`的方式效果相同：
 
 ```ts
 let sentence: string = "Hello, my name is " + name + ".\n\n" +
     "I'll be " + (age + 1) + " years old next month.";
 ```
 
-# 数组
+# 陣列
 
-TypeScript像JavaScript一样可以操作数组元素。
-有两种方式可以定义数组。
-第一种，可以在元素类型后面接上`[]`，表示由此类型元素组成的一个数组：
+TypeScript像JavaScript一樣可以操作陣列元素。
+有兩種方式可以定義陣列。
+第一種，可以在元素類型後面接上`[]`，表示由此類型元素組成的一個陣列：
 
 ```ts
 let list: number[] = [1, 2, 3];
 ```
 
-第二种方式是使用数组泛型，`Array<元素类型>`：
+第二種方式是使用陣列泛型，`Array<元素類型>`：
 
 ```ts
 let list: Array<number> = [1, 2, 3];
 ```
 
-# 元组 Tuple
+# 元組 Tuple
 
-元组类型允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。
-比如，你可以定义一对值分别为`string`和`number`类型的元组。
+元組類型允許表示一個已知元素數量和類型的陣列，各元素的類型不必相同。
+比如，你可以定義一對值分別為`string`和`number`類型的元組。
 
 ```ts
 // Declare a tuple type
@@ -83,53 +83,53 @@ x = ['hello', 10]; // OK
 x = [10, 'hello']; // Error
 ```
 
-当访问一个已知索引的元素，会得到正确的类型：
+當訪問一個已知索引的元素，會得到正確的類型：
 
 ```ts
 console.log(x[0].substr(1)); // OK
 console.log(x[1].substr(1)); // Error, 'number' does not have 'substr'
 ```
 
-当访问一个越界的元素，会使用联合类型替代：
+當訪問一個越界的元素，會使用聯合類型替代：
 
 ```ts
-x[3] = 'world'; // OK, 字符串可以赋值给(string | number)类型
+x[3] = 'world'; // OK, 字符串可以賦值給(string | number)類型
 
 console.log(x[5].toString()); // OK, 'string' 和 'number' 都有 toString
 
-x[6] = true; // Error, 布尔不是(string | number)类型
+x[6] = true; // Error, 布爾不是(string | number)類型
 ```
 
-联合类型是高级主题，我们会在以后的章节里讨论它。
+聯合類型是高級主題，我們會在以後的章節裡討論它。
 
-# 枚举
+# 枚舉
 
-`enum`类型是对JavaScript标准数据类型的一个补充。
-像C#等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。
+`enum`類型是對JavaScript標準數據類型的一個補充。
+像C#等其它語言一樣，使用枚舉類型可以為一組數值賦予友好的名字。
 
 ```ts
 enum Color {Red, Green, Blue};
 let c: Color = Color.Green;
 ```
 
-默认情况下，从`0`开始为元素编号。
-你也可以手动的指定成员的数值。
-例如，我们将上面的例子改成从`1`开始编号：
+默認情況下，從`0`開始為元素編號。
+你也可以手動的指定成員的數值。
+例如，我們將上面的例子改成從`1`開始編號：
 
 ```ts
 enum Color {Red = 1, Green, Blue};
 let c: Color = Color.Green;
 ```
 
-或者，全部都采用手动赋值：
+或者，全部都採用手動賦值：
 
 ```ts
 enum Color {Red = 1, Green = 2, Blue = 4};
 let c: Color = Color.Green;
 ```
 
-枚举类型提供的一个便利是你可以由枚举的值得到它的名字。
-例如，我们知道数值为2，但是不确定它映射到Color里的哪个名字，我们可以查找相应的名字：
+枚舉類型提供的一個便利是你可以由枚舉的值得到它的名字。
+例如，我們知道數值為2，但是不確定它映射到Color裡的哪個名字，我們可以查找相應的名字：
 
 ```ts
 enum Color {Red = 1, Green, Blue};
@@ -140,10 +140,10 @@ alert(colorName);
 
 # 任意值
 
-有时候，我们会想要为那些在编程阶段还不清楚类型的变量指定一个类型。
-这些值可能来自于动态的内容，比如来自用户输入或第三方代码库。
-这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。
-那么我们可以使用`any`类型来标记这些变量：
+有時候，我們會想要為那些在編程階段還不清楚類型的變量指定一個類型。
+這些值可能來自於動態的內容，比如來自用戶輸入或第三方代碼庫。
+這種情況下，我們不希望類型檢查器對這些值進行檢查而是直接讓它們通過編譯階段的檢查。
+那麼我們可以使用`any`類型來標記這些變量：
 
 ```ts
 let notSure: any = 4;
@@ -151,9 +151,9 @@ notSure = "maybe a string instead";
 notSure = false; // okay, definitely a boolean
 ```
 
-在对现有代码进行改写的时候，`any`类型是十分有用的，它允许你在编译时可选择地包含或移除类型检查。
-你可能认为`Object`有相似的作用，就像它在其它语言中那样。
-但是`Object`类型的变量只是允许你给它赋任意值 -- 但是却不能够在它上面调用任意的方法，即便它真的有这些方法：
+在對現有代碼進行改寫的時候，`any`類型是十分有用的，它允許你在編譯時可選擇地包含或移除類型檢查。
+你可能認為`Object`有相似的作用，就像它在其它語言中那樣。
+但是`Object`類型的變量只是允許你給它賦任意值 -- 但是卻不能夠在它上面調用任意的方法，即便它真的有這些方法：
 
 ```ts
 let notSure: any = 4;
@@ -164,8 +164,8 @@ let prettySure: Object = 4;
 prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
 ```
 
-当你只知道一部分数据的类型时，`any`类型也是有用的。
-比如，你有一个数组，它包含了不同的类型的数据：
+當你只知道一部分數據的類型時，`any`類型也是有用的。
+比如，你有一個陣列，它包含了不同的類型的數據：
 
 ```ts
 let list: any[] = [1, true, "free"];
@@ -175,8 +175,8 @@ list[1] = 100;
 
 # 空值
 
-某种程度上来说，`void`类型像是与`any`类型相反，它表示没有任何类型。
-当一个函数没有返回值时，你通常会见到其返回值类型是`void`：
+某種程度上來說，`void`類型像是與`any`類型相反，它表示沒有任何類型。
+當一個函數沒有返回值時，你通常會見到其返回值類型是`void`：
 
 ```ts
 function warnUser(): void {
@@ -184,24 +184,24 @@ function warnUser(): void {
 }
 ```
 
-声明一个`void`类型的变量没有什么大用，因为你只能为它赋予`undefined`和`null`：
+聲明一個`void`類型的變量沒有什麼大用，因為你只能為它賦予`undefined`和`null`：
 
 ```ts
 let unusable: void = undefined;
 ```
 
-# 类型断言
+# 類型斷言
 
-有时候你会遇到这样的情况，你会比TypeScript更了解某个值的详细信息。
-通常这会发生在你清楚地知道一个实体具有比它现有类型更确切的类型。
+有時候你會遇到這樣的情況，你會比TypeScript更瞭解某個值的詳細信息。
+通常這會發生在你清楚地知道一個實體具有比它現有類型更確切的類型。
 
-通过*类型断言*这种方式可以告诉编译器，“相信我，我知道自己在干什么”。
-类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。
-它没有运行时的影响，只是在编译阶段起作用。
-TypeScript会假设你，程序员，已经进行了必须的检查。
+通過*類型斷言*這種方式可以告訴編譯器，「相信我，我知道自己在幹什麼」。
+類型斷言好比其它語言裡的類型轉換，但是不進行特殊的數據檢查和解構。
+它沒有運行時的影響，只是在編譯階段起作用。
+TypeScript會假設你，程序員，已經進行了必須的檢查。
 
-类型断言有两种形式。
-其一是“尖括号”语法：
+類型斷言有兩種形式。
+其一是「尖括號」語法：
 
 ```ts
 let someValue: any = "this is a string";
@@ -209,7 +209,7 @@ let someValue: any = "this is a string";
 let strLength: number = (<string>someValue).length;
 ```
 
-另一个为`as`语法：
+另一個為`as`語法：
 
 ```ts
 let someValue: any = "this is a string";
@@ -217,11 +217,11 @@ let someValue: any = "this is a string";
 let strLength: number = (someValue as string).length;
 ```
 
-两种形式是等价的。
-至于使用哪个大多数情况下是凭个人喜好；然而，当你在TypeScript里使用JSX时，只有`as`语法断言是被允许地。
+兩種形式是等價的。
+至於使用哪個大多數情況下是憑個人喜好；然而，當你在TypeScript裡使用JSX時，只有`as`語法斷言是被允許地。
 
-# 关于`let`
+# 關於`let`
 
-你可能已经注意到了，我们使用`let`关键字来代替大家所熟悉的JavaScript关键字`var`。
-`let`关键字是JavaScript的一个新概念，TypeScript实现了它。
-我们会在以后详细介绍它，很多常见的问题都可以通过使用`let`来解决，所以尽可能地使用`let`来代替`var`吧。
+你可能已經注意到了，我們使用`let`關鍵字來代替大家所熟悉的JavaScript關鍵字`var`。
+`let`關鍵字是JavaScript的一個新概念，TypeScript實現了它。
+我們會在以後詳細介紹它，很多常見的問題都可以通過使用`let`來解決，所以儘可能地使用`let`來代替`var`吧。

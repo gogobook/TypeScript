@@ -1,6 +1,6 @@
 ## 概述
 
-编译选项可以在使用MSBuild的项目里通过MSBuild属性指定。
+編譯選項可以在使用MSBuild的項目裡通過MSBuild屬性指定。
 
 ## 例子
 
@@ -19,71 +19,71 @@
 
 ## 映射
 
-编译选项                                      | MSBuild属性名称                             | 可用值
+編譯選項                                      | MSBuild屬性名稱                             | 可用值
 ---------------------------------------------|--------------------------------------------|-----------------
-`--declaration`                              | TypeScriptGeneratesDeclarations            | 布尔值
+`--declaration`                              | TypeScriptGeneratesDeclarations            | 布林值
 `--module`                                   | TypeScriptModuleKind                       | `AMD`, `CommonJs`, `UMD` 或 `System`
 `--target`                                   | TypeScriptTarget                           | `ES3`, `ES5`, or `ES6`
 `--charset`                                  | TypeScriptCharset                          |
-`--emitBOM`                                  | TypeScriptEmitBOM                          | 布尔值
-`--emitDecoratorMetadata`                    | TypeScriptEmitDecoratorMetadata            | 布尔值
-`--experimentalDecorators`                   | TypeScriptExperimentalDecorators           | 布尔值
-`--inlineSourceMap`                          | TypeScriptInlineSourceMap                  | 布尔值
-`--inlineSources`                            | TypeScriptInlineSources                    | 布尔值
-`--locale`                                   | *自动的*                                    | 自动设置成PreferredUILang的值
-`--mapRoot`                                  | TypeScriptMapRoot                          | 文件路径
+`--emitBOM`                                  | TypeScriptEmitBOM                          | 布林值
+`--emitDecoratorMetadata`                    | TypeScriptEmitDecoratorMetadata            | 布林值
+`--experimentalDecorators`                   | TypeScriptExperimentalDecorators           | 布林值
+`--inlineSourceMap`                          | TypeScriptInlineSourceMap                  | 布林值
+`--inlineSources`                            | TypeScriptInlineSources                    | 布林值
+`--locale`                                   | *自動的*                                    | 自動設置成PreferredUILang的值
+`--mapRoot`                                  | TypeScriptMapRoot                          | 文件路徑
 `--newLine`                                  | TypeScriptNewLine                          | `CRLF` 或 `LF`
-`--noEmitOnError`                            | TypeScriptNoEmitOnError                    | 布尔值
-`--noEmitHelpers`                            | TypeScriptNoEmitHelpers                    | 布尔值
-`--noImplicitAny`                            | TypeScriptNoImplicitAny                    | 布尔值
-`--noLib`                                    | TypeScriptNoLib                            | 布尔值
-`--noResolve`                                | TypeScriptNoResolve                        | 布尔值
-`--out`                                      | TypeScriptOutFile                          | 文件路径
-`--outDir`                                   | TypeScriptOutDir                           | 文件路径
-`--preserveConstEnums`                       | TypeScriptPreserveConstEnums               | 布尔值
-`--removeComments`                           | TypeScriptRemoveComments                   | 布尔值
-`--rootDir`                                  | TypeScriptRootDir                          | 文件路径
-`--isolatedModules`                          | TypeScriptIsolatedModules                  | 布尔值
-`--sourceMap`                                | TypeScriptSourceMap                        | 文件路径
-`--sourceRoot`                               | TypeScriptSourceRoot                       | 文件路径
-`--suppressImplicitAnyIndexErrors`           | TypeScriptSuppressImplicitAnyIndexErrors   | 布尔值
-`--suppressExcessPropertyErrors`             |  TypeScriptSuppressExcessPropertyErrors    | 布尔值
+`--noEmitOnError`                            | TypeScriptNoEmitOnError                    | 布林值
+`--noEmitHelpers`                            | TypeScriptNoEmitHelpers                    | 布林值
+`--noImplicitAny`                            | TypeScriptNoImplicitAny                    | 布林值
+`--noLib`                                    | TypeScriptNoLib                            | 布林值
+`--noResolve`                                | TypeScriptNoResolve                        | 布林值
+`--out`                                      | TypeScriptOutFile                          | 文件路徑
+`--outDir`                                   | TypeScriptOutDir                           | 文件路徑
+`--preserveConstEnums`                       | TypeScriptPreserveConstEnums               | 布林值
+`--removeComments`                           | TypeScriptRemoveComments                   | 布林值
+`--rootDir`                                  | TypeScriptRootDir                          | 文件路徑
+`--isolatedModules`                          | TypeScriptIsolatedModules                  | 布林值
+`--sourceMap`                                | TypeScriptSourceMap                        | 文件路徑
+`--sourceRoot`                               | TypeScriptSourceRoot                       | 文件路徑
+`--suppressImplicitAnyIndexErrors`           | TypeScriptSuppressImplicitAnyIndexErrors   | 布林值
+`--suppressExcessPropertyErrors`             |  TypeScriptSuppressExcessPropertyErrors    | 布林值
 `--moduleResolution`                         | TypeScriptModuleResolution                 | `Classic` or `Node`
-`--experimentalAsyncFunctions`               | TypeScriptExperimentalAsyncFunctions       | 布尔值
+`--experimentalAsyncFunctions`               | TypeScriptExperimentalAsyncFunctions       | 布林值
 `--jsx`                                      | TypeScriptJSXEmit                          | `React` or `Preserve`
 `--reactNamespace`                           | TypeScriptReactNamespace                   | string
-`--skipDefaultLibCheck`                      | TypeScriptSkipDefaultLibCheck              | 布尔值
-`--allowUnusedLabels`                        | TypeScriptAllowUnusedLabels                | 布尔值
-`--noImplicitReturns`                        | TypeScriptNoImplicitReturns                | 布尔值
-`--noFallthroughCasesInSwitch`               | TypeScriptNoFallthroughCasesInSwitch       | 布尔值
-`--allowUnreachableCode`                     | TypeScriptAllowUnreachableCode             | 布尔值
-`--forceConsistentCasingInFileNames`         | TypeScriptForceConsistentCasingInFileNames | 布尔值
-`--allowSyntheticDefaultImports`             | TypeScriptAllowSyntheticDefaultImports     | 布尔值
-`--noImplicitUseStrict`                      | TypeScriptNoImplicitUseStrict              | 布尔值
+`--skipDefaultLibCheck`                      | TypeScriptSkipDefaultLibCheck              | 布林值
+`--allowUnusedLabels`                        | TypeScriptAllowUnusedLabels                | 布林值
+`--noImplicitReturns`                        | TypeScriptNoImplicitReturns                | 布林值
+`--noFallthroughCasesInSwitch`               | TypeScriptNoFallthroughCasesInSwitch       | 布林值
+`--allowUnreachableCode`                     | TypeScriptAllowUnreachableCode             | 布林值
+`--forceConsistentCasingInFileNames`         | TypeScriptForceConsistentCasingInFileNames | 布林值
+`--allowSyntheticDefaultImports`             | TypeScriptAllowSyntheticDefaultImports     | 布林值
+`--noImplicitUseStrict`                      | TypeScriptNoImplicitUseStrict              | 布林值
 `--project`                                  | *VS不支持*                                  |
 `--watch`                                    | *VS不支持*                                  |
 `--diagnostics`                              | *VS不支持*                                  |
 `--listFiles`                                | *VS不支持*                                  |
 `--noEmit`                                   | *VS不支持*                                  |
 `--allowJs`                                  | *VS不支持*                                  |
-*VS特有选项*                                  | TypeScriptAdditionalFlags                  | *任意编译选项*
+*VS特有選項*                                  | TypeScriptAdditionalFlags                  | *任意編譯選項*
 
 
-## 我使用的Visual Studio版本里支持哪些选项?
+## 我使用的Visual Studio版本裡支持哪些選項?
 
 查找 `C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets` 文件。
-可用的MSBuild XML标签与相应的`tsc`编译选项的映射都在那里。
+可用的MSBuild XML標籤與相應的`tsc`編譯選項的映射都在那裡。
 
 ## ToolsVersion
 
-工程文件里的`<TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>`属性值表明了构建时使用的编译器的版本号（这个例子里是1.7）
-这样就允许一个工程在不同的机器上使用固定的版本去编译。
+工程文件裡的`<TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>`屬性值表明了構建時使用的編譯器的版本號（這個例子裡是1.7）
+這樣就允許一個工程在不同的機器上使用固定的版本去編譯。
 
-如果没有指定`TypeScriptToolsVersion`，则会使用机器上安装的最新版本的编译器去构建。
+如果沒有指定`TypeScriptToolsVersion`，則會使用機器上安裝的最新版本的編譯器去構建。
 
-如果用户使用的是更新版本的TypeScript，则会在首次加载工程的时候看到一个提示升级工程的对话框。
+如果用戶使用的是更新版本的TypeScript，則會在首次加載工程的時候看到一個提示升級工程的對話框。
 
 ## TypeScriptCompileBlocked
 
-如果你使用其它的构建工具（比如，gulp， grunt等等）并且使用VS做为开发和调试工具，那么在工程里设置`<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>`。
-这样VS只会提供给你编辑的功能，而不会在你按F5的时候去构建。
+如果你使用其它的構建工具（比如，gulp， grunt等等）並且使用VS做為開發和調試工具，那麼在工程裡設置`<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>`。
+這樣VS只會提供給你編輯的功能，而不會在你按F5的時候去構建。

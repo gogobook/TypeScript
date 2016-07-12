@@ -1,6 +1,6 @@
 # Browserify
 
-### 安装
+### 安裝
 
 ```sh
 npm install tsify
@@ -25,11 +25,11 @@ browserify()
     .pipe(process.stdout);
 ```
 
-更多详细信息：[smrq/tsify](https://github.com/smrq/tsify)
+更多詳細信息：[smrq/tsify](https://github.com/smrq/tsify)
 
 # Duo
 
-### 安装
+### 安裝
 
 ```sh
 npm install duo-typescript
@@ -61,11 +61,11 @@ Duo(__dirname)
     });
 ```
 
-更多详细信息：[frankwallis/duo-typescript](https://github.com/frankwallis/duo-typescript)
+更多詳細信息：[frankwallis/duo-typescript](https://github.com/frankwallis/duo-typescript)
 
 # Grunt
 
-### 安装
+### 安裝
 
 ```sh
 npm install grunt-ts
@@ -87,11 +87,11 @@ module.exports = function(grunt) {
 };
 ````
 
-更多详细信息：[TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
+更多詳細信息：[TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
 
 # gulp
 
-### 安装
+### 安裝
 
 ```sh
 npm install gulp-typescript
@@ -113,11 +113,11 @@ gulp.task("default", function () {
 });
 ```
 
-更多详细信息：[ivogabe/gulp-typescript](https://github.com/ivogabe/gulp-typescript)
+更多詳細信息：[ivogabe/gulp-typescript](https://github.com/ivogabe/gulp-typescript)
 
 # jspm
 
-### 安装
+### 安裝
 
 ```sh
 npm install -g jspm@beta
@@ -125,11 +125,11 @@ npm install -g jspm@beta
 
 _注意：目前jspm的0.16beta版本支持TypeScript_
 
-更多详细信息：[TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSamples/tree/master/jspm)
+更多詳細信息：[TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSamples/tree/master/jspm)
 
 # webpack
 
-### 安装
+### 安裝
 
 ```sh
 npm install ts-loader --save-dev
@@ -156,7 +156,7 @@ module.exports = {
 };
 ```
 
-查看[更多关于ts-loader的详细信息](https://www.npmjs.com/package/ts-loader)
+查看[更多關於ts-loader的詳細信息](https://www.npmjs.com/package/ts-loader)
 
 或者
 
@@ -164,7 +164,7 @@ module.exports = {
 
 # MSBuild
 
-更新工程文件，包含本地安装的`Microsoft.TypeScript.Default.props`（在顶端）和`Microsoft.TypeScript.targets`（在底部）文件：
+更新工程文件，包含本地安裝的`Microsoft.TypeScript.Default.props`（在頂端）和`Microsoft.TypeScript.targets`（在底部）文件：
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -191,13 +191,13 @@ module.exports = {
 </Project>
 ```
 
-关于配置MSBuild编译器选项的更多详细信息，请参考：[在MSBuild里使用编译选项](./Compiler Options in MSBuild.md)
+關於配置MSBuild編譯器選項的更多詳細信息，請參考：[在MSBuild裡使用編譯選項](./Compiler Options in MSBuild.md)
 
 # NuGet
 
-* 右键点击 -> Manage NuGet Packages
+* 右鍵點擊 -> Manage NuGet Packages
 * 查找`Microsoft.TypeScript.MSBuild`
-* 点击`Install`
-* 安装完成后，Rebuild。
+* 點擊`Install`
+* 安裝完成後，Rebuild。
 
-更多详细信息请参考[Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog)和[using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
+更多詳細信息請參考[Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog)和[using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)

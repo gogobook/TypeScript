@@ -1,17 +1,17 @@
 # TypeScript 1.7
 
-## 支持 `async`/`await` 编译到 ES6 (Node v4+)
+## 支持 `async`/`await` 編譯到 ES6 (Node v4+)
 
-TypeScript 目前在已经原生支持 ES6 generator 的引擎 (比如 Node v4 及以上版本) 上支持异步函数. 异步函数前置 `async` 关键字; `await` 会暂停执行, 直到一个异步函数执行后返回的 promise 被 fulfill 后获得它的值.
+TypeScript 目前在已經原生支持 ES6 generator 的引擎 (比如 Node v4 及以上版本) 上支持異步函數. 異步函數前置 `async` 關鍵字; `await` 會暫停執行, 直到一個異步函數執行後返回的 promise 被 fulfill 後獲得它的值.
 
 ### 例子
 
-在下面的例子中, 输入的内容将会延时 200 毫秒逐个打印:
+在下面的例子中, 輸入的內容將會延時 200 毫秒逐個打印:
 
 ```ts
 "use strict";
 
-// printDelayed 返回值是一个 'Promise<void>'
+// printDelayed 返回值是一個 'Promise<void>'
 async function printDelayed(elements: string[]) {
     for (const element of elements) {
         await delay(200);
@@ -27,15 +27,15 @@ async function delay(milliseconds: number) {
 
 printDelayed(["Hello", "beautiful", "asynchronous", "world"]).then(() => {
     console.log();
-    console.log("打印每一个内容!");
+    console.log("打印每一個內容!");
 });
 ```
 
-查看 [Async Functions](http://blogs.msdn.com/b/typescript/archive/2015/11/03/what-about-async-await.aspx) 一文了解更多.
+查看 [Async Functions](http://blogs.msdn.com/b/typescript/archive/2015/11/03/what-about-async-await.aspx) 一文瞭解更多.
 
-## 支持同时使用 `--target ES6` 和 `--module`
+## 支持同時使用 `--target ES6` 和 `--module`
 
-TypeScript 1.7 将 `ES6` 添加到了 `--module` 选项支持的选项的列表, 当编译到 `ES6` 时允许指定模块类型. 这让使用具体运行时中你需要的特性更加灵活.
+TypeScript 1.7 將 `ES6` 添加到了 `--module` 選項支持的選項的列表, 當編譯到 `ES6` 時允許指定模組類型. 這讓使用具體運行時中你需要的特性更加靈活.
 
 ### 例子
 
@@ -48,9 +48,9 @@ TypeScript 1.7 将 `ES6` 添加到了 `--module` 选项支持的选项的列表,
 }
 ```
 
-## `this` 类型
+## `this` 類型
 
-在方法中返回当前对象 (也就是 `this`) 是一种创建链式 API 的常见方式. 比如, 考虑下面的 `BasicCalculator` 模块:
+在方法中返回當前物件 (也就是 `this`) 是一種創建鏈式 API 的常見方式. 比如, 考慮下面的 `BasicCalculator` 模組:
 
 ```ts
 export default class BasicCalculator {
@@ -82,7 +82,7 @@ export default class BasicCalculator {
 }
 ```
 
-使用者可以这样表述 `2 * 5 + 1`:
+使用者可以這樣表述 `2 * 5 + 1`:
 
 ```ts
 import calc from "./BasicCalculator";
@@ -93,7 +93,7 @@ let v = new calc(2)
     .currentValue();
 ```
 
-这使得这么一种优雅的编码方式成为可能; 然而, 对于想要去继承 `BasicCalculator` 的类来说有一个问题. 想象使用者可能需要编写一个 `ScientificCalculator`:
+這使得這麼一種優雅的編碼方式成為可能; 然而, 對於想要去繼承 `BasicCalculator` 的類來說有一個問題. 想像使用者可能需要編寫一個 `ScientificCalculator`:
 
 ```ts
 import BasicCalculator from "./BasicCalculator";
@@ -115,9 +115,9 @@ export default class ScientificCalculator extends BasicCalculator {
 }
 ```
 
-因为 `BasicCalculator` 的方法返回了 `this`, TypeScript 过去推断的类型是 `BasicCalculator`, 如果在 `ScientificCalculator` 的实例上调用属于 `BasicCalculator` 的方法, 类型系统不能很好地处理.
+因為 `BasicCalculator` 的方法返回了 `this`, TypeScript 過去推斷的類型是 `BasicCalculator`, 如果在 `ScientificCalculator` 的實例上調用屬於 `BasicCalculator` 的方法, 類型系統不能很好地處理.
 
-举例来说:
+舉例來說:
 
 ```ts
 import calc from "./ScientificCalculator";
@@ -125,13 +125,13 @@ import calc from "./ScientificCalculator";
 let v = new calc(0.5)
     .square()
     .divide(2)
-    .sin()    // Error: 'BasicCalculator' 没有 'sin' 方法.
+    .sin()    // Error: 'BasicCalculator' 沒有 'sin' 方法.
     .currentValue();
 ```
 
-这已经不再是问题 - TypeScript 现在在类的实例方法中, 会将 `this` 推断为一个特殊的叫做 `this` 的类型. `this` 类型也就写作 `this`, 可以大致理解为 "方法调用时点左边的类型".
+這已經不再是問題 - TypeScript 現在在類的實例方法中, 會將 `this` 推斷為一個特殊的叫做 `this` 的類型. `this` 類型也就寫作 `this`, 可以大致理解為 "方法調用時點左邊的類型".
 
-`this` 类型在描述一些使用了 mixin 风格继承的库 (比如 Ember.js) 的交叉类型:
+`this` 類型在描述一些使用了 mixin 風格繼承的庫 (比如 Ember.js) 的交叉類型:
 
 ```ts
 interface MyType {
@@ -139,11 +139,11 @@ interface MyType {
 }
 ```
 
-## ES7 幂运算符
+## ES7 冪運算符
 
-TypeScript 1.7 支持将在 ES7/ES2016 中增加的[幂运算符](https://github.com/rwaldron/exponentiation-operator): `**` 和 `**=`. 这些运算符会被转换为 ES3/ES5 中的 `Math.pow`.
+TypeScript 1.7 支持將在 ES7/ES2016 中增加的[冪運算符](https://github.com/rwaldron/exponentiation-operator): `**` 和 `**=`. 這些運算符會被轉換為 ES3/ES5 中的 `Math.pow`.
 
-### 举例
+### 舉例
 
 ```ts
 var x = 2 ** 3;
@@ -152,7 +152,7 @@ y **= 2;
 var z =  -(4 ** 3);
 ```
 
-会生成下面的 JavaScript:
+會生成下面的 JavaScript:
 
 ```ts
 var x = Math.pow(2, 3);
@@ -161,24 +161,24 @@ y = Math.pow(y, 2);
 var z = -(Math.pow(4, 3));
 ```
 
-## 改进对象字面量解构的检查
+## 改進物件字面量解構的檢查
 
-TypeScript 1.7 使对象和数组字面量解构初始值的检查更加直观和自然.
+TypeScript 1.7 使物件和陣列字面量解構初始值的檢查更加直觀和自然.
 
-当一个对象字面量通过与之对应的对象解构绑定推断类型时:
+當一個物件字面量通過與之對應的物件解構綁定推斷類型時:
 
-- 对象解构绑定中有默认值的属性对于对象字面量来说可选.
-- 对象解构绑定中的属性如果在对象字面量中没有匹配的值, 则该属性必须有默认值, 并且会被添加到对象字面量的类型中.
-- 对象字面量中的属性必须在对象解构绑定中存在.
+- 物件解構綁定中有默認值的屬性對於物件字面量來說可選.
+- 物件解構綁定中的屬性如果在物件字面量中沒有匹配的值, 則該屬性必須有默認值, 並且會被添加到物件字面量的類型中.
+- 物件字面量中的屬性必須在物件解構綁定中存在.
 
-当一个数组字面量通过与之对应的数组解构绑定推断类型时:
+當一個陣列字面量通過與之對應的陣列解構綁定推斷類型時:
 
-- 数组解构绑定中的元素如果在数组字面量中没有匹配的值, 则该元素必须有默认值, 并且会被添加到数组字面量的类型中.
+- 陣列解構綁定中的元素如果在陣列字面量中沒有匹配的值, 則該元素必須有默認值, 並且會被添加到陣列字面量的類型中.
 
-### 举例
+### 舉例
 
 ```ts
-// f1 的类型为 (arg?: { x?: number, y?: number }) => void
+// f1 的類型為 (arg?: { x?: number, y?: number }) => void
 function f1({ x = 0, y = 0 } = {}) { }
 
 // And can be called as:
@@ -188,16 +188,16 @@ f1({ x: 1 });
 f1({ y: 1 });
 f1({ x: 1, y: 1 });
 
-// f2 的类型为 (arg?: (x: number, y?: number) => void
+// f2 的類型為 (arg?: (x: number, y?: number) => void
 function f2({ x, y = 0 } = { x: 0 }) { }
 
 f2();
-f2({});        // 错误, x 非可选
+f2({});        // 錯誤, x 非可選
 f2({ x: 1 });
-f2({ y: 1 });  // 错误, x 非可选
+f2({ y: 1 });  // 錯誤, x 非可選
 f2({ x: 1, y: 1 });
 ```
 
-## 装饰器 (decorators) 支持的编译目标版本增加 ES3
+## 裝飾器 (decorators) 支持的編譯目標版本增加 ES3
 
-装饰器现在可以编译到 ES3. TypeScript 1.7 在 `__decorate` 函数中移除了 ES5 中增加的 `reduceRight`. 相关改动也内联了对 `Object.getOwnPropertyDescriptor` 和 `Object.defineProperty` 的调用, 并向后兼容, 使 ES5 的输出可以消除前面提到的 `Object` 方法的重复<sup>[1]</sup>.
+裝飾器現在可以編譯到 ES3. TypeScript 1.7 在 `__decorate` 函數中移除了 ES5 中增加的 `reduceRight`. 相關改動也單行內了對 `Object.getOwnPropertyDescriptor` 和 `Object.defineProperty` 的調用, 並向後兼容, 使 ES5 的輸出可以消除前面提到的 `Object` 方法的重複<sup>[1]</sup>.

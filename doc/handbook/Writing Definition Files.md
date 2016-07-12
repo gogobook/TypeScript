@@ -1,67 +1,67 @@
-# 介绍
+# 介紹
 
-当使用外部JavaScript库或新的宿主API时，你需要一个声明文件（.d.ts）定义程序库的shape。
-这个手册包含了写.d.ts文件的高级概念，并带有一些例子，告诉你怎么去写一个声明文件。
+當使用外部JavaScript庫或新的宿主API時，你需要一個聲明文件（.d.ts）定義程序庫的shape。
+這個手冊包含了寫.d.ts文件的高級概念，並帶有一些例子，告訴你怎麼去寫一個聲明文件。
 
-# 指导与说明
+# 指導與說明
 
 ## 流程
 
-最好从程序库的文档而不是代码开始写.d.ts文件。
-这样保证不会被具体实现所干扰，而且相比于JS代码更易读。
-下面的例子会假设你正在参照文档写声明文件。
+最好從程序庫的文檔而不是代碼開始寫.d.ts文件。
+這樣保證不會被具體實現所幹擾，而且相比於JS代碼更易讀。
+下面的例子會假設你正在參照文檔寫聲明文件。
 
-## 命名空间
+## 命名空間
 
-当定义接口（例如：“options”对象），你会选择是否将这些类型放进命名空间里。
-这主要是靠主观判断 -- 如果使用的人主要是用这些类型来声明变量和参数，并且类型命名不会引起命名冲突，则放在全局命名空间里更好。
-如果类型不是被直接使用，或者没法起一个唯一的名字的话，就使用命名空间来避免与其它类型发生冲突。
+當定義接口（例如：「options」物件），你會選擇是否將這些類型放進命名空間裡。
+這主要是靠主觀判斷 -- 如果使用的人主要是用這些類型來聲明變量和參數，並且類型命名不會引起命名衝突，則放在全局命名空間裡更好。
+如果類型不是被直接使用，或者沒法起一個唯一的名字的話，就使用命名空間來避免與其它類型發生衝突。
 
-## 回调函数
+## 回調函數
 
-许多JavaScript库接收一个函数做为参数，之后传入已知的参数来调用它。
-当用这些类型为函数签名的时候，不要把这些参数标记成可选参数。
-正确的思考方式是“(调用者)会提供什么样的参数？”，不是“(函数)会使用到什么样的参数？”。
-TypeScript 0.9.7+不会强制这种可选参数的使用，参数可选的双向协变可以被外部的linter强制执行。
+許多JavaScript庫接收一個函數做為參數，之後傳入已知的參數來調用它。
+當用這些類型為函數簽名的時候，不要把這些參數標記成可選參數。
+正確的思考方式是「(調用者)會提供什麼樣的參數？」，不是「(函數)會使用到什麼樣的參數？」。
+TypeScript 0.9.7+不會強制這種可選參數的使用，參數可選的雙向協變可以被外部的linter強制執行。
 
-## 扩展与声明合并
+## 擴展與聲明合併
 
-写声明文件的时候，要记住TypeScript扩展现有对象的方式。
-你可以选择用匿名类型或接口类型的方式声明一个变量：
+寫聲明文件的時候，要記住TypeScript擴展現有物件的方式。
+你可以選擇用匿名類型或接口類型的方式聲明一個變量：
 
-#### 匿名类型var
+#### 匿名類型var
 
 ```ts
 declare let MyPoint: { x: number; y: number; };
 ```
 
-#### 接口类型var
+#### 接口類型var
 
 ```ts
 interface SomePoint { x: number; y: number; }
 declare let MyPoint: SomePoint;
 ```
 
-从使用者角度来讲，它们是相同的，但是SomePoint类型能够通过接口合并来扩展：
+從使用者角度來講，它們是相同的，但是SomePoint類型能夠通過接口合併來擴展：
 
 ```ts
 interface SomePoint { z: number; }
 MyPoint.z = 4; // OK
 ```
 
-是否想让你的声明是可扩展的取决于主观判断。
-通常来讲，尽量符合library的意图。
+是否想讓你的聲明是可擴展的取決於主觀判斷。
+通常來講，儘量符合library的意圖。
 
-## 类的分解
+## 類的分解
 
-TypeScript的类会创建出两个类型：实例类型，定义了类型的实例具有哪些成员；构造函数类型，定义了类构造函数具有哪些类型。
-构造函数类型也被称做类的静态部分类型，因为它包含了类的静态成员。
+TypeScript的類會創建出兩個類型：實例類型，定義了類型的實例具有哪些成員；構造函數類型，定義了類構造函數具有哪些類型。
+構造函數類型也被稱做類的靜態部分類型，因為它包含了類的靜態成員。
 
-你可以使用`typeof`关键字来拿到类静态部分类型，在写声明文件时，想要把类明确的分解成实例类型和静态类型时是有用且必要的。
+你可以使用`typeof`關鍵字來拿到類靜態部分類型，在寫聲明文件時，想要把類明確的分解成實例類型和靜態類型時是有用且必要的。
 
-下面是一个例子，从使用者的角度来看，这两个声明是等同的：
+下面是一個例子，從使用者的角度來看，這兩個聲明是等同的：
 
-#### 标准版
+#### 標準版
 
 ```ts
 class A {
@@ -84,26 +84,26 @@ interface A_Instance {
 declare let A: A_Static;
 ```
 
-这里的利弊如下：
+這裡的利弊如下：
 
-* 标准方式可以使用extends来继承；分解的类不能。也可能会在未来版本的TypeScript里做出改变：是否允许任意extends表达式
-* 都允许之后为类添加静态成员(通过合并声明的方式)
-* 分解的类允许增加实例成员，标准版不允许
-* 使用分解类的时候，需要为多类型成员起合理的名字
+* 標準方式可以使用extends來繼承；分解的類不能。也可能會在未來版本的TypeScript裡做出改變：是否允許任意extends表達式
+* 都允許之後為類添加靜態成員(通過合併聲明的方式)
+* 分解的類允許增加實例成員，標準版不允許
+* 使用分解類的時候，需要為多類型成員起合理的名字
 
-## 命名规则
+## 命名規則
 
-一般来讲，不要给接口加I前缀（比如：IColor）。
-因为TypeScript的接口类型概念比C#或Java里的意义更为广泛，IFoo命名不利于这个特点。
+一般來講，不要給接口加I前綴（比如：IColor）。
+因為TypeScript的接口類型概念比C#或Java裡的意義更為廣泛，IFoo命名不利於這個特點。
 
 # 例子
 
-下面进行例子部分。对于每个例子，首先使用*应用示例*，然后是类型声明。
-如果有多个好的声明表示方法，会列出多个。
+下面進行例子部分。對於每個例子，首先使用*應用示例*，然後是類型聲明。
+如果有多個好的聲明表示方法，會列出多個。
 
-## 参数对象
+## 參數物件
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 animalFactory.create("dog");
@@ -113,7 +113,7 @@ animalFactory.create("panda", { name: "bob", height: 400 });
 animalFactory.create("cat", { height: 32 });
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 namespace animalFactory {
@@ -126,16 +126,16 @@ namespace animalFactory {
 }
 ```
 
-## 带属性的函数
+## 帶屬性的函數
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 zooKeeper.workSchedule = "morning";
 zooKeeper(giraffeCage);
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 // Note: Function must precede namespace
@@ -145,9 +145,9 @@ namespace zooKeeper {
 }
 ```
 
-## 可以用new调用也可以直接调用的方法
+## 可以用new調用也可以直接調用的方法
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 let w = widget(32, 16);
@@ -157,7 +157,7 @@ w.sprock();
 y.sprock();
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 interface Widget {
@@ -172,9 +172,9 @@ interface WidgetFactory {
 declare let widget: WidgetFactory;
 ```
 
-## 全局或外部的未知代码库
+## 全局或外部的未知代碼庫
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 // Either
@@ -184,7 +184,7 @@ x.open();
 zoo.open();
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 declare namespace zoo {
@@ -196,9 +196,9 @@ declare module "zoo" {
 }
 ```
 
-## 模块里的单一复杂对象
+## 模組裡的單一複雜物件
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 // Super-chainable library for eagles
@@ -214,7 +214,7 @@ var eddie = new Eagle('Mille');
 eddie.kind = 'golden';
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 interface Eagle {
@@ -230,9 +230,9 @@ declare var Eagle: Eagle;
 export = Eagle;
 ```
 
-## 将模块做为函数
+## 將模組做為函數
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 // Common pattern for node modules (e.g. rimraf, debug, request, etc.)
@@ -240,7 +240,7 @@ import sayHello = require('say-hello');
 sayHello('Travis');
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 declare module 'say-hello' {
@@ -249,20 +249,20 @@ declare module 'say-hello' {
 }
 ```
 
-## 回调函数
+## 回調函數
 
-#### 应用示例
+#### 應用示例
 
 ```ts
 addLater(3, 4, x => console.log('x = ' + x));
 ```
 
-#### 类型声明
+#### 類型聲明
 
 ```ts
 // Note: 'void' return type is preferred here
 function addLater(x: number, y: number, callback: (sum: number) => void): void;
 ```
 
-如果你想看其它模式的实现方式，请在[这里](https://github.com/Microsoft/TypeScript-Handbook/issues)留言！
-我们会尽可能地加到这里来。
+如果你想看其它模式的實現方式，請在[這裡](https://github.com/Microsoft/TypeScript-Handbook/issues)留言！
+我們會儘可能地加到這裡來。

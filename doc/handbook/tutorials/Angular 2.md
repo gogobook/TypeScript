@@ -1,6 +1,6 @@
-即将到来的Angular 2框架是使用TypeScript开发的。
-因此Angular和TypeScript一起使用非常简单方便。
-Angular团队也在其文档里把TypeScript视为一等公民。
+即將到來的Angular 2框架是使用TypeScript開發的。
+因此Angular和TypeScript一起使用非常簡單方便。
+Angular團隊也在其文檔裡把TypeScript視為一等公民。
 
-正因为这样，你总是可以在[Angular 2官网](https://angular.io)里查看到最新的结合使用Angular和TypeScript的参考文档。
-在这里查看[快速上手指南](https://angular.io/docs/ts/latest/quickstart.html)，现在就开始学习吧！
+正因為這樣，你總是可以在[Angular 2官網](https://angular.io)裡查看到最新的結合使用Angular和TypeScript的參考文檔。
+在這裡查看[快速上手指南](https://angular.io/docs/ts/latest/quickstart.html)，現在就開始學習吧！

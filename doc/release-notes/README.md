@@ -1,6 +1,6 @@
-# TypeScript 新增内容
+# TypeScript 新增內容
 
-章节分离自[TypeScript 新增特性一览](../wiki/What's-new-in-TypeScript.md)。
+章節分離自[TypeScript 新增特性一覽](../wiki/What's-new-in-TypeScript.md)。
 
 * [TypeScript 1.8](./TypeScript 1.8.md)
 * [TypeScript 1.7](./TypeScript 1.7.md)

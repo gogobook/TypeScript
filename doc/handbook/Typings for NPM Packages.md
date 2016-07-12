@@ -1,10 +1,10 @@
-<!-- markdownlint-disable MD029 -->TypeScript编译器处理Node模块名时使用的是[Node.js模块解析算法](https://nodejs.org/api/modules.html#modules_all_together)。
-TypeScript也可以同时加载与npm包绑在一起的类型声明文件。
-编译通过下面的规则来查找`"foo"`模块的类型信息：
+<!-- markdownlint-disable MD029 -->TypeScript編譯器處理Node模組名時使用的是[Node.js模組解析算法](https://nodejs.org/api/modules.html#modules_all_together)。
+TypeScript也可以同時加載與npm包綁在一起的類型聲明文件。
+編譯通過下面的規則來查找`"foo"`模組的類型信息：
 
-1. 尝试加载相应代码包目录下`package.json`文件（`node_modules/foo/`）。
+1. 嘗試加載相應代碼包目錄下`package.json`文件（`node_modules/foo/`）。
 
-如果存在，从`"typings"`字段里读取类型文件的路径。比如，在下面的`package.json`里，编译器会认为类型文件位于`node_modules/foo/lib/foo.d.ts`。
+如果存在，從`"typings"`字段裡讀取類型文件的路徑。比如，在下面的`package.json`裡，編譯器會認為類型文件位於`node_modules/foo/lib/foo.d.ts`。
 
 ```json
 {
@@ -16,16 +16,16 @@ TypeScript也可以同时加载与npm包绑在一起的类型声明文件。
 }
 ```
 
-2. 尝试加载在相应代码包目录下的名字为`index.d.ts`的文件（`node_modules/foo/`） - 这个文件应该包含了这个代码包的类型信息。
+2. 嘗試加載在相應代碼包目錄下的名字為`index.d.ts`的文件（`node_modules/foo/`） - 這個文件應該包含了這個代碼包的類型信息。
 
-解析模块的详细算法可以在[这里](https://github.com/Microsoft/TypeScript/issues/2338)找到。
+解析模組的詳細算法可以在[這裡](https://github.com/Microsoft/TypeScript/issues/2338)找到。
 
-### 你的定义文件应该
+### 你的定義文件應該
 
 * 是`.d.ts`文件
-* 写做外部模块
+* 寫做外部模組
 * 不包含`///<reference>`引用
 
-基本的原理是类型文件不能引入新的可编译代码；
-否则真正的实现文件就可能会在编译时被重盖。
-另外，**加载类型信息不应该污染全局空间**，当从同一个库的不同版本中引入潜在冲突的实体的时候。
+基本的原理是類型文件不能引入新的可編譯代碼；
+否則真正的實現文件就可能會在編譯時被重蓋。
+另外，**加載類型信息不應該污染全局空間**，當從同一個庫的不同版本中引入潛在衝突的實體的時候。

@@ -1,12 +1,12 @@
-# TypeScript 新增特性一览
+# TypeScript 新增特性一覽
 
 <!-- https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript/78a12d04d7ba25d5253bcb0bc4054976c9b628ac -->
 
 ## TypeScript 1.8
 
-### 类型参数约束
+### 類型參數約束
 
-在 TypeScript 1.8 中, 类型参数的限制可以引用自同一个类型参数列表中的类型参数. 在此之前这种做法会报错. 这种特性通常被叫做 [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
+在 TypeScript 1.8 中, 類型參數的限制可以引用自同一個類型參數列表中的類型參數. 在此之前這種做法會報錯. 這種特性通常被叫做 [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
 
 #### 例子
 
@@ -20,24 +20,24 @@ function assign<T extends U, U>(target: T, source: U): T {
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
 assign(x, { b: 10, d: 20 });
-assign(x, { e: 0 });  // 错误
+assign(x, { e: 0 });  // 錯誤
 ```
 
-### 控制流错误分析
+### 控制流錯誤分析
 
-TypeScript 1.8 中引入了控制流分析来捕获开发者通常会遇到的一些错误.
+TypeScript 1.8 中引入了控制流分析來捕獲開發者通常會遇到的一些錯誤.
 
-详情见接下来的内容, 可以上手尝试:
+詳情見接下來的內容, 可以上手嘗試:
 
 ![cfa](https://cloud.githubusercontent.com/assets/8052307/5210657/c5ae0f28-7585-11e4-97d8-86169ef2a160.gif)
 
-#### 不可及的代码
+#### 不可及的代碼
 
-一定无法在运行时被执行的语句现在会被标记上代码不可及错误. 举个例子, 在无条件限制的 `return`, `throw`, `break` 或者 `continue` 后的语句被认为是不可及的. 使用 `--allowUnreachableCode` 来禁用不可及代码的检测和报错.
+一定無法在運行時被執行的語句現在會被標記上代碼不可及錯誤. 舉個例子, 在無條件限制的 `return`, `throw`, `break` 或者 `continue` 後的語句被認為是不可及的. 使用 `--allowUnreachableCode` 來禁用不可及代碼的檢測和報錯.
 
 ##### 例子
 
-这里是一个简单的不可及错误的例子:
+這裡是一個簡單的不可及錯誤的例子:
 
 ```ts
 function f(x) {
@@ -48,61 +48,61 @@ function f(x) {
        return false;
     }
 
-    x = 0; // 错误: 检测到不可及的代码.
+    x = 0; // 錯誤: 檢測到不可及的代碼.
 }
 ```
 
-这个特性能捕获的一个更常见的错误是在 `return` 语句后添加换行:
+這個特性能捕獲的一個更常見的錯誤是在 `return` 語句後添加換行:
 
 ```ts
 function f() {
-    return            // 换行导致自动插入的分号
+    return            // 換行導致自動插入的分號
     {
-        x: "string"   // 错误: 检测到不可及的代码.
+        x: "string"   // 錯誤: 檢測到不可及的代碼.
     }
 }
 ```
 
-因为 JavaScript 会自动在行末结束 `return` 语句, 下面的对象字面量变成了一个代码块.
+因為 JavaScript 會自動在行末結束 `return` 語句, 下面的物件字面量變成了一個代碼塊.
 
-#### 未使用的标签
+#### 未使用的標籤
 
-未使用的标签也会被标记. 和不可及代码检查一样, 被使用的标签检查也是默认开启的. 使用 `--allowUnusedLabels` 来禁用未使用标签的报错.
+未使用的標籤也會被標記. 和不可及代碼檢查一樣, 被使用的標籤檢查也是默認開啟的. 使用 `--allowUnusedLabels` 來禁用未使用標籤的報錯.
 
 ##### 例子
 
 ```ts
-loop: while (x > 0) {  // 错误: 未使用的标签.
+loop: while (x > 0) {  // 錯誤: 未使用的標籤.
     x++;
 }
 ```
 
-#### 隐式返回
+#### 隱式返回
 
-JS 中没有返回值的代码分支会隐式地返回 `undefined`. 现在编译器可以将这种方式标记为隐式返回. 对于隐式返回的检查默认是被禁用的, 可以使用 `--noImplicitReturns` 来启用.
+JS 中沒有返回值的代碼分支會隱式地返回 `undefined`. 現在編譯器可以將這種方式標記為隱式返回. 對於隱式返回的檢查默認是被禁用的, 可以使用 `--noImplicitReturns` 來啟用.
 
 ##### 例子
 
 ```ts
-function f(x) { // 错误: 不是所有分支都返回了值.
+function f(x) { // 錯誤: 不是所有分支都返回了值.
     if (x) {
         return false;
     }
 
-    // 隐式返回了 `undefined`
+    // 隱式返回了 `undefined`
 }
 ```
 
-#### Case 语句贯穿
+#### Case 語句貫穿
 
-TypeScript 现在可以在 switch 语句中出现贯穿的几个非空 case 时报错.
-这个检测默认是关闭的, 可以使用 `--noFallthroughCasesInSwitch` 启用.
+TypeScript 現在可以在 switch 語句中出現貫穿的幾個非空 case 時報錯.
+這個檢測默認是關閉的, 可以使用 `--noFallthroughCasesInSwitch` 啟用.
 
 ##### 例子
 
 ```ts
 switch (x % 2) {
-    case 0: // 错误: switch 中出现了贯穿的 case.
+    case 0: // 錯誤: switch 中出現了貫穿的 case.
         console.log("even");
 
     case 1:
@@ -111,7 +111,7 @@ switch (x % 2) {
 }
 ```
 
-然而, 在下面的例子中, 由于贯穿的 case 是空的, 并不会报错:
+然而, 在下面的例子中, 由於貫穿的 case 是空的, 並不會報錯:
 
 ```ts
 switch (x % 3) {
@@ -126,47 +126,47 @@ switch (x % 3) {
 }
 ```
 
-### React 无状态的函数组件
+### React 無狀態的函數組件
 
-TypeScript 现在支持[无状态的函数组件](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions).
-它是可以组合其他组件的轻量级组件.
+TypeScript 現在支持[無狀態的函數組件](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions).
+它是可以組合其他組件的輕量級組件.
 
 ```ts
-// 使用参数解构和默认值轻松地定义 'props' 的类型
+// 使用參數解構和默認值輕鬆地定義 'props' 的類型
 const Greeter = ({name = 'world'}) => <div>Hello, {name}!</div>;
 
-// 参数可以被检验
+// 參數可以被檢驗
 let example = <Greeter name='TypeScript 1.8' />;
 ```
 
-如果需要使用这一特性及简化的 props, 请确认使用的是[最新的 react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
+如果需要使用這一特性及簡化的 props, 請確認使用的是[最新的 react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
 
-### 简化的 React `props` 类型管理
+### 簡化的 React `props` 類型管理
 
-在 TypeScript 1.8 配合最新的 react.d.ts (见上方) 大幅简化了 `props` 的类型声明.
+在 TypeScript 1.8 配合最新的 react.d.ts (見上方) 大幅簡化了 `props` 的類型聲明.
 
-具体的:
+具體的:
 
-- 你不再需要显式的声明 `ref` 和 `key` 或者 `extend React.Props`
-- `ref` 和 `key` 属性会在所有组件上拥有正确的类型.
-- `ref` 属性在无状态函数组件上会被正确地禁用.
+- 你不再需要顯式的聲明 `ref` 和 `key` 或者 `extend React.Props`
+- `ref` 和 `key` 屬性會在所有組件上擁有正確的類型.
+- `ref` 屬性在無狀態函數組件上會被正確地禁用.
 
-### 在模块中扩充全局或者模块作用域
+### 在模組中擴充全局或者模組作用域
 
-用户现在可以为任何模块进行他们想要, 或者其他人已经对其作出的扩充.
-模块扩充的形式和过去的包模块一致 (例如 `declare module "foo" { }` 这样的语法), 并且可以直接嵌在你自己的模块内, 或者在另外的顶级外部包模块中.
+用戶現在可以為任何模組進行他們想要, 或者其他人已經對其作出的擴充.
+模組擴充的形式和過去的包模組一致 (例如 `declare module "foo" { }` 這樣的語法), 並且可以直接嵌在你自己的模組內, 或者在另外的頂級外部包模組中.
 
-除此之外, TypeScript 还以 `declare global { }` 的形式提供了对于_全局_声明的扩充.
-这能使模块对像 `Array` 这样的全局类型在必要的时候进行扩充.
+除此之外, TypeScript 還以 `declare global { }` 的形式提供了對於_全局_聲明的擴充.
+這能使模組對像 `Array` 這樣的全局類型在必要的時候進行擴充.
 
-模块扩充的名称解析规则与 `import` 和 `export` 声明中的一致.
-扩充的模块声明合并方式与在同一个文件中声明是相同的.
+模組擴充的名稱解析規則與 `import` 和 `export` 聲明中的一致.
+擴充的模組聲明合併方式與在同一個文件中聲明是相同的.
 
-不论是模块扩充还是全局声明扩充都不能向顶级作用域添加新的项目 - 它们只能为已经存在的声明添加 "补丁".
+不論是模組擴充還是全局聲明擴充都不能向頂級作用域添加新的項目 - 它們只能為已經存在的聲明添加 "補丁".
 
 #### 例子
 
-这里的 `map.ts` 可以声明它会在内部修改在 `observable.ts` 中声明的 `Observable` 类型, 添加 `map` 方法.
+這裡的 `map.ts` 可以聲明它會在內部修改在 `observable.ts` 中聲明的 `Observable` 類型, 添加 `map` 方法.
 
 ```ts
 // observable.ts
@@ -179,10 +179,10 @@ export class Observable<T> {
 // map.ts
 import { Observable } from "./observable";
 
-// 扩充 "./observable"
+// 擴充 "./observable"
 declare module "./observable" {
 
-    // 使用接口合并扩充 'Observable' 类的定义
+    // 使用接口合併擴充 'Observable' 類的定義
     interface Observable<T> {
         map<U>(proj: (el: T) => U): Observable<U>;
     }
@@ -201,12 +201,12 @@ let o: Observable<number>;
 o.map(x => x.toFixed());
 ```
 
-相似的, 在模块中全局作用域可以使用 `declare global` 声明被增强:
+相似的, 在模組中全局作用域可以使用 `declare global` 聲明被增強:
 
 #### 例子
 
 ```ts
-// 确保当前文件被当做一个模块.
+// 確保當前文件被當做一個模組.
 export {};
 
 declare global {
@@ -218,10 +218,10 @@ declare global {
 Array.prototype.mapToNumbers = function () { /* ... */ }
 ```
 
-### 字符串字面量类型
+### 字符串字面量類型
 
-接受一个特定字符串集合作为某个值的 API 并不少见.
-举例来说, 考虑一个可以通过控制[动画的渐变](https://en.wikipedia.org/wiki/Inbetweening)让元素在屏幕中滑动的 UI 库:
+接受一個特定字符串集合作為某個值的 API 並不少見.
+舉例來說, 考慮一個可以通過控制[動畫的漸變](https://en.wikipedia.org/wiki/Inbetweening)讓元素在屏幕中滑動的 UI 庫:
 
 ```ts
 declare class UIElement {
@@ -235,17 +235,17 @@ interface AnimationOptions {
 }
 ```
 
-然而, 这容易产生错误 - 当用户错误不小心错误拼写了一个合法的值时, 并没有任何提示:
+然而, 這容易產生錯誤 - 當用戶錯誤不小心錯誤拼寫了一個合法的值時, 並沒有任何提示:
 
 ```ts
-// 没有报错
+// 沒有報錯
 new UIElement().animate({ deltaX: 100, deltaY: 100, easing: "ease-inout" });
 ```
 
-在 TypeScript 1.8 中, 我们新增了字符串字面量类型. 这些类型和字符串字面量的写法一致, 只是写在类型的位置.
+在 TypeScript 1.8 中, 我們新增了字符串字面量類型. 這些類型和字符串字面量的寫法一致, 只是寫在類型的位置.
 
-用户现在可以确保类型系统会捕获这样的错误.
-这里是我们使用了字符串字面量类型的新的 `AnimationOptions`:
+用戶現在可以確保類型系統會捕獲這樣的錯誤.
+這裡是我們使用了字符串字面量類型的新的 `AnimationOptions`:
 
 ```ts
 interface AnimationOptions {
@@ -254,14 +254,14 @@ interface AnimationOptions {
     easing: "ease-in" | "ease-out" | "ease-in-out";
 }
 
-// 错误: 类型 '"ease-inout"' 不能复制给类型 '"ease-in" | "ease-out" | "ease-in-out"'
+// 錯誤: 類型 '"ease-inout"' 不能複製給類型 '"ease-in" | "ease-out" | "ease-in-out"'
 new UIElement().animate({ deltaX: 100, deltaY: 100, easing: "ease-inout" });
 ```
 
-### 更好的联合/交叉类型接口
+### 更好的聯合/交叉類型接口
 
-TypeScript 1.8 优化了源类型和目标类型都是联合或者交叉类型的情况下的类型推导.
-举例来说, 当从 `string | string[]` 推导到 `string | T` 时, 我们将类型拆解为 `string[]` 和 `T`, 这样就可以将 `string[]` 推导为 `T`.
+TypeScript 1.8 優化了源類型和目標類型都是聯合或者交叉類型的情況下的類型推導.
+舉例來說, 當從 `string | string[]` 推導到 `string | T` 時, 我們將類型拆解為 `string[]` 和 `T`, 這樣就可以將 `string[]` 推導為 `T`.
 
 #### 例子
 
@@ -293,11 +293,11 @@ function test2(x: Maybe<number>) {
 }
 ```
 
-### 使用 `--outFile` 合并 `AMD` 和 `System` 模块
+### 使用 `--outFile` 合併 `AMD` 和 `System` 模組
 
-在使用 `--module amd` 或者 `--module system` 的同时制定 `--outFile` 将会把所有参与编译的模块合并为单个包括了多个模块闭包的输出文件.
+在使用 `--module amd` 或者 `--module system` 的同時制定 `--outFile` 將會把所有參與編譯的模組合併為單個包括了多個模組閉包的輸出文件.
 
-每一个模块都会根据其相对于 `rootDir` 的位置被计算出自己的模块名称.
+每一個模組都會根據其相對於 `rootDir` 的位置被計算出自己的模組名稱.
 
 #### 例子
 
@@ -316,7 +316,7 @@ export function createB() {
 }
 ```
 
-结果为:
+結果為:
 
 ```js
 define("lib/b", ["require", "exports"], function (require, exports) {
@@ -335,18 +335,18 @@ define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
 });
 ```
 
-### 支持 SystemJS 使用 `default` 导入
+### 支持 SystemJS 使用 `default` 導入
 
-像 SystemJS 这样的模块加载器将 CommonJS 模块做了包装并暴露为 `default` ES6 导入项. 这使得在 SystemJS 和 CommonJS 的实现由于不同加载器不同的模块导出方式不能共享定义.
+像 SystemJS 這樣的模組加載器將 CommonJS 模組做了包裝並暴露為 `default` ES6 導入項. 這使得在 SystemJS 和 CommonJS 的實現由於不同加載器不同的模組導出方式不能共享定義.
 
-设置新的编译选项 `--allowSyntheticDefaultImports` 指明模块加载器会进行导入的 `.ts` 或 `.d.ts` 中未指定的某种类型的默认导入项构建. 编译器会由此推断存在一个 `default` 导出项和整个模块自己一致.
+設置新的編譯選項 `--allowSyntheticDefaultImports` 指明模組加載器會進行導入的 `.ts` 或 `.d.ts` 中未指定的某種類型的默認導入項構建. 編譯器會由此推斷存在一個 `default` 導出項和整個模組自己一致.
 
-此选项在 System 模块默认开启.
+此選項在 System 模組默認開啟.
 
-### 允许循环中被引用的 `let`/`const`
+### 允許循環中被引用的 `let`/`const`
 
-之前这样会报错, 现在由 TypeScript 1.8 支持.
-循环中被函数引用的 `let`/`const` 声明现在会被输出为与 `let`/`const` 更新语义相符的代码.
+之前這樣會報錯, 現在由 TypeScript 1.8 支持.
+循環中被函數引用的 `let`/`const` 聲明現在會被輸出為與 `let`/`const` 更新語義相符的代碼.
 
 #### 例子
 
@@ -359,7 +359,7 @@ for (let i = 0; i < 5; i++) {
 list.forEach(f => console.log(f()));
 ```
 
-被编译为:
+被編譯為:
 
 ```js
 var list = [];
@@ -372,7 +372,7 @@ for (var i = 0; i < 5; i++) {
 list.forEach(function (f) { return console.log(f()); });
 ```
 
-然后结果是:
+然後結果是:
 
 ```cmd
 0
@@ -382,41 +382,41 @@ list.forEach(function (f) { return console.log(f()); });
 4
 ```
 
-### 改进的 `for..in` 语句检查
+### 改進的 `for..in` 語句檢查
 
-过去 `for..in` 变量的类型被推断为 `any`, 这使得编译器忽略了 `for..in` 语句内的一些不合法的使用.
+過去 `for..in` 變量的類型被推斷為 `any`, 這使得編譯器忽略了 `for..in` 語句內的一些不合法的使用.
 
-从 TypeScript 1.8 开始:
+從 TypeScript 1.8 開始:
 
-- 在 `for..in` 语句中的变量隐含类型为 `string`.
-- 当一个有数字索引签名对应类型 `T` (比如一个数组) 的对象被一个 `for..in` 索引*有*数字索引签名并且*没有*字符串索引签名 (比如还是数组) 的对象的变量索引, 产生的值的类型为 `T`.
+- 在 `for..in` 語句中的變量隱含類型為 `string`.
+- 當一個有數字索引簽名對應類型 `T` (比如一個陣列) 的物件被一個 `for..in` 索引*有*數字索引簽名並且*沒有*字符串索引簽名 (比如還是陣列) 的物件的變量索引, 產生的值的類型為 `T`.
 
 #### 例子
 
 ```ts
 var a: MyObject[];
-for (var x in a) {   // x 的隐含类型为 string
-    var obj = a[x];  // obj 的类型为 MyObject
+for (var x in a) {   // x 的隱含類型為 string
+    var obj = a[x];  // obj 的類型為 MyObject
 }
 ```
 
-### 模块现在输出时会加上 `"use strict;"`
+### 模組現在輸出時會加上 `"use strict;"`
 
-对于 ES6 来说模块始终以严格模式被解析, 但这一点过去对于非 ES6 目标在生成的代码中并没有遵循. 从 TypeScript 1.8 开始, 输出的模块总会为严格模式. 由于多数严格模式下的错误也是 TS 编译时的错误, 多数代码并不会有可见的改动, 但是这也意味着有一些东西可能在运行时没有征兆地失败, 比如赋值给 `NaN` 现在会有运行时错误. 你可以参考这篇 [MDN 上的文章](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mod) 查看详细的严格模式与非严格模式的区别列表.
+對於 ES6 來說模組始終以嚴格模式被解析, 但這一點過去對於非 ES6 目標在生成的代碼中並沒有遵循. 從 TypeScript 1.8 開始, 輸出的模組總會為嚴格模式. 由於多數嚴格模式下的錯誤也是 TS 編譯時的錯誤, 多數代碼並不會有可見的改動, 但是這也意味著有一些東西可能在運行時沒有徵兆地失敗, 比如賦值給 `NaN` 現在會有運行時錯誤. 你可以參考這篇 [MDN 上的文章](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mod) 查看詳細的嚴格模式與非嚴格模式的區別列表.
 
 ### 使用 `--allowJs` 加入 `.js` 文件
 
-经常在项目中会有外部的非 TypeScript 编写的源文件.
-一种方式是将 JS 代码转换为 TS 代码, 但这时又希望将所有 JS 代码和新的 TS 代码的输出一起打包为一个文件.
+經常在項目中會有外部的非 TypeScript 編寫的源文件.
+一種方式是將 JS 代碼轉換為 TS 代碼, 但這時又希望將所有 JS 代碼和新的 TS 代碼的輸出一起打包為一個文件.
 
-`.js` 文件现在允许作为 `tsc` 的输入文件. TypeScript 编译器会检查 `.js` 输入文件的语法错误, 并根据 `--target` 和 `--module` 选项输出对应的代码.
-输出也会和其他 `.ts` 文件一起. `.js` 文件的 source maps 也会像 `.ts` 文件一样被生成.
+`.js` 文件現在允許作為 `tsc` 的輸入文件. TypeScript 編譯器會檢查 `.js` 輸入文件的語法錯誤, 並根據 `--target` 和 `--module` 選項輸出對應的代碼.
+輸出也會和其他 `.ts` 文件一起. `.js` 文件的 source maps 也會像 `.ts` 文件一樣被生成.
 
-### 使用 `--reactNamespace` 自定义 JSX 工厂
+### 使用 `--reactNamespace` 自定義 JSX 工廠
 
-在使用 `--jsx react` 的同时使用 `--reactNamespace <JSX 工厂名称>` 可以允许使用一个不同的 JSX 工厂代替默认的 `React`.
+在使用 `--jsx react` 的同時使用 `--reactNamespace <JSX 工廠名稱>` 可以允許使用一個不同的 JSX 工廠代替默認的 `React`.
 
-新的工厂名称会被用来调用 `createElement` 和 `__spread` 方法.
+新的工廠名稱會被用來調用 `createElement` 和 `__spread` 方法.
 
 #### 例子
 
@@ -426,13 +426,13 @@ import {jsxFactory} from "jsxFactory";
 var div = <div>Hello JSX!</div>
 ```
 
-编译参数:
+編譯參數:
 
 ```shell
 tsc --jsx react --reactNamespace jsxFactory --m commonJS
 ```
 
-结果:
+結果:
 
 ```js
 "use strict";
@@ -440,12 +440,12 @@ var jsxFactory_1 = require("jsxFactory");
 var div = jsxFactory_1.jsxFactory.createElement("div", null, "Hello JSX!");
 ```
 
-### 基于 `this` 的类型收窄
+### 基於 `this` 的類型收窄
 
-TypeScript 1.8 为类和接口方法扩展了[用户定义的类型收窄函数](#用户定义的类型收窄函数).
+TypeScript 1.8 為類和接口方法擴展了[用戶定義的類型收窄函數](#用戶定義的類型收窄函數).
 
-`this is T` 现在是类或接口方法的合法的返回值类型标注.
-当在类型收窄的位置使用时 (比如 `if` 语句), 函数调用表达式的目标对象的类型会被收窄为 `T`.
+`this is T` 現在是類或接口方法的合法的返回值類型標註.
+當在類型收窄的位置使用時 (比如 `if` 語句), 函數調用表達式的目標物件的類型會被收窄為 `T`.
 
 #### 例子
 
@@ -481,51 +481,51 @@ else if (fso.isNetworked()) {
 
 ### 官方的 TypeScript NuGet 包
 
-从 TypeScript 1.8 开始, 将为 TypeScript 编译器 (`tsc.exe`) 和 MSBuild 整合 (`Microsoft.TypeScript.targets` 和 `Microsoft.TypeScript.Tasks.dll`) 提供官方的 NuGet 包.
+從 TypeScript 1.8 開始, 將為 TypeScript 編譯器 (`tsc.exe`) 和 MSBuild 整合 (`Microsoft.TypeScript.targets` 和 `Microsoft.TypeScript.Tasks.dll`) 提供官方的 NuGet 包.
 
-稳定版本可以在这里下载:
+穩定版本可以在這裡下載:
 
 - [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
 - [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
 
-与此同时, 和[每日 npm 包](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx)对应的每日 NuGet 包可以在 https://myget.org 下载:
+與此同時, 和[每日 npm 包](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx)對應的每日 NuGet 包可以在 https://myget.org 下載:
 
 - [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
 
-### `tsc` 错误信息更美观
+### `tsc` 錯誤信息更美觀
 
-我们理解大量单色的输出并不直观. 颜色可以帮助识别信息的始末, 这些视觉上的线索在处理复杂的错误信息时非常重要.
+我們理解大量單色的輸出並不直觀. 顏色可以幫助識別信息的始末, 這些視覺上的線索在處理複雜的錯誤信息時非常重要.
 
-通过传递 `--pretty` 命令行选项, TypeScript 会给出更丰富的输出, 包含错误发生的上下文.
+通過傳遞 `--pretty` 命令行選項, TypeScript 會給出更豐富的輸出, 包含錯誤發生的上下文.
 
-![展示在 ConEmu 中美化之后的错误信息](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
+![展示在 ConEmu 中美化之後的錯誤信息](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
 
-### 高亮 VS 2015 中的 JSX 代码
+### 高亮 VS 2015 中的 JSX 代碼
 
-在 TypeScript 1.8 中, JSX 标签现在可以在 Visual Studio 2015 中被分别和高亮.
+在 TypeScript 1.8 中, JSX 標籤現在可以在 Visual Studio 2015 中被分別和高亮.
 
 ![jsx](https://cloud.githubusercontent.com/assets/8052307/12271404/b875c502-b90f-11e5-93d8-c6740be354d1.png)
 
-通过 `工具`->`选项`->`环境`->`字体与颜色` 页面在 `VB XML` 颜色和字体设置中还可以进一步改变字体和颜色来自定义.
+通過 `工具`->`選項`->`環境`->`字體與顏色` 頁面在 `VB XML` 顏色和字體設置中還可以進一步改變字體和顏色來自定義.
 
-### `--project` (`-p`) 选项现在接受任意文件路径
+### `--project` (`-p`) 選項現在接受任意文件路徑
 
-`--project` 命令行选项过去只接受包含了 `tsconfig.json` 文件的文件夹.
-考虑到不同的构建场景, 应该允许 `--project` 指向任何兼容的 JSON 文件.
-比如说, 一个用户可能会希望为 Node 5 编译 CommonJS 的 ES 2015, 为浏览器编译 AMD 的 ES5.
-现在少了这项限制, 用户可以更容易地直接使用 `tsc` 管理不同的构建目标, 无需再通过一些奇怪的方式, 比如将多个 `tsconfig.json` 文件放在不同的目录中.
+`--project` 命令行選項過去只接受包含了 `tsconfig.json` 文件的文件夾.
+考慮到不同的構建場景, 應該允許 `--project` 指向任何兼容的 JSON 文件.
+比如說, 一個用戶可能會希望為 Node 5 編譯 CommonJS 的 ES 2015, 為瀏覽器編譯 AMD 的 ES5.
+現在少了這項限制, 用戶可以更容易地直接使用 `tsc` 管理不同的構建目標, 無需再通過一些奇怪的方式, 比如將多個 `tsconfig.json` 文件放在不同的目錄中.
 
-如果参数是一个路径, 行为保持不变 - 编译器会尝试在该目录下寻找名为 `tsconfig.json` 的文件.
+如果參數是一個路徑, 行為保持不變 - 編譯器會嘗試在該目錄下尋找名為 `tsconfig.json` 的文件.
 
-### 允许 tsconfig.json 中的注释
+### 允許 tsconfig.json 中的註釋
 
-为配置添加文档是很棒的! `tsconfig.json` 现在支持单行和多行注释.
+為配置添加文檔是很棒的! `tsconfig.json` 現在支持單行和多行註釋.
 
 ```json
 {
     "compilerOptions": {
         "target": "ES2015", // 跑在 node v5 上, 呀!
-        "sourceMap": true   // 让调试轻松一些
+        "sourceMap": true   // 讓調試輕鬆一些
     },
     /*
      * 排除的文件
@@ -536,56 +536,56 @@ else if (fso.isNetworked()) {
 }
 ```
 
-### 支持输出到 IPC 驱动的文件
+### 支持輸出到 IPC 驅動的文件
 
-TypeScript 1.8 允许用户将 `--outFile` 参数和一些特殊的文件系统对象一起使用, 比如命名的管道 (pipe), 设备 (devices) 等.
+TypeScript 1.8 允許用戶將 `--outFile` 參數和一些特殊的文件系統物件一起使用, 比如命名的管道 (pipe), 設備 (devices) 等.
 
-举个例子, 在很多与 Unix 相似的系统上, 标准输出流可以通过文件 `/dev/stdout` 访问.
+舉個例子, 在很多與 Unix 相似的系統上, 標準輸出流可以通過文件 `/dev/stdout` 訪問.
 
 ```sh
 tsc foo.ts --outFile /dev/stdout
 ```
 
-这一特性也允许输出给其他命令.
+這一特性也允許輸出給其他命令.
 
-比如说, 我们可以输出生成的 JavaScript 给一个像 [pretty-js](https://www.npmjs.com/package/pretty-js) 这样的格式美化工具:
+比如說, 我們可以輸出生成的 JavaScript 給一個像 [pretty-js](https://www.npmjs.com/package/pretty-js) 這樣的格式美化工具:
 
 ```sh
 tsc foo.ts --outFile /dev/stdout | pretty-js
 ```
 
-### 改进了 Visual Studio 2015 中对 `tsconfig.json` 的支持
+### 改進了 Visual Studio 2015 中對 `tsconfig.json` 的支持
 
-TypeScript 1.8 允许在任何种类的项目中使用 `tsconfig.json` 文件.
-包括 ASP.NET v4 项目, *控制台应用*, 以及 *用 TypeScript 开发的 HTML 应用*.
-与此同时, 你可以添加不止一个 `tsconfig.json` 文件, 其中每一个都会作为项目的一部分被构建.
-这使得你可以在不使用多个不同项目的情况下为应用的不同部分使用不同的配置.
+TypeScript 1.8 允許在任何種類的項目中使用 `tsconfig.json` 文件.
+包括 ASP.NET v4 項目, *控制台應用*, 以及 *用 TypeScript 開發的 HTML 應用*.
+與此同時, 你可以添加不止一個 `tsconfig.json` 文件, 其中每一個都會作為項目的一部分被構建.
+這使得你可以在不使用多個不同項目的情況下為應用的不同部分使用不同的配置.
 
 ![展示 Visual Studio 中的 tsconfig.json](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/tsconfig-in-vs.png)
 
-当项目中添加了 `tsconfig.json` 文件时, 我们还禁用了项目属性页面.
-也就是说所有配置的改变必须在 `tsconfig.json` 文件中进行.
+當項目中添加了 `tsconfig.json` 文件時, 我們還禁用了項目屬性頁面.
+也就是說所有配置的改變必須在 `tsconfig.json` 文件中進行.
 
 #### 一些限制
 
-- 如果你添加了一个 `tsconfig.json` 文件, 不在其上下文中的 TypeScript 文件不会被编译.
-- Apache Cordova 应用依然有单个 `tsconfig.json` 文件的限制, 而这个文件必须在根目录或者 `scripts` 文件夹.
-- 多数项目类型中都没有 `tsconfig.json` 的模板.
+- 如果你添加了一個 `tsconfig.json` 文件, 不在其上下文中的 TypeScript 文件不會被編譯.
+- Apache Cordova 應用依然有單個 `tsconfig.json` 文件的限制, 而這個文件必須在根目錄或者 `scripts` 文件夾.
+- 多數項目類型中都沒有 `tsconfig.json` 的模板.
 
 ## TypeScript 1.7
 
-### 支持 `async`/`await` 编译到 ES6 (Node v4+)
+### 支持 `async`/`await` 編譯到 ES6 (Node v4+)
 
-TypeScript 目前在已经原生支持 ES6 generator 的引擎 (比如 Node v4 及以上版本) 上支持异步函数. 异步函数前置 `async` 关键字; `await` 会暂停执行, 直到一个异步函数执行后返回的 promise 被 fulfill 后获得它的值.
+TypeScript 目前在已經原生支持 ES6 generator 的引擎 (比如 Node v4 及以上版本) 上支持異步函數. 異步函數前置 `async` 關鍵字; `await` 會暫停執行, 直到一個異步函數執行後返回的 promise 被 fulfill 後獲得它的值.
 
 #### 例子
 
-在下面的例子中, 输入的内容将会延时 200 毫秒逐个打印:
+在下面的例子中, 輸入的內容將會延時 200 毫秒逐個打印:
 
 ```ts
 "use strict";
 
-// printDelayed 返回值是一个 'Promise<void>'
+// printDelayed 返回值是一個 'Promise<void>'
 async function printDelayed(elements: string[]) {
     for (const element of elements) {
         await delay(200);
@@ -601,15 +601,15 @@ async function delay(milliseconds: number) {
 
 printDelayed(["Hello", "beautiful", "asynchronous", "world"]).then(() => {
     console.log();
-    console.log("打印每一个内容!");
+    console.log("打印每一個內容!");
 });
 ```
 
-查看 [Async Functions](http://blogs.msdn.com/b/typescript/archive/2015/11/03/what-about-async-await.aspx) 一文了解更多.
+查看 [Async Functions](http://blogs.msdn.com/b/typescript/archive/2015/11/03/what-about-async-await.aspx) 一文瞭解更多.
 
-### 支持同时使用 `--target ES6` 和 `--module`
+### 支持同時使用 `--target ES6` 和 `--module`
 
-TypeScript 1.7 将 `ES6` 添加到了 `--module` 选项支持的选项的列表, 当编译到 `ES6` 时允许指定模块类型. 这让使用具体运行时中你需要的特性更加灵活.
+TypeScript 1.7 將 `ES6` 添加到了 `--module` 選項支持的選項的列表, 當編譯到 `ES6` 時允許指定模組類型. 這讓使用具體運行時中你需要的特性更加靈活.
 
 #### 例子
 
@@ -622,9 +622,9 @@ TypeScript 1.7 将 `ES6` 添加到了 `--module` 选项支持的选项的列表,
 }
 ```
 
-### `this` 类型
+### `this` 類型
 
-在方法中返回当前对象 (也就是 `this`) 是一种创建链式 API 的常见方式. 比如, 考虑下面的 `BasicCalculator` 模块:
+在方法中返回當前物件 (也就是 `this`) 是一種創建鏈式 API 的常見方式. 比如, 考慮下面的 `BasicCalculator` 模組:
 
 ```ts
 export default class BasicCalculator {
@@ -656,7 +656,7 @@ export default class BasicCalculator {
 }
 ```
 
-使用者可以这样表述 `2 * 5 + 1`:
+使用者可以這樣表述 `2 * 5 + 1`:
 
 ```ts
 import calc from "./BasicCalculator";
@@ -667,7 +667,7 @@ let v = new calc(2)
     .currentValue();
 ```
 
-这使得这么一种优雅的编码方式成为可能; 然而, 对于想要去继承 `BasicCalculator` 的类来说有一个问题. 想象使用者可能需要编写一个 `ScientificCalculator`:
+這使得這麼一種優雅的編碼方式成為可能; 然而, 對於想要去繼承 `BasicCalculator` 的類來說有一個問題. 想像使用者可能需要編寫一個 `ScientificCalculator`:
 
 ```ts
 import BasicCalculator from "./BasicCalculator";
@@ -689,9 +689,9 @@ export default class ScientificCalculator extends BasicCalculator {
 }
 ```
 
-因为 `BasicCalculator` 的方法返回了 `this`, TypeScript 过去推断的类型是 `BasicCalculator`, 如果在 `ScientificCalculator` 的实例上调用属于 `BasicCalculator` 的方法, 类型系统不能很好地处理.
+因為 `BasicCalculator` 的方法返回了 `this`, TypeScript 過去推斷的類型是 `BasicCalculator`, 如果在 `ScientificCalculator` 的實例上調用屬於 `BasicCalculator` 的方法, 類型系統不能很好地處理.
 
-举例来说:
+舉例來說:
 
 ```ts
 import calc from "./ScientificCalculator";
@@ -699,13 +699,13 @@ import calc from "./ScientificCalculator";
 let v = new calc(0.5)
     .square()
     .divide(2)
-    .sin()    // Error: 'BasicCalculator' 没有 'sin' 方法.
+    .sin()    // Error: 'BasicCalculator' 沒有 'sin' 方法.
     .currentValue();
 ```
 
-这已经不再是问题 - TypeScript 现在在类的实例方法中, 会将 `this` 推断为一个特殊的叫做 `this` 的类型. `this` 类型也就写作 `this`, 可以大致理解为 "方法调用时点左边的类型".
+這已經不再是問題 - TypeScript 現在在類的實例方法中, 會將 `this` 推斷為一個特殊的叫做 `this` 的類型. `this` 類型也就寫作 `this`, 可以大致理解為 "方法調用時點左邊的類型".
 
-`this` 类型在描述一些使用了 mixin 风格继承的库 (比如 Ember.js) 的交叉类型:
+`this` 類型在描述一些使用了 mixin 風格繼承的庫 (比如 Ember.js) 的交叉類型:
 
 ```ts
 interface MyType {
@@ -713,11 +713,11 @@ interface MyType {
 }
 ```
 
-### ES7 幂运算符
+### ES7 冪運算符
 
-TypeScript 1.7 支持将在 ES7/ES2016 中增加的[幂运算符](https://github.com/rwaldron/exponentiation-operator): `**` 和 `**=`. 这些运算符会被转换为 ES3/ES5 中的 `Math.pow`.
+TypeScript 1.7 支持將在 ES7/ES2016 中增加的[冪運算符](https://github.com/rwaldron/exponentiation-operator): `**` 和 `**=`. 這些運算符會被轉換為 ES3/ES5 中的 `Math.pow`.
 
-#### 举例
+#### 舉例
 
 ```ts
 var x = 2 ** 3;
@@ -726,7 +726,7 @@ y **= 2;
 var z =  -(4 ** 3);
 ```
 
-会生成下面的 JavaScript:
+會生成下面的 JavaScript:
 
 ```ts
 var x = Math.pow(2, 3);
@@ -735,24 +735,24 @@ y = Math.pow(y, 2);
 var z = -(Math.pow(4, 3));
 ```
 
-### 改进对象字面量解构的检查
+### 改進物件字面量解構的檢查
 
-TypeScript 1.7 使对象和数组字面量解构初始值的检查更加直观和自然.
+TypeScript 1.7 使物件和陣列字面量解構初始值的檢查更加直觀和自然.
 
-当一个对象字面量通过与之对应的对象解构绑定推断类型时:
+當一個物件字面量通過與之對應的物件解構綁定推斷類型時:
 
-- 对象解构绑定中有默认值的属性对于对象字面量来说可选.
-- 对象解构绑定中的属性如果在对象字面量中没有匹配的值, 则该属性必须有默认值, 并且会被添加到对象字面量的类型中.
-- 对象字面量中的属性必须在对象解构绑定中存在.
+- 物件解構綁定中有默認值的屬性對於物件字面量來說可選.
+- 物件解構綁定中的屬性如果在物件字面量中沒有匹配的值, 則該屬性必須有默認值, 並且會被添加到物件字面量的類型中.
+- 物件字面量中的屬性必須在物件解構綁定中存在.
 
-当一个数组字面量通过与之对应的数组解构绑定推断类型时:
+當一個陣列字面量通過與之對應的陣列解構綁定推斷類型時:
 
-- 数组解构绑定中的元素如果在数组字面量中没有匹配的值, 则该元素必须有默认值, 并且会被添加到数组字面量的类型中.
+- 陣列解構綁定中的元素如果在陣列字面量中沒有匹配的值, 則該元素必須有默認值, 並且會被添加到陣列字面量的類型中.
 
-#### 举例
+#### 舉例
 
 ```ts
-// f1 的类型为 (arg?: { x?: number, y?: number }) => void
+// f1 的類型為 (arg?: { x?: number, y?: number }) => void
 function f1({ x = 0, y = 0 } = {}) { }
 
 // And can be called as:
@@ -762,39 +762,39 @@ f1({ x: 1 });
 f1({ y: 1 });
 f1({ x: 1, y: 1 });
 
-// f2 的类型为 (arg?: (x: number, y?: number) => void
+// f2 的類型為 (arg?: (x: number, y?: number) => void
 function f2({ x, y = 0 } = { x: 0 }) { }
 
 f2();
-f2({});        // 错误, x 非可选
+f2({});        // 錯誤, x 非可選
 f2({ x: 1 });
-f2({ y: 1 });  // 错误, x 非可选
+f2({ y: 1 });  // 錯誤, x 非可選
 f2({ x: 1, y: 1 });
 ```
 
-### 装饰器 (decorators) 支持的编译目标版本增加 ES3
+### 裝飾器 (decorators) 支持的編譯目標版本增加 ES3
 
-装饰器现在可以编译到 ES3. TypeScript 1.7 在 `__decorate` 函数中移除了 ES5 中增加的 `reduceRight`. 相关改动也内联了对 `Object.getOwnPropertyDescriptor` 和 `Object.defineProperty` 的调用, 并向后兼容, 使 ES5 的输出可以消除前面提到的 `Object` 方法的重复<sup>[1]</sup>.
+裝飾器現在可以編譯到 ES3. TypeScript 1.7 在 `__decorate` 函數中移除了 ES5 中增加的 `reduceRight`. 相關改動也單行內了對 `Object.getOwnPropertyDescriptor` 和 `Object.defineProperty` 的調用, 並向後兼容, 使 ES5 的輸出可以消除前面提到的 `Object` 方法的重複<sup>[1]</sup>.
 
 ## TypeScript 1.6
 
 ### JSX 支持
 
-JSX 是一种可嵌入的类似 XML 的语法. 它将最终被转换为合法的 JavaScript, 但转换的语义和具体实现有关. JSX 随着 React 流行起来, 也出现在其他应用中. TypeScript 1.6 支持 JavaScript 文件中 JSX 的嵌入, 类型检查, 以及直接编译为 JavaScript 的选项.
+JSX 是一種可嵌入的類似 XML 的語法. 它將最終被轉換為合法的 JavaScript, 但轉換的語義和具體實現有關. JSX 隨著 React 流行起來, 也出現在其他應用中. TypeScript 1.6 支持 JavaScript 文件中 JSX 的嵌入, 類型檢查, 以及直接編譯為 JavaScript 的選項.
 
-#### 新的 `.tsx` 文件扩展名和 `as` 运算符
+#### 新的 `.tsx` 文件擴展名和 `as` 運算符
 
-TypeScript 1.6 引入了新的 `.tsx` 文件扩展名. 这一扩展名一方面允许 TypeScript 文件中的 JSX 语法, 一方面将 `as` 运算符作为默认的类型转换方式 (避免 JSX 表达式和 TypeScript 前置类型转换运算符之间的歧义). 比如:
+TypeScript 1.6 引入了新的 `.tsx` 文件擴展名. 這一擴展名一方面允許 TypeScript 文件中的 JSX 語法, 一方面將 `as` 運算符作為默認的類型轉換方式 (避免 JSX 表達式和 TypeScript 前置類型轉換運算符之間的歧義). 比如:
 
 ```ts
 var x = <any> foo;
-// 与如下等价:
+// 與如下等價:
 var x = foo as any;
 ```
 
 #### 使用 React
 
-使用 React 及 JSX 支持, 你需要使用 [React 类型声明](https://github.com/borisyankov/DefinitelyTyped/tree/master/react). 这些类型定义了 `JSX` 命名空间, 以便 TypeScript 能正确地检查 React 的 JSX 表达式. 比如:
+使用 React 及 JSX 支持, 你需要使用 [React 類型聲明](https://github.com/borisyankov/DefinitelyTyped/tree/master/react). 這些類型定義了 `JSX` 命名空間, 以便 TypeScript 能正確地檢查 React 的 JSX 表達式. 比如:
 
 ```ts
 /// <reference path="react.d.ts" />
@@ -809,26 +809,26 @@ class MyComponent extends React.Component<Props, {}> {
   }
 }
 
-<MyComponent name="bar" />; // 没问题
-<MyComponent name={0} />; // 错误, `name` 不是一个数字
+<MyComponent name="bar" />; // 沒問題
+<MyComponent name={0} />; // 錯誤, `name` 不是一個數字
 ```
 
 #### 使用其他 JSX 框架
 
-JSX 元素的名称和属性是根据 `JSX` 命名空间来检验的. 请查看 [JSX](https://github.com/Microsoft/TypeScript/wiki/JSX) 页面了解如何为自己的框架定义 `JSX` 命名空间.
+JSX 元素的名稱和屬性是根據 `JSX` 命名空間來檢驗的. 請查看 [JSX](https://github.com/Microsoft/TypeScript/wiki/JSX) 頁面瞭解如何為自己的框架定義 `JSX` 命名空間.
 
-#### 编译输出
+#### 編譯輸出
 
-TypeScript 支持两种 `JSX` 模式: `preserve` (保留) 和 `react`.
+TypeScript 支持兩種 `JSX` 模式: `preserve` (保留) 和 `react`.
 
-- `preserve` 模式将会在输出中保留 JSX 表达式, 使之后的转换步骤可以处理. *并且输出的文件扩展名为 `.jsx`.*
-- `react` 模式将会生成 `React.createElement`, 不再需要再通过 JSX 转换即可运行, 输出的文件扩展名为 `.js`.
+- `preserve` 模式將會在輸出中保留 JSX 表達式, 使之後的轉換步驟可以處理. *並且輸出的文件擴展名為 `.jsx`.*
+- `react` 模式將會生成 `React.createElement`, 不再需要再通過 JSX 轉換即可運行, 輸出的文件擴展名為 `.js`.
 
-查看 [JSX](https://github.com/Microsoft/TypeScript/wiki/JSX) 页面了解更多 JSX 在 TypeScript 中的使用.
+查看 [JSX](https://github.com/Microsoft/TypeScript/wiki/JSX) 頁面瞭解更多 JSX 在 TypeScript 中的使用.
 
-### 交叉类型 (intersection types)
+### 交叉類型 (intersection types)
 
-TypeScript 1.6 引入了交叉类型作为联合类型 (union types) 逻辑上的补充. 联合类型 `A | B` 表示一个类型为 `A` 或 `B` 的实体, 而交叉类型 `A & B` 表示一个类型同时为 `A` 或 `B` 的实体.
+TypeScript 1.6 引入了交叉類型作為聯合類型 (union types) 邏輯上的補充. 聯合類型 `A | B` 表示一個類型為 `A` 或 `B` 的實體, 而交叉類型 `A & B` 表示一個類型同時為 `A` 或 `B` 的實體.
 
 #### 例子
 
@@ -873,11 +873,11 @@ abc.b = "hello";
 abc.c = "hello";
 ```
 
-查看 [issue #1256](https://github.com/Microsoft/TypeScript/issues/1256) 了解更多.
+查看 [issue #1256](https://github.com/Microsoft/TypeScript/issues/1256) 瞭解更多.
 
-### 本地类型声明
+### 本地類型聲明
 
-本地的类, 接口, 枚举和类型别名现在可以在函数声明中出现. 本地类型为块级作用域, 与 `let` 和 `const` 声明的变量类似. 比如说:
+本地的類, 接口, 枚舉和類型別名現在可以在函數聲明中出現. 本地類型為塊級作用域, 與 `let` 和 `const` 聲明的變量類似. 比如說:
 
 ```ts
 function f() {
@@ -894,7 +894,7 @@ function f() {
 }
 ```
 
-推导出的函数返回值类型可能在函数内部声明的. 调用函数的地方无法引用到这样的本地类型, 但是它当然能从类型结构上匹配. 比如:
+推導出的函數返回值類型可能在函數內部聲明的. 調用函數的地方無法引用到這樣的本地類型, 但是它當然能從類型結構上匹配. 比如:
 
 ```ts
 interface Point {
@@ -917,7 +917,7 @@ var p2 = new PointZero();
 var p3 = new PointOne();
 ```
 
-本地的类型可以引用类型参数, 本地的类和接口本身即可能是泛型. 比如:
+本地的類型可以引用類型參數, 本地的類和接口本身即可能是泛型. 比如:
 
 ```ts
 function f3() {
@@ -935,9 +935,9 @@ function f3() {
 }
 ```
 
-### 类表达式
+### 類表達式
 
-TypeScript 1.6 增加了对 ES6 类表达式的支持. 在一个类表达式中, 类的名称是可选的, 如果指明, 作用域仅限于类表达式本身. 这和函数表达式可选的名称类似. 在类表达式外无法引用其实例类型, 但是自然也能够从类型结构上匹配. 比如:
+TypeScript 1.6 增加了對 ES6 類表達式的支持. 在一個類表達式中, 類的名稱是可選的, 如果指明, 作用域僅限於類表達式本身. 這和函數表達式可選的名稱類似. 在類表達式外無法引用其實例類型, 但是自然也能夠從類型結構上匹配. 比如:
 
 ```ts
 let Point = class {
@@ -950,21 +950,21 @@ var p = new Point(3, 4);  // p has anonymous class type
 console.log(p.length());
 ```
 
-### 继承表达式
+### 繼承表達式
 
-TypeScript 1.6 增加了对类继承任意值为一个构造函数的表达式的支持. 这样一来内建的类型也可以在类的声明中被继承.
+TypeScript 1.6 增加了對類繼承任意值為一個構造函數的表達式的支持. 這樣一來內建的類型也可以在類的聲明中被繼承.
 
-`extends` 语句过去需要指定一个类型引用, 现在接受一个可选类型参数的表达式. 表达式的类型必须为有至少一个构造函数签名的构造函数, 并且需要和 `extends` 语句中类型参数数量一致. 匹配的构造函数签名的返回值类型是类实例类型继承的基类型. 如此一来, 这使得普通的类和与类相似的表达式可以在 `extends` 语句中使用.
+`extends` 語句過去需要指定一個類型引用, 現在接受一個可選類型參數的表達式. 表達式的類型必須為有至少一個構造函數簽名的構造函數, 並且需要和 `extends` 語句中類型參數數量一致. 匹配的構造函數簽名的返回值類型是類實例類型繼承的基類型. 如此一來, 這使得普通的類和與類相似的表達式可以在 `extends` 語句中使用.
 
 一些例子:
 
 ```ts
-// 继承内建类
+// 繼承內建類
 
 class MyArray extends Array<number> { }
 class MyError extends Error { }
 
-// 继承表达式类
+// 繼承表達式類
 
 class ThingA {
     getGreeting() { return "Hello from A"; }
@@ -993,9 +993,9 @@ class Test extends getGreeterBase() {
 }
 ```
 
-### `abstract` (抽象的) 类和方法
+### `abstract` (抽象的) 類和方法
 
-TypeScript 1.6 为类和它们的方法增加了 `abstract` 关键字. 一个抽象类允许没有被实现的方法, 并且不能被构造.
+TypeScript 1.6 為類和它們的方法增加了 `abstract` 關鍵字. 一個抽象類允許沒有被實現的方法, 並且不能被構造.
 
 #### 例子
 
@@ -1005,27 +1005,27 @@ abstract class Base {
     getOtherThing() { return 'hello'; }
 }
 
-let x = new Base(); // 错误, 'Base' 是抽象的
+let x = new Base(); // 錯誤, 'Base' 是抽象的
 
-// 错误, 必须也为抽象类, 或者实现 'getThing' 方法
+// 錯誤, 必須也為抽象類, 或者實現 'getThing' 方法
 class Derived1 extends Base { }
 
 class Derived2 extends Base {
     getThing() { return 'hello'; }
     foo() {
-        super.getThing();// 错误: 不能调用 'super' 的抽象方法
+        super.getThing();// 錯誤: 不能調用 'super' 的抽象方法
     }
 }
 
-var x = new Derived2(); // 正确
-var y: Base = new Derived2(); // 同样正确
-y.getThing(); // 正确
-y.getOtherThing(); // 正确
+var x = new Derived2(); // 正確
+var y: Base = new Derived2(); // 同樣正確
+y.getThing(); // 正確
+y.getOtherThing(); // 正確
 ```
 
-### 泛型别名
+### 泛型別名
 
-TypeScript 1.6 中, 类型别名支持泛型. 比如:
+TypeScript 1.6 中, 類型別名支持泛型. 比如:
 
 ```ts
 type Lazy<T> = T | (() => T);
@@ -1042,106 +1042,106 @@ interface Tuple<A, B> {
 type Pair<T> = Tuple<T, T>;
 ```
 
-### 更严格的对象字面量赋值检查
+### 更嚴格的物件字面量賦值檢查
 
-为了能发现多余或者错误拼写的属性, TypeScript 1.6 使用了更严格的对象字面量检查. 确切地说, 在将一个新的对象字面量赋值给一个变量, 或者传递给类型非空的参数时, 如果对象字面量的属性在目标类型中不存在, 则会视为错误.
+為了能發現多餘或者錯誤拼寫的屬性, TypeScript 1.6 使用了更嚴格的物件字面量檢查. 確切地說, 在將一個新的物件字面量賦值給一個變量, 或者傳遞給類型非空的參數時, 如果物件字面量的屬性在目標類型中不存在, 則會視為錯誤.
 
 #### 例子
 
 ```ts
 var x: { foo: number };
-x = { foo: 1, baz: 2 };  // 错误, 多余的属性 `baz`
+x = { foo: 1, baz: 2 };  // 錯誤, 多餘的屬性 `baz`
 
 var y: { foo: number, bar?: number };
-y = { foo: 1, baz: 2 };  // 错误, 多余或者拼错的属性 `baz`
+y = { foo: 1, baz: 2 };  // 錯誤, 多餘或者拼錯的屬性 `baz`
 ```
 
-一个类型可以通过包含一个索引签名来现实指明未出现在类型中的属性是被允许的.
+一個類型可以通過包含一個索引簽名來現實指明未出現在類型中的屬性是被允許的.
 
 ```ts
 var x: { foo: number, [x: string]: any };
-x = { foo: 1, baz: 2 };  // 现在 `baz` 匹配了索引签名
+x = { foo: 1, baz: 2 };  // 現在 `baz` 匹配了索引簽名
 ```
 
 ### ES6 生成器 (generators)
 
-TypeScript 1.6 添加了对于 ES6 输出的生成器支持.
+TypeScript 1.6 添加了對於 ES6 輸出的生成器支持.
 
-一个生成器函数可以有返回值类型标注, 就像普通的函数. 标注表示生成器函数返回的生成器的类型. 这里有个例子:
+一個生成器函數可以有返回值類型標註, 就像普通的函數. 標註表示生成器函數返回的生成器的類型. 這裡有個例子:
 
 ```ts
 function *g(): Iterable<string> {
     for (var i = 0; i < 100; i++) {
-        yield ""; // string 可以赋值给 string
+        yield ""; // string 可以賦值給 string
     }
-    yield * otherStringGenerator(); // otherStringGenerator 必须可遍历, 并且元素类型需要可赋值给 string
+    yield * otherStringGenerator(); // otherStringGenerator 必須可遍歷, 並且元素類型需要可賦值給 string
 }
 ```
 
-没有标注类型的生成器函数会有自动推演的类型. 在下面的例子中, 类型会由 yield 语句推演出来:
+沒有標註類型的生成器函數會有自動推演的類型. 在下面的例子中, 類型會由 yield 語句推演出來:
 
 ```ts
 function *g() {
     for (var i = 0; i < 100; i++) {
-        yield ""; // 推导出 string
+        yield ""; // 推導出 string
     }
-    yield * otherStringGenerator(); // 推导出 otherStringGenerator 的元素类型
+    yield * otherStringGenerator(); // 推導出 otherStringGenerator 的元素類型
 }
 ```
 
-### 对 `async` (异步) 函数的试验性支持
+### 對 `async` (異步) 函數的試驗性支持
 
-TypeScript 1.6 增加了编译到 ES6 时对 `async` 函数试验性的支持. 异步函数会执行一个异步的操作, 在等待的同时不会阻塞程序的正常运行. 这是通过与 ES6 兼容的 `Promise` 实现完成的, 并且会将函数体转换为支持在等待的异步操作完成时继续的形式.
+TypeScript 1.6 增加了編譯到 ES6 時對 `async` 函數試驗性的支持. 異步函數會執行一個異步的操作, 在等待的同時不會阻塞程序的正常運行. 這是通過與 ES6 兼容的 `Promise` 實現完成的, 並且會將函數體轉換為支持在等待的異步操作完成時繼續的形式.
 
-由 `async` 标记的函数或方法被称作_异步函数_. 这个标记告诉了编译器该函数体需要被转换, 关键字 _await_ 则应该被当做一个一元运算符, 而不是标示符. 一个_异步函数_必须返回类型与 `Promise` 兼容的值. 返回值类型的推断只能在有一个全局的, 与 ES6 兼容的 `Promise` 类型时使用.
+由 `async` 標記的函數或方法被稱作_異步函數_. 這個標記告訴了編譯器該函數體需要被轉換, 關鍵字 _await_ 則應該被當做一個一元運算符, 而不是標示符. 一個_異步函數_必須返回類型與 `Promise` 兼容的值. 返回值類型的推斷只能在有一個全局的, 與 ES6 兼容的 `Promise` 類型時使用.
 
 #### 例子
 
 ```ts
 var p: Promise<number> = /* ... */;
 async function fn(): Promise<number> {
-  var i = await p; // 暂停执行知道 'p' 得到结果. 'i' 的类型为 "number"
+  var i = await p; // 暫停執行知道 'p' 得到結果. 'i' 的類型為 "number"
   return 1 + i;
 }
 
-var a = async (): Promise<number> => 1 + await p; // 暂停执行.
-var a = async () => 1 + await p; // 暂停执行. 使用 --target ES6 选项编译时返回值类型被推断为 "Promise<number>"
+var a = async (): Promise<number> => 1 + await p; // 暫停執行.
+var a = async () => 1 + await p; // 暫停執行. 使用 --target ES6 選項編譯時返回值類型被推斷為 "Promise<number>"
 var fe = async function(): Promise<number> {
-  var i = await p; // 暂停执行知道 'p' 得到结果. 'i' 的类型为 "number"
+  var i = await p; // 暫停執行知道 'p' 得到結果. 'i' 的類型為 "number"
   return 1 + i;
 }
 
 class C {
   async m(): Promise<number> {
-    var i = await p; // 暂停执行知道 'p' 得到结果. 'i' 的类型为 "number"
+    var i = await p; // 暫停執行知道 'p' 得到結果. 'i' 的類型為 "number"
     return 1 + i;
   }
 
   async get p(): Promise<number> {
-    var i = await p; // 暂停执行知道 'p' 得到结果. 'i' 的类型为 "number"
+    var i = await p; // 暫停執行知道 'p' 得到結果. 'i' 的類型為 "number"
     return 1 + i;
   }
 }
 ```
 
-### 每天发布新版本
+### 每天發佈新版本
 
-由于并不算严格意义上的语言变化<sup>[2]</sup>, 每天的新版本可以使用如下命令安装获得:
+由於並不算嚴格意義上的語言變化<sup>[2]</sup>, 每天的新版本可以使用如下命令安裝獲得:
 
 ```sh
 npm install -g typescript@next
 ```
 
-### 对模块解析逻辑的调整
+### 對模組解析邏輯的調整
 
-从 1.6 开始, TypeScript 编译器对于 "commonjs" 的模块解析会使用一套不同的规则. 这些[规则](https://github.com/Microsoft/TypeScript/issues/2338) 尝试模仿 Node 查找模块的过程. 这就意味着 node 模块可以包含它的类型信息, 并且 TypeScript 编译器可以找到这些信息. 不过用户可以通过使用 `--moduleResolution` 命令行选项覆盖模块解析规则. 支持的值有:
+從 1.6 開始, TypeScript 編譯器對於 "commonjs" 的模組解析會使用一套不同的規則. 這些[規則](https://github.com/Microsoft/TypeScript/issues/2338) 嘗試模仿 Node 查找模組的過程. 這就意味著 node 模組可以包含它的類型信息, 並且 TypeScript 編譯器可以找到這些信息. 不過用戶可以通過使用 `--moduleResolution` 命令行選項覆蓋模組解析規則. 支持的值有:
 
-- 'classic' - TypeScript 1.6 以前的编译器使用的模块解析规则
-- 'node' - 与 node 相似的模块解析
+- 'classic' - TypeScript 1.6 以前的編譯器使用的模組解析規則
+- 'node' - 與 node 相似的模組解析
 
-### 合并外围类和接口的声明
+### 合併外圍類和接口的聲明
 
-外围类的实例类型可以通过接口声明来扩展. 类构造函数对象不会被修改. 比如说:
+外圍類的實例類型可以通過接口聲明來擴展. 類構造函數物件不會被修改. 比如說:
 
 ```ts
 declare class Foo {
@@ -1153,14 +1153,14 @@ interface Foo {
 }
 
 function bar(foo : Foo)  {
-    foo.x = 1; // 没问题, 在类 Foo 中有声明
-    foo.y = "1"; // 没问题, 在接口 Foo 中有声明
+    foo.x = 1; // 沒問題, 在類 Foo 中有聲明
+    foo.y = "1"; // 沒問題, 在接口 Foo 中有聲明
 }
 ```
 
-### 用户定义的类型收窄函数
+### 用戶定義的類型收窄函數
 
-TypeScript 1.6 增加了一个新的在 `if` 语句中收窄变量类型的方式, 作为对 `typeof` 和 `instanceof` 的补充. 用户定义的类型收窄函数的返回值类型标注形式为 `x is T`, 这里 `x` 是函数声明中的形参, `T` 是任何类型. 当一个用户定义的类型收窄函数在 `if` 语句中被传入某个变量执行时, 该变量的类型会被收窄到 `T`.
+TypeScript 1.6 增加了一個新的在 `if` 語句中收窄變量類型的方式, 作為對 `typeof` 和 `instanceof` 的補充. 用戶定義的類型收窄函數的返回值類型標註形式為 `x is T`, 這裡 `x` 是函數聲明中的形參, `T` 是任何類型. 當一個用戶定義的類型收窄函數在 `if` 語句中被傳入某個變量執行時, 該變量的類型會被收窄到 `T`.
 
 #### 例子
 
@@ -1171,13 +1171,13 @@ function isCat(a: any): a is Cat {
 
 var x: Cat | Dog;
 if(isCat(x)) {
-  x.meow(); // 那么, x 在这个代码块内是 Cat 类型
+  x.meow(); // 那麼, x 在這個代碼塊內是 Cat 類型
 }
 ```
 
-### `tsconfig.json` 对 `exclude` 属性的支持
+### `tsconfig.json` 對 `exclude` 屬性的支持
 
-一个没有写明 `files` 属性的 `tsconfig.json` 文件 (默认会引用所有子目录下的 *.ts 文件) 现在可以包含一个 `exclude` 属性, 指定需要在编译中排除的文件或者目录列表. `exclude` 属性必须是一个字符串数组, 其中每一个元素指定对应的一个文件或者文件夹名称对于 `tsconfig.json` 文件所在位置的相对路径. 举例来说:
+一個沒有寫明 `files` 屬性的 `tsconfig.json` 文件 (默認會引用所有子目錄下的 *.ts 文件) 現在可以包含一個 `exclude` 屬性, 指定需要在編譯中排除的文件或者目錄列表. `exclude` 屬性必須是一個字符串陣列, 其中每一個元素指定對應的一個文件或者文件夾名稱對於 `tsconfig.json` 文件所在位置的相對路徑. 舉例來說:
 
 ```json
 {
@@ -1192,29 +1192,29 @@ if(isCat(x)) {
 }
 ```
 
-`exclude` 列表不支持通配符. 仅仅可以是文件或者目录的列表.
+`exclude` 列表不支持通配符. 僅僅可以是文件或者目錄的列表.
 
-### `--init` 命令行选项
+### `--init` 命令行選項
 
-在一个目录中执行 `tsc --init` 可以在该目录中创建一个包含了默认值的 `tsconfig.json`. 可以通过一并传递其他选项来生成初始的 `tsconfig.json`.
+在一個目錄中執行 `tsc --init` 可以在該目錄中創建一個包含了默認值的 `tsconfig.json`. 可以通過一併傳遞其他選項來生成初始的 `tsconfig.json`.
 
 ## TypeScript 1.5
 
-### ES6 模块
+### ES6 模組
 
-TypeScript 1.5 支持 ECMAScript 6 (ES6) 模块. ES6 模块可以看做之前 TypeScript 的外部模块换上了新的语法: ES6 模块是分开加载的源文件, 这些文件还可能引入其他模块, 并且导出部分供外部可访问. ES6 模块新增了几种导入和导出声明. 我们建议使用 TypeScript 开发的库和应用能够更新到新的语法, 但不做强制要求. 新的 ES6 模块语法和 TypeScript 原来的内部和外部模块结构同时被支持, 如果需要也可以混合使用.
+TypeScript 1.5 支持 ECMAScript 6 (ES6) 模組. ES6 模組可以看做之前 TypeScript 的外部模組換上了新的語法: ES6 模組是分開加載的源文件, 這些文件還可能引入其他模組, 並且導出部分供外部可訪問. ES6 模組新增了幾種導入和導出聲明. 我們建議使用 TypeScript 開發的庫和應用能夠更新到新的語法, 但不做強制要求. 新的 ES6 模組語法和 TypeScript 原來的內部和外部模組結構同時被支持, 如果需要也可以混合使用.
 
-#### 导出声明
+#### 導出聲明
 
-作为 TypeScript 已有的 `export` 前缀支持, 模块成员也可以使用单独导出的声明导出, 如果需要, `as` 语句可以指定不同的导出名称.
+作為 TypeScript 已有的 `export` 前綴支持, 模組成員也可以使用單獨導出的聲明導出, 如果需要, `as` 語句可以指定不同的導出名稱.
 
 ```ts
 interface Stream { ... }
 function writeToStream(stream: Stream, data: string) { ... }
-export { Stream, writeToStream as write };  // writeToStream 导出为 write
+export { Stream, writeToStream as write };  // writeToStream 導出為 write
 ```
 
-引入声明也可以使用 `as` 语句来指定一个不同的导入名称. 比如:
+引入聲明也可以使用 `as` 語句來指定一個不同的導入名稱. 比如:
 
 ```ts
 import { read, write, standardOutput as stdout } from "./inout";
@@ -1222,7 +1222,7 @@ var s = read(stdout);
 write(stdout, s);
 ```
 
-作为单独导入的候选项, 命名空间导入可以导入整个模块:
+作為單獨導入的候選項, 命名空間導入可以導入整個模組:
 
 ```ts
 import * as io from "./inout";
@@ -1230,15 +1230,15 @@ var s = io.read(io.standardOutput);
 io.write(io.standardOutput, s);
 ```
 
-### 重新导出
+### 重新導出
 
-使用 `from` 语句一个模块可以复制指定模块的导出项到当前模块, 而无需创建本地名称.
+使用 `from` 語句一個模組可以複製指定模組的導出項到當前模組, 而無需創建本地名稱.
 
 ```ts
 export { read, write, standardOutput as stdout } from "./inout";
 ```
 
-`export *` 可以用来重新导出另一个模块的所有导出项. 在创建一个聚合了其他几个模块导出项的模块时很方便.
+`export *` 可以用來重新導出另一個模組的所有導出項. 在創建一個聚合了其他幾個模組導出項的模組時很方便.
 
 ```ts
 export function transform(s: string): string { ... }
@@ -1246,9 +1246,9 @@ export * from "./mod1";
 export * from "./mod2";
 ```
 
-#### 默认导出项
+#### 默認導出項
 
-一个 export default 声明表示一个表达式是这个模块的默认导出项.
+一個 export default 聲明表示一個表達式是這個模組的默認導出項.
 
 ```ts
 export default class Greeter {
@@ -1258,7 +1258,7 @@ export default class Greeter {
 }
 ```
 
-对应的可以使用默认导入:
+對應的可以使用默認導入:
 
 ```ts
 import Greeter from "./greeter";
@@ -1266,51 +1266,51 @@ var g = new Greeter();
 g.sayHello();
 ```
 
-#### 无导入加载
+#### 無導入加載
 
-"无导入加载" 可以被用来加载某些只需要其副作用的模块.
+"無導入加載" 可以被用來加載某些只需要其副作用的模組.
 
 ```ts
 import "./polyfills";
 ```
 
-了解更多关于模块的信息, 请参见 [ES6 模块支持规范](https://github.com/Microsoft/TypeScript/issues/2242).
+瞭解更多關於模組的信息, 請參見 [ES6 模組支持規範](https://github.com/Microsoft/TypeScript/issues/2242).
 
-### 声明与赋值的解构
+### 聲明與賦值的解構
 
-TypeScript 1.5 添加了对 ES6 解构声明与赋值的支持.
+TypeScript 1.5 添加了對 ES6 解構聲明與賦值的支持.
 
-#### 解构
+#### 解構
 
-解构声明会引入一个或多个命名变量, 并且初始化它们的值为对象的属性或者数组的元素对应的值.
+解構聲明會引入一個或多個命名變量, 並且初始化它們的值為物件的屬性或者陣列的元素對應的值.
 
-比如说, 下面的例子声明了变量 `x`, `y` 和 `z`, 并且分别将它们的值初始化为 `getSomeObject().x`, `getSomeObject().x` 和 `getSomeObject().x`:
+比如說, 下面的例子聲明了變量 `x`, `y` 和 `z`, 並且分別將它們的值初始化為 `getSomeObject().x`, `getSomeObject().x` 和 `getSomeObject().x`:
 
 ```ts
 var { x, y, z } = getSomeObject();
 ```
 
-解构声明也可以用于从数组中得到值.
+解構聲明也可以用於從陣列中得到值.
 
 ```ts
 var [x, y, z = 10] = getSomeArray();
 ```
 
-相似的, 解构可以用在函数的参数声明中:
+相似的, 解構可以用在函數的參數聲明中:
 
 ```ts
 function drawText({ text = "", location: [x, y] = [0, 0], bold = false }) {
-    // 画出文本
+    // 畫出文本
 }
 
-// 以一个对象字面量为参数调用 drawText
+// 以一個物件字面量為參數調用 drawText
 var item = { text: "someText", location: [1,2,3], style: "italics" };
 drawText(item);
 ```
 
-#### 赋值
+#### 賦值
 
-解构也可以被用于普通的赋值表达式. 举例来讲, 交换两个变量的值可以被写作一个解构赋值:
+解構也可以被用於普通的賦值表達式. 舉例來講, 交換兩個變量的值可以被寫作一個解構賦值:
 
 ```ts
 var x = 1;
@@ -1318,11 +1318,11 @@ var y = 2;
 [x, y] = [y, x];
 ```
 
-### `namespace` (命名空间) 关键字
+### `namespace` (命名空間) 關鍵字
 
-过去 TypeScript 中 `module` 关键字既可以定义 "内部模块", 也可以定义 "外部模块"; 这让刚刚接触 TypeScript 的开发者有些困惑. "内部模块" 的概念更接近于大部分人眼中的命名空间; 而 "外部模块" 对于 JS 来讲, 现在也就是模块了.
+過去 TypeScript 中 `module` 關鍵字既可以定義 "內部模組", 也可以定義 "外部模組"; 這讓剛剛接觸 TypeScript 的開發者有些困惑. "內部模組" 的概念更接近於大部分人眼中的命名空間; 而 "外部模組" 對於 JS 來講, 現在也就是模組了.
 
-> 注意: 之前定义内部模块的语法依然被支持.
+> 注意: 之前定義內部模組的語法依然被支持.
 
 **之前**:
 
@@ -1332,7 +1332,7 @@ module Math {
 }
 ```
 
-**之后**:
+**之後**:
 
 ```ts
 namespace Math {
@@ -1342,44 +1342,44 @@ namespace Math {
 
 ### `let` 和 `const` 的支持
 
-ES6 的 `let` 和 `const` 声明现在支持编译到 ES3 和 ES5.
+ES6 的 `let` 和 `const` 聲明現在支持編譯到 ES3 和 ES5.
 
 #### Const
 
 ```ts
 const MAX = 100;
 
-++MAX; // 错误: 自增/减运算符不能用于一个常量
+++MAX; // 錯誤: 自增/減運算符不能用於一個常量
 ```
 
-#### 块级作用域
+#### 塊級作用域
 
 ```ts
 if (true) {
   let a = 4;
-  // 使用变量 a
+  // 使用變量 a
 }
 else {
   let a = "string";
-  // 使用变量 a
+  // 使用變量 a
 }
 
-alert(a); // 错误: 变量 a 在当前作用域未定义
+alert(a); // 錯誤: 變量 a 在當前作用域未定義
 ```
 
 ### `for...of` 的支持
 
-TypeScript 1.5 增加了 ES6 `for...of` 循环编译到 ES3/ES5 时对数组的支持, 以及编译到 ES6 时对满足 `Iterator` 接口的全面支持.
+TypeScript 1.5 增加了 ES6 `for...of` 循環編譯到 ES3/ES5 時對陣列的支持, 以及編譯到 ES6 時對滿足 `Iterator` 接口的全面支持.
 
 #### 例子:
 
-TypeScript 编译器会转译 `for...of` 数组到具有语义的 ES3/ES5 JavaScript (如果被设置为编译到这些版本).
+TypeScript 編譯器會轉譯 `for...of` 陣列到具有語義的 ES3/ES5 JavaScript (如果被設置為編譯到這些版本).
 
 ```ts
 for (var v of expr) { }
 ```
 
-会输出为:
+會輸出為:
 
 ```js
 for (var _i = 0, _a = expr; _i < _a.length; _i++) {
@@ -1387,22 +1387,22 @@ for (var _i = 0, _a = expr; _i < _a.length; _i++) {
 }
 ```
 
-### 装饰器
+### 裝飾器
 
-> TypeScript 装饰器是局域 [ES7 装饰器](https://github.com/wycats/javascript-decorators) 提案的.
+> TypeScript 裝飾器是局域 [ES7 裝飾器](https://github.com/wycats/javascript-decorators) 提案的.
 
-一个装饰器是:
+一個裝飾器是:
 
-- 一个表达式
-- 并且值为一个函数
-- 接受 `target`, `name`, 以及属性描述对象作为参数
-- 可选返回一个会被应用到目标对象的属性描述对象
+- 一個表達式
+- 並且值為一個函數
+- 接受 `target`, `name`, 以及屬性描述物件作為參數
+- 可選返回一個會被應用到目標物件的屬性描述物件
 
-> 了解更多, 请参见 [装饰器](https://github.com/Microsoft/TypeScript/issues/2249) 提案.
+> 瞭解更多, 請參見 [裝飾器](https://github.com/Microsoft/TypeScript/issues/2249) 提案.
 
 #### 例子:
 
-装饰器 `readonly` 和 `enumerable(false)` 会在属性 `method` 添加到类 `C` 上之前被应用. 这使得装饰器可以修改其实现, 具体到这个例子, 设置了 `descriptor` 为 `writable: false` 以及 `enumerable: false`.
+裝飾器 `readonly` 和 `enumerable(false)` 會在屬性 `method` 添加到類 `C` 上之前被應用. 這使得裝飾器可以修改其實現, 具體到這個例子, 設置了 `descriptor` 為 `writable: false` 以及 `enumerable: false`.
 
 ```ts
 class C {
@@ -1422,9 +1422,9 @@ function enumerable(value) {
 }
 ```
 
-### 计算属性
+### 計算屬性
 
-使用动态的属性初始化一个对象可能会很麻烦. 参考下面的例子:
+使用動態的屬性初始化一個物件可能會很麻煩. 參考下面的例子:
 
 ```ts
 type NeighborMap = { [name: string]: Node };
@@ -1437,7 +1437,7 @@ function makeNode(name: string, initialNeighbor: Node): Node {
 }
 ```
 
-这里我们需要创建一个包含了 neighbor-map 的变量, 便于我们初始化它. 使用 TypeScript 1.5, 我们可以让编译器来干重活:
+這裡我們需要創建一個包含了 neighbor-map 的變量, 便於我們初始化它. 使用 TypeScript 1.5, 我們可以讓編譯器來幹重活:
 
 ```ts
 function makeNode(name: string, initialNeighbor: Node): Node {
@@ -1450,9 +1450,9 @@ function makeNode(name: string, initialNeighbor: Node): Node {
 }
 ```
 
-### 指出 `UMD` 和 `System` 模块输出
+### 指出 `UMD` 和 `System` 模組輸出
 
-作为 `AMD` 和 `CommonJS` 模块加载器的补充, TypeScript 现在支持输出为 `UMD` ([Universal Module Definition](https://github.com/umdjs/umd)) 和 [`System`](https://github.com/systemjs/systemjs) 模块的格式.
+作為 `AMD` 和 `CommonJS` 模組加載器的補充, TypeScript 現在支持輸出為 `UMD` ([Universal Module Definition](https://github.com/umdjs/umd)) 和 [`System`](https://github.com/systemjs/systemjs) 模組的格式.
 
 **用法**:
 
@@ -1463,19 +1463,19 @@ function makeNode(name: string, initialNeighbor: Node): Node {
 > tsc --module system
 
 
-### Unicode 字符串码位转义
+### Unicode 字符串碼位轉義
 
-ES6 中允许用户使用单个转义表示一个 Unicode 码位.
+ES6 中允許用戶使用單個轉義表示一個 Unicode 碼位.
 
-举个例子, 考虑我们需要转义一个包含了字符 '𠮷' 的字符串. 在 UTF-16/USC2 中, '𠮷' 被表示为一个代理对, 意思就是它被编码为一对 16 位值的代码单元, 具体来说是 `0xD842` 和 `0xDFB7`. 之前这意味着你必须将该码位转义为 `"\uD842\uDFB7"`. 这样做有一个重要的问题, 就事很难讲两个独立的字符同一个代理对区分开来.
+舉個例子, 考慮我們需要轉義一個包含了字符 '𠮷' 的字符串. 在 UTF-16/USC2 中, '𠮷' 被表示為一個代理對, 意思就是它被編碼為一對 16 位值的代碼單元, 具體來說是 `0xD842` 和 `0xDFB7`. 之前這意味著你必須將該碼位轉義為 `"\uD842\uDFB7"`. 這樣做有一個重要的問題, 就事很難講兩個獨立的字符同一個代理對區分開來.
 
-通过 ES6 的码位转义, 你可以在字符串或模板字符串中清晰地通过一个转义表示一个确切的字符: `"\u{20bb7}"`. TypeScript 在编译到 ES3/ES5 时会将该字符串输出为 `"\uD842\uDFB7"`.
+通過 ES6 的碼位轉義, 你可以在字符串或模板字符串中清晰地通過一個轉義表示一個確切的字符: `"\u{20bb7}"`. TypeScript 在編譯到 ES3/ES5 時會將該字符串輸出為 `"\uD842\uDFB7"`.
 
-### 标签模板字符串编译到 ES3/ES5
+### 標籤模板字符串編譯到 ES3/ES5
 
-TypeScript 1.4 中, 我们添加了模板字符串编译到所有 ES 版本的支持, 并且支持标签模板字符串编译到 ES6. 得益于 [@ivogabe](https://github.com/ivogabe) 的大量付出, 我们填补了标签模板字符串对编译到 ES3/ES5 的支持.
+TypeScript 1.4 中, 我們添加了模板字符串編譯到所有 ES 版本的支持, 並且支持標籤模板字符串編譯到 ES6. 得益於 [@ivogabe](https://github.com/ivogabe) 的大量付出, 我們填補了標籤模板字符串對編譯到 ES3/ES5 的支持.
 
-当编译到 ES3/ES5 时, 下面的代码:
+當編譯到 ES3/ES5 時, 下面的代碼:
 
 ```ts
 function oddRawStrings(strs: TemplateStringsArray, n1, n2) {
@@ -1485,7 +1485,7 @@ function oddRawStrings(strs: TemplateStringsArray, n1, n2) {
 oddRawStrings `Hello \n${123} \t ${456}\n world`
 ```
 
-会被输出为:
+會被輸出為:
 
 ```ts
 function oddRawStrings(strs, n1, n2) {
@@ -1497,11 +1497,11 @@ function oddRawStrings(strs, n1, n2) {
 var _a;
 ```
 
-### AMD 可选依赖名称
+### AMD 可選依賴名稱
 
-`/// <amd-dependency path="x" />` 会告诉编译器需要被注入到模块 `require` 方法中的非 TS 模块依赖; 然而在 TS 代码中无法使用这个模块.
+`/// <amd-dependency path="x" />` 會告訴編譯器需要被注入到模組 `require` 方法中的非 TS 模組依賴; 然而在 TS 代碼中無法使用這個模組.
 
-新的 `amd-dependency name` 属性允许为 AMD 依赖传递一个可选的名称.
+新的 `amd-dependency name` 屬性允許為 AMD 依賴傳遞一個可選的名稱.
 
 ```ts
 /// <amd-dependency path="legacy/moduleA" name="moduleA"/>
@@ -1509,7 +1509,7 @@ declare var moduleA:MyType
 moduleA.callStuff()
 ```
 
-生成的 JS 代码:
+生成的 JS 代碼:
 
 ```ts
 define(["require", "exports", "legacy/moduleA"], function (require, exports, moduleA) {
@@ -1517,12 +1517,12 @@ define(["require", "exports", "legacy/moduleA"], function (require, exports, mod
 });
 ```
 
-### 通过 `tsconfig.json` 指示一个项目
+### 通過 `tsconfig.json` 指示一個項目
 
-通过添加 `tsconfig.json` 到一个目录指明这是一个 TypeScript 项目的根目录. `tsconfig.json` 文件指定了根文件以及编译项目需要的编译器选项. 一个项目可以由以下方式编译:
+通過添加 `tsconfig.json` 到一個目錄指明這是一個 TypeScript 項目的根目錄. `tsconfig.json` 文件指定了根文件以及編譯項目需要的編譯器選項. 一個項目可以由以下方式編譯:
 
-- 调用 tsc 并不指定输入文件, 此时编译器会从当前目录开始往上级目录寻找 `tsconfig.json` 文件.
-- 调用 tsc 并不指定输入文件, 使用 `-project` (或者 `-p`) 命令行选项指定包含了 `tsconfig.json` 文件的目录.
+- 調用 tsc 並不指定輸入文件, 此時編譯器會從當前目錄開始往上級目錄尋找 `tsconfig.json` 文件.
+- 調用 tsc 並不指定輸入文件, 使用 `-project` (或者 `-p`) 命令行選項指定包含了 `tsconfig.json` 文件的目錄.
 
 #### 例子:
 ```json
@@ -1535,35 +1535,35 @@ define(["require", "exports", "legacy/moduleA"], function (require, exports, mod
 }
 ```
 
-参见 [tsconfig.json wiki 页面](https://github.com/Microsoft/TypeScript/wiki/tsconfig.json) 查看更多信息.
+參見 [tsconfig.json wiki 頁面](https://github.com/Microsoft/TypeScript/wiki/tsconfig.json) 查看更多信息.
 
-### `--rootDir` 命令行选项
+### `--rootDir` 命令行選項
 
-选项 `--outDir` 在输出中会保留输入的层级关系. 编译器将所有输入文件共有的最长路径作为根路径; 并且在输出中应用对应的子层级关系.
+選項 `--outDir` 在輸出中會保留輸入的層級關係. 編譯器將所有輸入文件共有的最長路徑作為根路徑; 並且在輸出中應用對應的子層級關係.
 
-有的时候这并不是期望的结果, 比如输入 `FolderA\FolderB\1.ts` 和 `FolderA\FolderB\2.ts`, 输出结构会是 `FolderA\FolderB\` 对应的结构. 如果输入中新增 `FolderA\3.ts` 文件, 输出的结构将突然变为 `FolderA\` 对应的结构.
+有的時候這並不是期望的結果, 比如輸入 `FolderA\FolderB\1.ts` 和 `FolderA\FolderB\2.ts`, 輸出結構會是 `FolderA\FolderB\` 對應的結構. 如果輸入中新增 `FolderA\3.ts` 文件, 輸出的結構將突然變為 `FolderA\` 對應的結構.
 
-`--rootDir` 指定了会输出对应结构的输入目录, 不再通过计算获得.
+`--rootDir` 指定了會輸出對應結構的輸入目錄, 不再通過計算獲得.
 
-### `--noEmitHelpers` 命令行选项
+### `--noEmitHelpers` 命令行選項
 
-TypeScript 编译器在需要的时候会输出一些像 `__extends` 这样的工具函数. 这些函数会在使用它们的所有文件中输出. 如果你想要聚合所有的工具函数到同一个位置, 或者覆盖默认的行为, 使用 `--noEmitHelpers` 来告知编译器不要输出它们.
+TypeScript 編譯器在需要的時候會輸出一些像 `__extends` 這樣的工具函數. 這些函數會在使用它們的所有文件中輸出. 如果你想要聚合所有的工具函數到同一個位置, 或者覆蓋默認的行為, 使用 `--noEmitHelpers` 來告知編譯器不要輸出它們.
 
-### `--newLine` 命令行选项
+### `--newLine` 命令行選項
 
-默认输出的换行符在 Windows 上是 `\r\n`, 在 *nix 上是 `\n`. `--newLine` 命令行标记可以覆盖这个行为, 并指定输出文件中使用的换行符.
+默認輸出的換行符在 Windows 上是 `\r\n`, 在 *nix 上是 `\n`. `--newLine` 命令行標記可以覆蓋這個行為, 並指定輸出文件中使用的換行符.
 
-### `--inlineSourceMap` and `inlineSources` 命令行选项
+### `--inlineSourceMap` and `inlineSources` 命令行選項
 
-`--inlineSourceMap` 将内嵌源文件映射到 `.js` 文件, 而不是在单独的 `.js.map` 文件中. `--inlineSources` 允许进一步将 `.ts` 文件内容包含到输出文件中.
+`--inlineSourceMap` 將內嵌源文件映射到 `.js` 文件, 而不是在單獨的 `.js.map` 文件中. `--inlineSources` 允許進一步將 `.ts` 文件內容包含到輸出文件中.
 
 ## TypeScript 1.4
 
-### 联合类型
+### 聯合類型
 
-#### 概览
+#### 概覽
 
-联合类型是描述一个可能是几个类型之一的值的有效方式. 举例来说, 你可能会有一个 API 用于执行一个 `commandline` 为 `string`, `string[]` 或者是返回值为 `string` 的函数的程序. 现在可以这样写:
+聯合類型是描述一個可能是幾個類型之一的值的有效方式. 舉例來說, 你可能會有一個 API 用於執行一個 `commandline` 為 `string`, `string[]` 或者是返回值為 `string` 的函數的程序. 現在可以這樣寫:
 
 ```ts
 interface RunOptions {
@@ -1572,24 +1572,24 @@ interface RunOptions {
 }
 ```
 
-对联合类型的赋值非常直观 -- 任何可以赋值给联合类型中任意一个类型的值都可以赋值给这个联合类型:
+對聯合類型的賦值非常直觀 -- 任何可以賦值給聯合類型中任意一個類型的值都可以賦值給這個聯合類型:
 
 ```ts
 var opts: RunOptions = /* ... */;
-opts.commandline = '-hello world'; // 没问题
-opts.commandline = ['-hello', 'world']; // 没问题
-opts.commandline = [42]; // 错误, number 不是 string 或 string[]
+opts.commandline = '-hello world'; // 沒問題
+opts.commandline = ['-hello', 'world']; // 沒問題
+opts.commandline = [42]; // 錯誤, number 不是 string 或 string[]
 ```
 
-当从联合类型中读取时, 你可以看到联合类型中各类型共有的属性:
+當從聯合類型中讀取時, 你可以看到聯合類型中各類型共有的屬性:
 
 ```ts
-if (opts.length === 0) { // 没问题, string 和 string[] 都有 'length' 属性
+if (opts.length === 0) { // 沒問題, string 和 string[] 都有 'length' 屬性
   console.log("it's empty");
 }
 ```
 
-使用类型收窄, 你可以方便的使用具有联合类型的变量:
+使用類型收窄, 你可以方便的使用具有聯合類型的變量:
 
 ```ts
 function formatCommandline(c: string|string[]) {
@@ -1601,137 +1601,137 @@ function formatCommandline(c: string|string[]) {
 }
 ```
 
-#### 更严格的泛型
+#### 更嚴格的泛型
 
-结合联合类型可以表示很多种类型场景, 我们决定让某些泛型调用更加严格. 之前, 以下的代码能出人意料地无错通过编译:
+結合聯合類型可以表示很多種類型場景, 我們決定讓某些泛型調用更加嚴格. 之前, 以下的代碼能出人意料地無錯通過編譯:
 
 ```ts
 function equal<T>(lhs: T, rhs: T): boolean {
   return lhs === rhs;
 }
 
-// 过去: 无错误
-// 现在: 错误, 'string' 和 'number' 间没有最佳共有类型
+// 過去: 無錯誤
+// 現在: 錯誤, 'string' 和 'number' 間沒有最佳共有類型
 var e = equal(42, 'hello');
 ```
 
-而通过联合类型, 你现在可以在函数声明或者调用的时候指明想要的行为:
+而通過聯合類型, 你現在可以在函數聲明或者調用的時候指明想要的行為:
 
 ```ts
-// 'choose' 函数的参数类型必须相同
+// 'choose' 函數的參數類型必須相同
 function choose1<T>(a: T, b: T): T { return Math.random() > 0.5 ? a : b }
-var a = choose1('hello', 42); // 错误
-var b = choose1<string|number>('hello', 42); // 正确
+var a = choose1('hello', 42); // 錯誤
+var b = choose1<string|number>('hello', 42); // 正確
 
-// 'choose' 函数的参数类型不需要相同
+// 'choose' 函數的參數類型不需要相同
 function choose2<T, U>(a: T, b: U): T|U { return Math.random() > 0.5 ? a : b }
-var c = choose2('bar', 'foo'); // 正确, c: string
-var d = choose2('hello', 42); // 正确, d: string|number
+var c = choose2('bar', 'foo'); // 正確, c: string
+var d = choose2('hello', 42); // 正確, d: string|number
 ```
 
-#### 更好的类型接口
+#### 更好的類型接口
 
-联合类型也允许了数组或者其他地方有更好的类型接口, 以便一个集合中可能有多重类型.
+聯合類型也允許了陣列或者其他地方有更好的類型接口, 以便一個集合中可能有多重類型.
 
 ```ts
 var x = [1, 'hello']; // x: Array<string|number>
-x[0] = 'world'; // 正确
-x[0] = false; // 错误, boolean 不是 string 或 number
+x[0] = 'world'; // 正確
+x[0] = false; // 錯誤, boolean 不是 string 或 number
 ```
 
-### `let` 声明
+### `let` 聲明
 
-在 JavaScript 中, `var` 声明会被 "提升" 到它们所在的作用域. 这可能会导致一些令人疑惑的问题:
+在 JavaScript 中, `var` 聲明會被 "提升" 到它們所在的作用域. 這可能會導致一些令人疑惑的問題:
 
 ```ts
-console.log(x); // 本意是在这里写 'y'
-/* 当前代码块靠后的位置 */
+console.log(x); // 本意是在這裡寫 'y'
+/* 當前代碼塊靠後的位置 */
 var x = 'hello';
 ```
 
-ES6 的关键字 `let` 现在在 TypeScript 中得到支持, 声明变量获得了更直观的块级语义. 一个 `let` 变量只能在它声明之后被引用, 其作用域被限定于它被声明的句法块:
+ES6 的關鍵字 `let` 現在在 TypeScript 中得到支持, 聲明變量獲得了更直觀的塊級語義. 一個 `let` 變量只能在它聲明之後被引用, 其作用域被限定於它被聲明的句法塊:
 
 ```ts
 if (foo) {
-    console.log(x); // 错误, 在声明前不能引用 x
+    console.log(x); // 錯誤, 在聲明前不能引用 x
     let x = 'hello';
 } else {
-    console.log(x); // 错误, x 在当前块中没有声明
+    console.log(x); // 錯誤, x 在當前塊中沒有聲明
 }
 ```
 
-`let` 仅在编译到 ECMAScript 6 时被支持 (`--target ES6`).
+`let` 僅在編譯到 ECMAScript 6 時被支持 (`--target ES6`).
 
-### `const` 声明
+### `const` 聲明
 
-另外一种在 TypeScript 中被支持的新的 ES6 声明类型是 `const`. 一个 `const` 变量不能被赋值, 并且在声明的时候必须被初始化. 这可以用在你声明和初始化后不希望值被改变时:
+另外一種在 TypeScript 中被支持的新的 ES6 聲明類型是 `const`. 一個 `const` 變量不能被賦值, 並且在聲明的時候必須被初始化. 這可以用在你聲明和初始化後不希望值被改變時:
 
 ```ts
 const halfPi = Math.PI / 2;
-halfPi = 2; // 错误, 不能赋值给一个 `const`
+halfPi = 2; // 錯誤, 不能賦值給一個 `const`
 ```
 
-`const` 仅在编译到 ECMAScript 6 时被支持 (`--target ES6`).
+`const` 僅在編譯到 ECMAScript 6 時被支持 (`--target ES6`).
 
 ## 模板字符串
 
-TypeScript 现在支持 ES6 模板字符串. 现在可以方便地在字符串中嵌入任何表达式:
+TypeScript 現在支持 ES6 模板字符串. 現在可以方便地在字符串中嵌入任何表達式:
 
 ```ts
 var name = "TypeScript";
 var greeting  = `Hello, ${name}! Your name has ${name.length} characters`;
 ```
 
-当编译到 ES6 以前的版本时, 字符串会被分解为:
+當編譯到 ES6 以前的版本時, 字符串會被分解為:
 
 ```ts
 var name = "TypeScript!";
 var greeting = "Hello, " + name + "! Your name has " + name.length + " characters";
 ```
 
-### 类型收窄
+### 類型收窄
 
-在 JavaScript 中常常用 `typeof` 或者 `instanceof` 在运行时检查一个表达式的类型. TypeScript 现在理解这些条件, 并且在 `if` 语句中会据此改变类型接口.
+在 JavaScript 中常常用 `typeof` 或者 `instanceof` 在運行時檢查一個表達式的類型. TypeScript 現在理解這些條件, 並且在 `if` 語句中會據此改變類型接口.
 
-使用 `typeof` 来检查一个变量:
+使用 `typeof` 來檢查一個變量:
 
 ```ts
 var x: any = /* ... */;
 if(typeof x === 'string') {
-    console.log(x.subtr(1)); // 错误, 'subtr' 在 'string' 上不存在
+    console.log(x.subtr(1)); // 錯誤, 'subtr' 在 'string' 上不存在
 }
-// 这里 x 的类型依然是 any
-x.unknown(); // 正确
+// 這裡 x 的類型依然是 any
+x.unknown(); // 正確
 ```
 
-与联合类型和 `else` 一起使用 `typeof`:
+與聯合類型和 `else` 一起使用 `typeof`:
 
 ```ts
 var x: string | HTMLElement = /* ... */;
 if (typeof x === 'string') {
-    // x 如上所述是一个 string
+    // x 如上所述是一個 string
 } else {
-    // x 在这里是 HTMLElement
+    // x 在這裡是 HTMLElement
     console.log(x.innerHTML);
 }
 ```
 
-与类和联合类型一起使用 `instanceof`:
+與類和聯合類型一起使用 `instanceof`:
 
 ```ts
 class Dog { woof() { } }
 class Cat { meow() { } }
 var pet: Dog | Cat = /* ... */;
 if (pet instanceof Dog) {
-    pet.woof(); // 正确
+    pet.woof(); // 正確
 } else {
-    pet.woof(); // 错误
+    pet.woof(); // 錯誤
 }
 ```
 
-### 类型别名
+### 類型別名
 
-现在你可以使用 `type` 关键字为类型定义一个_别名_:
+現在你可以使用 `type` 關鍵字為類型定義一個_別名_:
 
 ```ts
 type PrimitiveArray = Array<string | number | boolean>;
@@ -1740,24 +1740,24 @@ type NgScope = ng.IScope;
 type Callback = () => void;
 ```
 
-类型别名和它们原来的类型完全相同; 它们仅仅是另一种表述的名称.
+類型別名和它們原來的類型完全相同; 它們僅僅是另一種表述的名稱.
 
-### `const enum` (完全内联的枚举)
+### `const enum` (完全單行內的枚舉)
 
-枚举非常有用, 但有的程序可能并不需要生成的代码, 而简单地将枚举成员的数字值内联能够给这些程序带来一定好处. 新的 `const enum` 声明在类型安全上和 `enum` 一致, 但是编译后会被完全抹去.
+枚舉非常有用, 但有的程序可能並不需要生成的代碼, 而簡單地將枚舉成員的數字值單行內能夠給這些程序帶來一定好處. 新的 `const enum` 聲明在類型安全上和 `enum` 一致, 但是編譯後會被完全抹去.
 
 ```ts
 const enum Suit { Clubs, Diamonds, Hearts, Spades }
 var d = Suit.Diamonds;
 ```
 
-编译为:
+編譯為:
 
 ```js
 var d = 1;
 ```
 
-如果可能 TypeScript 现在会计算枚举的值:
+如果可能 TypeScript 現在會計算枚舉的值:
 
 ```ts
 enum MyFlags {
@@ -1767,20 +1767,20 @@ enum MyFlags {
   Awesome = 4,
   Best = Neat | Cool | Awesome
 }
-var b = MyFlags.Best; // 输出 var b = 7;
+var b = MyFlags.Best; // 輸出 var b = 7;
 ```
 
-### `--noEmitOnError` 命令行选项
+### `--noEmitOnError` 命令行選項
 
-TypeScript 编译器的默认行为会在出现类型错误 (比如, 尝试赋值一个 `string` 给 `number`) 时依然输出 .js 文件. 在构建服务器或者其他只希望有 "干净" 版本的场景可能并不是期望的结果. 新的 `noEmitOnError` 标记会使编译器在有任何错误时不输出 .js 代码.
+TypeScript 編譯器的默認行為會在出現類型錯誤 (比如, 嘗試賦值一個 `string` 給 `number`) 時依然輸出 .js 文件. 在構建服務器或者其他只希望有 "乾淨" 版本的場景可能並不是期望的結果. 新的 `noEmitOnError` 標記會使編譯器在有任何錯誤時不輸出 .js 代碼.
 
-对于 MSBuild 的项目这是目前的默认设定; 这使 MSBuild 的增量编译变得可行, 输出仅在代码没有问题时产生.
+對於 MSBuild 的項目這是目前的默認設定; 這使 MSBuild 的增量編譯變得可行, 輸出僅在代碼沒有問題時產生.
 
-### AMD 模块名称
+### AMD 模組名稱
 
-AMD 模块默认生成是匿名的. 对于一些像打包工具这样的处理输出模块的工具会带来一些问题 (比如 r.js).
+AMD 模組默認生成是匿名的. 對於一些像打包工具這樣的處理輸出模組的工具會帶來一些問題 (比如 r.js).
 
-新的 `amd-module name` 标签允许传入一个可选的模块名称给编译器:
+新的 `amd-module name` 標籤允許傳入一個可選的模組名稱給編譯器:
 
 ```ts
 //// [amdModule.ts]
@@ -1789,7 +1789,7 @@ export class C {
 }
 ```
 
-这会在调用 AMD 的 `define` 方法时传入名称 `NamedModule`:
+這會在調用 AMD 的 `define` 方法時傳入名稱 `NamedModule`:
 
 ```ts
 //// [amdModule.js]
@@ -1805,9 +1805,9 @@ define("NamedModule", ["require", "exports"], function (require, exports) {
 
 ## TypeScript 1.3
 
-### 受保护成员
+### 受保護成員
 
-在类中新的 `protected` 标示符就像它在其他一些像 C++, C# 与 Java 这样的常见语言中的功能一致. 一个 `protected` (受保护的) 的成员仅在子类或者声明它的类中可见:
+在類中新的 `protected` 標示符就像它在其他一些像 C++, C# 與 Java 這樣的常見語言中的功能一致. 一個 `protected` (受保護的) 的成員僅在子類或者聲明它的類中可見:
 
 ```ts
 class Thing {
@@ -1816,51 +1816,51 @@ class Thing {
 
 class MyThing extends Thing {
   public myMethod() {
-    // 正确, 可以在子类中访问受保护成员
+    // 正確, 可以在子類中訪問受保護成員
     this.doSomething();
   }
 }
 var t = new MyThing();
-t.doSomething(); // 错误, 不能在类外调用受保护成员
+t.doSomething(); // 錯誤, 不能在類外調用受保護成員
 ```
 
-### 元组类型
+### 元組類型
 
-元组类型可以表示一个数组中部分元素的类型是已知, 但不一定相同的情况. 举例来说, 你可能希望描述一个数组, 在下标 0 处为 `string`, 在 1 处为 `number`:
+元組類型可以表示一個陣列中部分元素的類型是已知, 但不一定相同的情況. 舉例來說, 你可能希望描述一個陣列, 在下標 0 處為 `string`, 在 1 處為 `number`:
 
 ```ts
-// 声明一个元组类型
+// 聲明一個元組類型
 var x: [string, number];
 // 初始化
-x = ['hello', 10]; // 正确
-// 错误的初始化
-x = [10, 'hello']; // 错误
+x = ['hello', 10]; // 正確
+// 錯誤的初始化
+x = [10, 'hello']; // 錯誤
 ```
 
-当使用已知的下标访问某个元素时, 能够获得正确的类型:
+當使用已知的下標訪問某個元素時, 能夠獲得正確的類型:
 
 ```ts
-console.log(x[0].substr(1)); // 正确
-console.log(x[1].substr(1)); // 错误, 'number' 类型没有 'substr' 属性
+console.log(x[0].substr(1)); // 正確
+console.log(x[1].substr(1)); // 錯誤, 'number' 類型沒有 'substr' 屬性
 ```
 
-注意在 TypeScript 1.4 中, 当访问某个下标不在已知范围内的元素时, 获得的是联合类型:
+注意在 TypeScript 1.4 中, 當訪問某個下標不在已知範圍內的元素時, 獲得的是聯合類型:
 
 ```ts
-x[3] = 'world'; // 正确
-console.log(x[5].toString()); // 正确, 'string' 和 'number' 都有 toString 方法
-x[6] = true; // 错误, boolean 不是 number 或 string
+x[3] = 'world'; // 正確
+console.log(x[5].toString()); // 正確, 'string' 和 'number' 都有 toString 方法
+x[6] = true; // 錯誤, boolean 不是 number 或 string
 ```
 
 ## TypeScript 1.1
 
-### 性能优化
+### 性能優化
 
-1.1 版编译器大体比之前任何版本快 4 倍. 查看 [这篇文章里令人印象深刻的对比](http://blogs.msdn.com/b/typescript/archive/2014/10/06/announcing-typescript-1-1-ctp.aspx).
+1.1 版編譯器大體比之前任何版本快 4 倍. 查看 [這篇文章裡令人印象深刻的對比](http://blogs.msdn.com/b/typescript/archive/2014/10/06/announcing-typescript-1-1-ctp.aspx).
 
-### 更好的模块可见规则
+### 更好的模組可見規則
 
-TypeScript 现在仅在开启了 `--declaration` 标记时严格要求模块类型的可见性. 对于 Angular 的场景来说非常有用, 比如:
+TypeScript 現在僅在開啟了 `--declaration` 標記時嚴格要求模組類型的可見性. 對於 Angular 的場景來說非常有用, 比如:
 
 ```ts
 module MyControllers {
@@ -1868,15 +1868,15 @@ module MyControllers {
     animals: Animal[];
   }
   export class ZooController {
-    // 过去是错误的 (无法暴露 ZooScope), 而现在仅在需要生成 .d.ts 文件时报错
+    // 過去是錯誤的 (無法暴露 ZooScope), 而現在僅在需要生成 .d.ts 文件時報錯
     constructor(public $scope: ZooScope) { }
-    /* 更多代码 */
+    /* 更多代碼 */
   }
 }
 ```
 
 ---
 
-**[1]** 原文为 "The changes also inline calls `Object.getOwnPropertyDescriptor` and `Object.defineProperty` in a backwards-compatible fashion that allows for a to clean up the emit for ES5 and later by removing various repetitive calls to the aforementioned `Object` methods."
+**[1]** 原文為 "The changes also inline calls `Object.getOwnPropertyDescriptor` and `Object.defineProperty` in a backwards-compatible fashion that allows for a to clean up the emit for ES5 and later by removing various repetitive calls to the aforementioned `Object` methods."
 
-**[2]** 原文为 "While not strictly a language change..."
+**[2]** 原文為 "While not strictly a language change..."

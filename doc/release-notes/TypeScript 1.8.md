@@ -1,8 +1,8 @@
 # TypeScript 1.8
 
-## 类型参数约束
+## 類型參數約束
 
-在 TypeScript 1.8 中, 类型参数的限制可以引用自同一个类型参数列表中的类型参数. 在此之前这种做法会报错. 这种特性通常被叫做 [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
+在 TypeScript 1.8 中, 類型參數的限制可以引用自同一個類型參數列表中的類型參數. 在此之前這種做法會報錯. 這種特性通常被叫做 [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
 
 ### 例子
 
@@ -16,24 +16,24 @@ function assign<T extends U, U>(target: T, source: U): T {
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
 assign(x, { b: 10, d: 20 });
-assign(x, { e: 0 });  // 错误
+assign(x, { e: 0 });  // 錯誤
 ```
 
-## 控制流错误分析
+## 控制流錯誤分析
 
-TypeScript 1.8 中引入了控制流分析来捕获开发者通常会遇到的一些错误.
+TypeScript 1.8 中引入了控制流分析來捕獲開發者通常會遇到的一些錯誤.
 
-详情见接下来的内容, 可以上手尝试:
+詳情見接下來的內容, 可以上手嘗試:
 
 ![cfa](https://cloud.githubusercontent.com/assets/8052307/5210657/c5ae0f28-7585-11e4-97d8-86169ef2a160.gif)
 
-### 不可及的代码
+### 不可及的代碼
 
-一定无法在运行时被执行的语句现在会被标记上代码不可及错误. 举个例子, 在无条件限制的 `return`, `throw`, `break` 或者 `continue` 后的语句被认为是不可及的. 使用 `--allowUnreachableCode` 来禁用不可及代码的检测和报错.
+一定無法在運行時被執行的語句現在會被標記上代碼不可及錯誤. 舉個例子, 在無條件限制的 `return`, `throw`, `break` 或者 `continue` 後的語句被認為是不可及的. 使用 `--allowUnreachableCode` 來禁用不可及代碼的檢測和報錯.
 
 #### 例子
 
-这里是一个简单的不可及错误的例子:
+這裡是一個簡單的不可及錯誤的例子:
 
 ```ts
 function f(x) {
@@ -44,61 +44,61 @@ function f(x) {
        return false;
     }
 
-    x = 0; // 错误: 检测到不可及的代码.
+    x = 0; // 錯誤: 檢測到不可及的代碼.
 }
 ```
 
-这个特性能捕获的一个更常见的错误是在 `return` 语句后添加换行:
+這個特性能捕獲的一個更常見的錯誤是在 `return` 語句後添加換行:
 
 ```ts
 function f() {
-    return            // 换行导致自动插入的分号
+    return            // 換行導致自動插入的分號
     {
-        x: "string"   // 错误: 检测到不可及的代码.
+        x: "string"   // 錯誤: 檢測到不可及的代碼.
     }
 }
 ```
 
-因为 JavaScript 会自动在行末结束 `return` 语句, 下面的对象字面量变成了一个代码块.
+因為 JavaScript 會自動在行末結束 `return` 語句, 下面的物件字面量變成了一個代碼塊.
 
-### 未使用的标签
+### 未使用的標籤
 
-未使用的标签也会被标记. 和不可及代码检查一样, 被使用的标签检查也是默认开启的. 使用 `--allowUnusedLabels` 来禁用未使用标签的报错.
+未使用的標籤也會被標記. 和不可及代碼檢查一樣, 被使用的標籤檢查也是默認開啟的. 使用 `--allowUnusedLabels` 來禁用未使用標籤的報錯.
 
 #### 例子
 
 ```ts
-loop: while (x > 0) {  // 错误: 未使用的标签.
+loop: while (x > 0) {  // 錯誤: 未使用的標籤.
     x++;
 }
 ```
 
-### 隐式返回
+### 隱式返回
 
-JS 中没有返回值的代码分支会隐式地返回 `undefined`. 现在编译器可以将这种方式标记为隐式返回. 对于隐式返回的检查默认是被禁用的, 可以使用 `--noImplicitReturns` 来启用.
+JS 中沒有返回值的代碼分支會隱式地返回 `undefined`. 現在編譯器可以將這種方式標記為隱式返回. 對於隱式返回的檢查默認是被禁用的, 可以使用 `--noImplicitReturns` 來啟用.
 
 #### 例子
 
 ```ts
-function f(x) { // 错误: 不是所有分支都返回了值.
+function f(x) { // 錯誤: 不是所有分支都返回了值.
     if (x) {
         return false;
     }
 
-    // 隐式返回了 `undefined`
+    // 隱式返回了 `undefined`
 }
 ```
 
-### Case 语句贯穿
+### Case 語句貫穿
 
-TypeScript 现在可以在 switch 语句中出现贯穿的几个非空 case 时报错.
-这个检测默认是关闭的, 可以使用 `--noFallthroughCasesInSwitch` 启用.
+TypeScript 現在可以在 switch 語句中出現貫穿的幾個非空 case 時報錯.
+這個檢測默認是關閉的, 可以使用 `--noFallthroughCasesInSwitch` 啟用.
 
 #### 例子
 
 ```ts
 switch (x % 2) {
-    case 0: // 错误: switch 中出现了贯穿的 case.
+    case 0: // 錯誤: switch 中出現了貫穿的 case.
         console.log("even");
 
     case 1:
@@ -107,7 +107,7 @@ switch (x % 2) {
 }
 ```
 
-然而, 在下面的例子中, 由于贯穿的 case 是空的, 并不会报错:
+然而, 在下面的例子中, 由於貫穿的 case 是空的, 並不會報錯:
 
 ```ts
 switch (x % 3) {
@@ -122,47 +122,47 @@ switch (x % 3) {
 }
 ```
 
-## React 无状态的函数组件
+## React 無狀態的函數組件
 
-TypeScript 现在支持[无状态的函数组件](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions).
-它是可以组合其他组件的轻量级组件.
+TypeScript 現在支持[無狀態的函數組件](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions).
+它是可以組合其他組件的輕量級組件.
 
 ```ts
-// 使用参数解构和默认值轻松地定义 'props' 的类型
+// 使用參數解構和默認值輕鬆地定義 'props' 的類型
 const Greeter = ({name = 'world'}) => <div>Hello, {name}!</div>;
 
-// 参数可以被检验
+// 參數可以被檢驗
 let example = <Greeter name='TypeScript 1.8' />;
 ```
 
-如果需要使用这一特性及简化的 props, 请确认使用的是[最新的 react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
+如果需要使用這一特性及簡化的 props, 請確認使用的是[最新的 react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
 
-## 简化的 React `props` 类型管理
+## 簡化的 React `props` 類型管理
 
-在 TypeScript 1.8 配合最新的 react.d.ts (见上方) 大幅简化了 `props` 的类型声明.
+在 TypeScript 1.8 配合最新的 react.d.ts (見上方) 大幅簡化了 `props` 的類型聲明.
 
-具体的:
+具體的:
 
-- 你不再需要显式的声明 `ref` 和 `key` 或者 `extend React.Props`
-- `ref` 和 `key` 属性会在所有组件上拥有正确的类型.
-- `ref` 属性在无状态函数组件上会被正确地禁用.
+- 你不再需要顯式的聲明 `ref` 和 `key` 或者 `extend React.Props`
+- `ref` 和 `key` 屬性會在所有組件上擁有正確的類型.
+- `ref` 屬性在無狀態函數組件上會被正確地禁用.
 
-## 在模块中扩充全局或者模块作用域
+## 在模組中擴充全局或者模組作用域
 
-用户现在可以为任何模块进行他们想要, 或者其他人已经对其作出的扩充.
-模块扩充的形式和过去的包模块一致 (例如 `declare module "foo" { }` 这样的语法), 并且可以直接嵌在你自己的模块内, 或者在另外的顶级外部包模块中.
+用戶現在可以為任何模組進行他們想要, 或者其他人已經對其作出的擴充.
+模組擴充的形式和過去的包模組一致 (例如 `declare module "foo" { }` 這樣的語法), 並且可以直接嵌在你自己的模組內, 或者在另外的頂級外部包模組中.
 
-除此之外, TypeScript 还以 `declare global { }` 的形式提供了对于_全局_声明的扩充.
-这能使模块对像 `Array` 这样的全局类型在必要的时候进行扩充.
+除此之外, TypeScript 還以 `declare global { }` 的形式提供了對於_全局_聲明的擴充.
+這能使模組對像 `Array` 這樣的全局類型在必要的時候進行擴充.
 
-模块扩充的名称解析规则与 `import` 和 `export` 声明中的一致.
-扩充的模块声明合并方式与在同一个文件中声明是相同的.
+模組擴充的名稱解析規則與 `import` 和 `export` 聲明中的一致.
+擴充的模組聲明合併方式與在同一個文件中聲明是相同的.
 
-不论是模块扩充还是全局声明扩充都不能向顶级作用域添加新的项目 - 它们只能为已经存在的声明添加 "补丁".
+不論是模組擴充還是全局聲明擴充都不能向頂級作用域添加新的項目 - 它們只能為已經存在的聲明添加 "補丁".
 
 ### 例子
 
-这里的 `map.ts` 可以声明它会在内部修改在 `observable.ts` 中声明的 `Observable` 类型, 添加 `map` 方法.
+這裡的 `map.ts` 可以聲明它會在內部修改在 `observable.ts` 中聲明的 `Observable` 類型, 添加 `map` 方法.
 
 ```ts
 // observable.ts
@@ -175,10 +175,10 @@ export class Observable<T> {
 // map.ts
 import { Observable } from "./observable";
 
-// 扩充 "./observable"
+// 擴充 "./observable"
 declare module "./observable" {
 
-    // 使用接口合并扩充 'Observable' 类的定义
+    // 使用接口合併擴充 'Observable' 類的定義
     interface Observable<T> {
         map<U>(proj: (el: T) => U): Observable<U>;
     }
@@ -197,12 +197,12 @@ let o: Observable<number>;
 o.map(x => x.toFixed());
 ```
 
-相似的, 在模块中全局作用域可以使用 `declare global` 声明被增强:
+相似的, 在模組中全局作用域可以使用 `declare global` 聲明被增強:
 
 ### 例子
 
 ```ts
-// 确保当前文件被当做一个模块.
+// 確保當前文件被當做一個模組.
 export {};
 
 declare global {
@@ -214,10 +214,10 @@ declare global {
 Array.prototype.mapToNumbers = function () { /* ... */ }
 ```
 
-## 字符串字面量类型
+## 字符串字面量類型
 
-接受一个特定字符串集合作为某个值的 API 并不少见.
-举例来说, 考虑一个可以通过控制[动画的渐变](https://en.wikipedia.org/wiki/Inbetweening)让元素在屏幕中滑动的 UI 库:
+接受一個特定字符串集合作為某個值的 API 並不少見.
+舉例來說, 考慮一個可以通過控制[動畫的漸變](https://en.wikipedia.org/wiki/Inbetweening)讓元素在屏幕中滑動的 UI 庫:
 
 ```ts
 declare class UIElement {
@@ -231,17 +231,17 @@ interface AnimationOptions {
 }
 ```
 
-然而, 这容易产生错误 - 当用户错误不小心错误拼写了一个合法的值时, 并没有任何提示:
+然而, 這容易產生錯誤 - 當用戶錯誤不小心錯誤拼寫了一個合法的值時, 並沒有任何提示:
 
 ```ts
-// 没有报错
+// 沒有報錯
 new UIElement().animate({ deltaX: 100, deltaY: 100, easing: "ease-inout" });
 ```
 
-在 TypeScript 1.8 中, 我们新增了字符串字面量类型. 这些类型和字符串字面量的写法一致, 只是写在类型的位置.
+在 TypeScript 1.8 中, 我們新增了字符串字面量類型. 這些類型和字符串字面量的寫法一致, 只是寫在類型的位置.
 
-用户现在可以确保类型系统会捕获这样的错误.
-这里是我们使用了字符串字面量类型的新的 `AnimationOptions`:
+用戶現在可以確保類型系統會捕獲這樣的錯誤.
+這裡是我們使用了字符串字面量類型的新的 `AnimationOptions`:
 
 ```ts
 interface AnimationOptions {
@@ -250,14 +250,14 @@ interface AnimationOptions {
     easing: "ease-in" | "ease-out" | "ease-in-out";
 }
 
-// 错误: 类型 '"ease-inout"' 不能复制给类型 '"ease-in" | "ease-out" | "ease-in-out"'
+// 錯誤: 類型 '"ease-inout"' 不能複製給類型 '"ease-in" | "ease-out" | "ease-in-out"'
 new UIElement().animate({ deltaX: 100, deltaY: 100, easing: "ease-inout" });
 ```
 
-## 更好的联合/交叉类型接口
+## 更好的聯合/交叉類型接口
 
-TypeScript 1.8 优化了源类型和目标类型都是联合或者交叉类型的情况下的类型推导.
-举例来说, 当从 `string | string[]` 推导到 `string | T` 时, 我们将类型拆解为 `string[]` 和 `T`, 这样就可以将 `string[]` 推导为 `T`.
+TypeScript 1.8 優化了源類型和目標類型都是聯合或者交叉類型的情況下的類型推導.
+舉例來說, 當從 `string | string[]` 推導到 `string | T` 時, 我們將類型拆解為 `string[]` 和 `T`, 這樣就可以將 `string[]` 推導為 `T`.
 
 ### 例子
 
@@ -289,11 +289,11 @@ function test2(x: Maybe<number>) {
 }
 ```
 
-## 使用 `--outFile` 合并 `AMD` 和 `System` 模块
+## 使用 `--outFile` 合併 `AMD` 和 `System` 模組
 
-在使用 `--module amd` 或者 `--module system` 的同时制定 `--outFile` 将会把所有参与编译的模块合并为单个包括了多个模块闭包的输出文件.
+在使用 `--module amd` 或者 `--module system` 的同時制定 `--outFile` 將會把所有參與編譯的模組合併為單個包括了多個模組閉包的輸出文件.
 
-每一个模块都会根据其相对于 `rootDir` 的位置被计算出自己的模块名称.
+每一個模組都會根據其相對於 `rootDir` 的位置被計算出自己的模組名稱.
 
 ### 例子
 
@@ -312,7 +312,7 @@ export function createB() {
 }
 ```
 
-结果为:
+結果為:
 
 ```js
 define("lib/b", ["require", "exports"], function (require, exports) {
@@ -331,18 +331,18 @@ define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
 });
 ```
 
-## 支持 SystemJS 使用 `default` 导入
+## 支持 SystemJS 使用 `default` 導入
 
-像 SystemJS 这样的模块加载器将 CommonJS 模块做了包装并暴露为 `default` ES6 导入项. 这使得在 SystemJS 和 CommonJS 的实现由于不同加载器不同的模块导出方式不能共享定义.
+像 SystemJS 這樣的模組加載器將 CommonJS 模組做了包裝並暴露為 `default` ES6 導入項. 這使得在 SystemJS 和 CommonJS 的實現由於不同加載器不同的模組導出方式不能共享定義.
 
-设置新的编译选项 `--allowSyntheticDefaultImports` 指明模块加载器会进行导入的 `.ts` 或 `.d.ts` 中未指定的某种类型的默认导入项构建. 编译器会由此推断存在一个 `default` 导出项和整个模块自己一致.
+設置新的編譯選項 `--allowSyntheticDefaultImports` 指明模組加載器會進行導入的 `.ts` 或 `.d.ts` 中未指定的某種類型的默認導入項構建. 編譯器會由此推斷存在一個 `default` 導出項和整個模組自己一致.
 
-此选项在 System 模块默认开启.
+此選項在 System 模組默認開啟.
 
-## 允许循环中被引用的 `let`/`const`
+## 允許循環中被引用的 `let`/`const`
 
-之前这样会报错, 现在由 TypeScript 1.8 支持.
-循环中被函数引用的 `let`/`const` 声明现在会被输出为与 `let`/`const` 更新语义相符的代码.
+之前這樣會報錯, 現在由 TypeScript 1.8 支持.
+循環中被函數引用的 `let`/`const` 聲明現在會被輸出為與 `let`/`const` 更新語義相符的代碼.
 
 ### 例子
 
@@ -355,7 +355,7 @@ for (let i = 0; i < 5; i++) {
 list.forEach(f => console.log(f()));
 ```
 
-被编译为:
+被編譯為:
 
 ```js
 var list = [];
@@ -368,7 +368,7 @@ for (var i = 0; i < 5; i++) {
 list.forEach(function (f) { return console.log(f()); });
 ```
 
-然后结果是:
+然後結果是:
 
 ```cmd
 0
@@ -378,41 +378,41 @@ list.forEach(function (f) { return console.log(f()); });
 4
 ```
 
-## 改进的 `for..in` 语句检查
+## 改進的 `for..in` 語句檢查
 
-过去 `for..in` 变量的类型被推断为 `any`, 这使得编译器忽略了 `for..in` 语句内的一些不合法的使用.
+過去 `for..in` 變量的類型被推斷為 `any`, 這使得編譯器忽略了 `for..in` 語句內的一些不合法的使用.
 
-从 TypeScript 1.8 开始:
+從 TypeScript 1.8 開始:
 
-- 在 `for..in` 语句中的变量隐含类型为 `string`.
-- 当一个有数字索引签名对应类型 `T` (比如一个数组) 的对象被一个 `for..in` 索引*有*数字索引签名并且*没有*字符串索引签名 (比如还是数组) 的对象的变量索引, 产生的值的类型为 `T`.
+- 在 `for..in` 語句中的變量隱含類型為 `string`.
+- 當一個有數字索引簽名對應類型 `T` (比如一個陣列) 的物件被一個 `for..in` 索引*有*數字索引簽名並且*沒有*字符串索引簽名 (比如還是陣列) 的物件的變量索引, 產生的值的類型為 `T`.
 
 ### 例子
 
 ```ts
 var a: MyObject[];
-for (var x in a) {   // x 的隐含类型为 string
-    var obj = a[x];  // obj 的类型为 MyObject
+for (var x in a) {   // x 的隱含類型為 string
+    var obj = a[x];  // obj 的類型為 MyObject
 }
 ```
 
-## 模块现在输出时会加上 `"use strict;"`
+## 模組現在輸出時會加上 `"use strict;"`
 
-对于 ES6 来说模块始终以严格模式被解析, 但这一点过去对于非 ES6 目标在生成的代码中并没有遵循. 从 TypeScript 1.8 开始, 输出的模块总会为严格模式. 由于多数严格模式下的错误也是 TS 编译时的错误, 多数代码并不会有可见的改动, 但是这也意味着有一些东西可能在运行时没有征兆地失败, 比如赋值给 `NaN` 现在会有运行时错误. 你可以参考这篇 [MDN 上的文章](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mod) 查看详细的严格模式与非严格模式的区别列表.
+對於 ES6 來說模組始終以嚴格模式被解析, 但這一點過去對於非 ES6 目標在生成的代碼中並沒有遵循. 從 TypeScript 1.8 開始, 輸出的模組總會為嚴格模式. 由於多數嚴格模式下的錯誤也是 TS 編譯時的錯誤, 多數代碼並不會有可見的改動, 但是這也意味著有一些東西可能在運行時沒有徵兆地失敗, 比如賦值給 `NaN` 現在會有運行時錯誤. 你可以參考這篇 [MDN 上的文章](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mod) 查看詳細的嚴格模式與非嚴格模式的區別列表.
 
 ## 使用 `--allowJs` 加入 `.js` 文件
 
-经常在项目中会有外部的非 TypeScript 编写的源文件.
-一种方式是将 JS 代码转换为 TS 代码, 但这时又希望将所有 JS 代码和新的 TS 代码的输出一起打包为一个文件.
+經常在項目中會有外部的非 TypeScript 編寫的源文件.
+一種方式是將 JS 代碼轉換為 TS 代碼, 但這時又希望將所有 JS 代碼和新的 TS 代碼的輸出一起打包為一個文件.
 
-`.js` 文件现在允许作为 `tsc` 的输入文件. TypeScript 编译器会检查 `.js` 输入文件的语法错误, 并根据 `--target` 和 `--module` 选项输出对应的代码.
-输出也会和其他 `.ts` 文件一起. `.js` 文件的 source maps 也会像 `.ts` 文件一样被生成.
+`.js` 文件現在允許作為 `tsc` 的輸入文件. TypeScript 編譯器會檢查 `.js` 輸入文件的語法錯誤, 並根據 `--target` 和 `--module` 選項輸出對應的代碼.
+輸出也會和其他 `.ts` 文件一起. `.js` 文件的 source maps 也會像 `.ts` 文件一樣被生成.
 
-## 使用 `--reactNamespace` 自定义 JSX 工厂
+## 使用 `--reactNamespace` 自定義 JSX 工廠
 
-在使用 `--jsx react` 的同时使用 `--reactNamespace <JSX 工厂名称>` 可以允许使用一个不同的 JSX 工厂代替默认的 `React`.
+在使用 `--jsx react` 的同時使用 `--reactNamespace <JSX 工廠名稱>` 可以允許使用一個不同的 JSX 工廠代替默認的 `React`.
 
-新的工厂名称会被用来调用 `createElement` 和 `__spread` 方法.
+新的工廠名稱會被用來調用 `createElement` 和 `__spread` 方法.
 
 ### 例子
 
@@ -422,13 +422,13 @@ import {jsxFactory} from "jsxFactory";
 var div = <div>Hello JSX!</div>
 ```
 
-编译参数:
+編譯參數:
 
 ```shell
 tsc --jsx react --reactNamespace jsxFactory --m commonJS
 ```
 
-结果:
+結果:
 
 ```js
 "use strict";
@@ -436,12 +436,12 @@ var jsxFactory_1 = require("jsxFactory");
 var div = jsxFactory_1.jsxFactory.createElement("div", null, "Hello JSX!");
 ```
 
-## 基于 `this` 的类型收窄
+## 基於 `this` 的類型收窄
 
-TypeScript 1.8 为类和接口方法扩展了[用户定义的类型收窄函数](#用户定义的类型收窄函数).
+TypeScript 1.8 為類和接口方法擴展了[用戶定義的類型收窄函數](#用戶定義的類型收窄函數).
 
-`this is T` 现在是类或接口方法的合法的返回值类型标注.
-当在类型收窄的位置使用时 (比如 `if` 语句), 函数调用表达式的目标对象的类型会被收窄为 `T`.
+`this is T` 現在是類或接口方法的合法的返回值類型標註.
+當在類型收窄的位置使用時 (比如 `if` 語句), 函數調用表達式的目標物件的類型會被收窄為 `T`.
 
 ### 例子
 
@@ -477,51 +477,51 @@ else if (fso.isNetworked()) {
 
 ## 官方的 TypeScript NuGet 包
 
-从 TypeScript 1.8 开始, 将为 TypeScript 编译器 (`tsc.exe`) 和 MSBuild 整合 (`Microsoft.TypeScript.targets` 和 `Microsoft.TypeScript.Tasks.dll`) 提供官方的 NuGet 包.
+從 TypeScript 1.8 開始, 將為 TypeScript 編譯器 (`tsc.exe`) 和 MSBuild 整合 (`Microsoft.TypeScript.targets` 和 `Microsoft.TypeScript.Tasks.dll`) 提供官方的 NuGet 包.
 
-稳定版本可以在这里下载:
+穩定版本可以在這裡下載:
 
 - [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
 - [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
 
-与此同时, 和[每日 npm 包](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx)对应的每日 NuGet 包可以在 https://myget.org 下载:
+與此同時, 和[每日 npm 包](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx)對應的每日 NuGet 包可以在 https://myget.org 下載:
 
 - [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
 
-## `tsc` 错误信息更美观
+## `tsc` 錯誤信息更美觀
 
-我们理解大量单色的输出并不直观. 颜色可以帮助识别信息的始末, 这些视觉上的线索在处理复杂的错误信息时非常重要.
+我們理解大量單色的輸出並不直觀. 顏色可以幫助識別信息的始末, 這些視覺上的線索在處理複雜的錯誤信息時非常重要.
 
-通过传递 `--pretty` 命令行选项, TypeScript 会给出更丰富的输出, 包含错误发生的上下文.
+通過傳遞 `--pretty` 命令行選項, TypeScript 會給出更豐富的輸出, 包含錯誤發生的上下文.
 
-![展示在 ConEmu 中美化之后的错误信息](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
+![展示在 ConEmu 中美化之後的錯誤信息](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
 
-## 高亮 VS 2015 中的 JSX 代码
+## 高亮 VS 2015 中的 JSX 代碼
 
-在 TypeScript 1.8 中, JSX 标签现在可以在 Visual Studio 2015 中被分别和高亮.
+在 TypeScript 1.8 中, JSX 標籤現在可以在 Visual Studio 2015 中被分別和高亮.
 
 ![jsx](https://cloud.githubusercontent.com/assets/8052307/12271404/b875c502-b90f-11e5-93d8-c6740be354d1.png)
 
-通过 `工具`->`选项`->`环境`->`字体与颜色` 页面在 `VB XML` 颜色和字体设置中还可以进一步改变字体和颜色来自定义.
+通過 `工具`->`選項`->`環境`->`字體與顏色` 頁面在 `VB XML` 顏色和字體設置中還可以進一步改變字體和顏色來自定義.
 
-## `--project` (`-p`) 选项现在接受任意文件路径
+## `--project` (`-p`) 選項現在接受任意文件路徑
 
-`--project` 命令行选项过去只接受包含了 `tsconfig.json` 文件的文件夹.
-考虑到不同的构建场景, 应该允许 `--project` 指向任何兼容的 JSON 文件.
-比如说, 一个用户可能会希望为 Node 5 编译 CommonJS 的 ES 2015, 为浏览器编译 AMD 的 ES5.
-现在少了这项限制, 用户可以更容易地直接使用 `tsc` 管理不同的构建目标, 无需再通过一些奇怪的方式, 比如将多个 `tsconfig.json` 文件放在不同的目录中.
+`--project` 命令行選項過去只接受包含了 `tsconfig.json` 文件的文件夾.
+考慮到不同的構建場景, 應該允許 `--project` 指向任何兼容的 JSON 文件.
+比如說, 一個用戶可能會希望為 Node 5 編譯 CommonJS 的 ES 2015, 為瀏覽器編譯 AMD 的 ES5.
+現在少了這項限制, 用戶可以更容易地直接使用 `tsc` 管理不同的構建目標, 無需再通過一些奇怪的方式, 比如將多個 `tsconfig.json` 文件放在不同的目錄中.
 
-如果参数是一个路径, 行为保持不变 - 编译器会尝试在该目录下寻找名为 `tsconfig.json` 的文件.
+如果參數是一個路徑, 行為保持不變 - 編譯器會嘗試在該目錄下尋找名為 `tsconfig.json` 的文件.
 
-## 允许 tsconfig.json 中的注释
+## 允許 tsconfig.json 中的註釋
 
-为配置添加文档是很棒的! `tsconfig.json` 现在支持单行和多行注释.
+為配置添加文檔是很棒的! `tsconfig.json` 現在支持單行和多行註釋.
 
 ```json
 {
     "compilerOptions": {
         "target": "ES2015", // 跑在 node v5 上, 呀!
-        "sourceMap": true   // 让调试轻松一些
+        "sourceMap": true   // 讓調試輕鬆一些
     },
     /*
      * 排除的文件
@@ -532,38 +532,38 @@ else if (fso.isNetworked()) {
 }
 ```
 
-## 支持输出到 IPC 驱动的文件
+## 支持輸出到 IPC 驅動的文件
 
-TypeScript 1.8 允许用户将 `--outFile` 参数和一些特殊的文件系统对象一起使用, 比如命名的管道 (pipe), 设备 (devices) 等.
+TypeScript 1.8 允許用戶將 `--outFile` 參數和一些特殊的文件系統物件一起使用, 比如命名的管道 (pipe), 設備 (devices) 等.
 
-举个例子, 在很多与 Unix 相似的系统上, 标准输出流可以通过文件 `/dev/stdout` 访问.
+舉個例子, 在很多與 Unix 相似的系統上, 標準輸出流可以通過文件 `/dev/stdout` 訪問.
 
 ```sh
 tsc foo.ts --outFile /dev/stdout
 ```
 
-这一特性也允许输出给其他命令.
+這一特性也允許輸出給其他命令.
 
-比如说, 我们可以输出生成的 JavaScript 给一个像 [pretty-js](https://www.npmjs.com/package/pretty-js) 这样的格式美化工具:
+比如說, 我們可以輸出生成的 JavaScript 給一個像 [pretty-js](https://www.npmjs.com/package/pretty-js) 這樣的格式美化工具:
 
 ```sh
 tsc foo.ts --outFile /dev/stdout | pretty-js
 ```
 
-## 改进了 Visual Studio 2015 中对 `tsconfig.json` 的支持
+## 改進了 Visual Studio 2015 中對 `tsconfig.json` 的支持
 
-TypeScript 1.8 允许在任何种类的项目中使用 `tsconfig.json` 文件.
-包括 ASP.NET v4 项目, *控制台应用*, 以及 *用 TypeScript 开发的 HTML 应用*.
-与此同时, 你可以添加不止一个 `tsconfig.json` 文件, 其中每一个都会作为项目的一部分被构建.
-这使得你可以在不使用多个不同项目的情况下为应用的不同部分使用不同的配置.
+TypeScript 1.8 允許在任何種類的項目中使用 `tsconfig.json` 文件.
+包括 ASP.NET v4 項目, *控制台應用*, 以及 *用 TypeScript 開發的 HTML 應用*.
+與此同時, 你可以添加不止一個 `tsconfig.json` 文件, 其中每一個都會作為項目的一部分被構建.
+這使得你可以在不使用多個不同項目的情況下為應用的不同部分使用不同的配置.
 
 ![展示 Visual Studio 中的 tsconfig.json](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/tsconfig-in-vs.png)
 
-当项目中添加了 `tsconfig.json` 文件时, 我们还禁用了项目属性页面.
-也就是说所有配置的改变必须在 `tsconfig.json` 文件中进行.
+當項目中添加了 `tsconfig.json` 文件時, 我們還禁用了項目屬性頁面.
+也就是說所有配置的改變必須在 `tsconfig.json` 文件中進行.
 
 ### 一些限制
 
-- 如果你添加了一个 `tsconfig.json` 文件, 不在其上下文中的 TypeScript 文件不会被编译.
-- Apache Cordova 应用依然有单个 `tsconfig.json` 文件的限制, 而这个文件必须在根目录或者 `scripts` 文件夹.
-- 多数项目类型中都没有 `tsconfig.json` 的模板.
+- 如果你添加了一個 `tsconfig.json` 文件, 不在其上下文中的 TypeScript 文件不會被編譯.
+- Apache Cordova 應用依然有單個 `tsconfig.json` 文件的限制, 而這個文件必須在根目錄或者 `scripts` 文件夾.
+- 多數項目類型中都沒有 `tsconfig.json` 的模板.
